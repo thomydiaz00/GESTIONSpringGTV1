@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <!--JQUERY-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    
+</head>
+<body>
+
+    <!--Tabla que trae datos desde base de datos--
+    
+    -->
+    <div class="card" >
+	    
+
+        <div class="card-header">
+            <h3>Agregar Persona</h5>
+
+        </div>
+        
+        <div class="card-body">
+          
+            <form th:action="@{/admin/save}" th:object=${persona} method="POST">
+            
+            	<div class="form-group">
+	                    <label>ID</label>
+	                    <input th:field="*{id}" type="number" min="0" class="form-control"/>
+	   		    </div>
+
+				
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input th:field="*{name}" type="text" class="form-control"/>
+                </div>
+                
+                <div class="form-group">
+                    <label>Telefono</label>
+                    <input th:field="*{telefono}" type="number" min="0" class="form-control"/>
+                </div>
+
+                <div class="form-group">
+                    <label>Equipo</label>
+                    <input th:field="*{equipo}" type="text" class="form-control"/>
+                </div>
+                
+                <div class="form-group">
+                    <label>Serie</label>
+                    <input th:field="*{serie}" type="text" class="form-control"/>
+                </div>
+                
+                <div class="form-group">
+                    <label>Fecha de entrada</label>
+                    <input th:field="*{fechaEntrada}" type="date"  class="form-control"/>
+                </div>
+                
+                <div class="form-group">
+                    <label>Fecha Salida</label>
+                    <input th:field="*{fechaSalida}" type="date"  class="form-control"/>
+                </div>
+                
+                
+				<button type="submit" class="btn btn-primary" >Guardar</button>
+            </form>
+            
+        
+    </div>
+
+    
+
+            
+                
+            
+            
+
+
+
+    
+
+
+    
+</body>
+</html>

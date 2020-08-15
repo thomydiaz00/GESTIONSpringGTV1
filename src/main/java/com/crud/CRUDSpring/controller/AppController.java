@@ -93,7 +93,7 @@ public class AppController {
 	
 	/*
 	 * Agrega nueva instancia de persona en "personas"
-	 * los datos de la nueva persona van a pasarse mediante "formulario"
+	 * los datos de la nueva persona van a ingresarse en "formulario"
 	 */
 	@GetMapping("/admin/listar/new")
 	public String agregar(Model model) {
@@ -102,9 +102,8 @@ public class AppController {
 		
 	}
 	/*
-	 * Metodo para guardar, metodo de "service" para guardar persona
-	 * siempre y cuando sea valida. Al terminar redirecciona a "/admin/listar" para 
-	 * que se reflejen los cambios
+	 * Metodo para guardar, metodo save de "service" para guardar persona es heredado de CrudRepo
+	 * Al terminar redirecciona a "/admin/listar" para que ver los cambios
 	 */
 	@PostMapping("/admin/save")
 	public String save(@Valid Persona p, Model model) {

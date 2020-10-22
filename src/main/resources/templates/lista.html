@@ -4,89 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina-->
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <script src="/js/bootstrap.min.js"></script>
+        
+    <!--Iconos de FontAwesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+    <script src="https://kit.fontawesome.com/76bcb4e810.js" crossorigin="anonymous"></script>
+
+    
+     <!-- SweetAlert -->
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="/funciones.js"></script>
+    
 </head>
 <body>
   
       <!---NavBar header-->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <img src="static/img/logo.png" th:src="@{/img/logo.png}"width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
-    <a class="navbar-brand" href="#">GestionSPRING</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/admin/listarproductos">Productos</a>
-        </li>
-        <li class="nav-item dropdown">
-	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	          Administrador
-	        </a>
-	        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-	          <a class="dropdown-item" href="/logout">Logout</a>
-	          
-	        </div>
-	          
-	       
-	      </li>
-        
-      </ul>
-    </div>
-  </nav>
-
-<div>
-  <form th:action="@{/admin/listar/}">
-    <div class="input-group">
-      <input type="text" name="keyword" id="keyword" th:value="${keyword}" required placeholder="Buscar...">
-      <div class="input-group-append" id="button-addon4">
-        <input type="submit" value="Search" button class="btn btn-outline-secondary"></button>
-        <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" button class="btn btn-outline-secondary"></button>
-      </div>	
-    </div>	 	  	
-  </form>
-</div>
-  
+  <div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">
+      GestionSPRING
+      <img src="static/img/logo.png" th:src="@{/img/logo.png}"width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/listarproductos">Productos</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Administrador
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="/logout">Logout</a>
+              
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+      
   
   <div class="alert alert-info" role="alert">
-    <p class="text">clear luego de la busqueda para volver al listado!</p> 
+    <p class="text">Utilizar la barra para buscar por nombre, telefono o equipo!</p> 
   </div>
-  <a th:href="@{/admin/listar/new}" class="btn btn-primary btn-lg btn-block"> <label>Nuevo</label> </a>
+  
+  <div class="container-fluid">
+    <form th:action="@{/admin/listar/}">
+        <div class="input-group">
+          <input type="text" class= "form-control" name="keyword" id="keyword" th:value="${keyword}" required placeholder="Buscar...">
+          <div class="input-group-append" id="button-addon4">
+            <input type="submit" value="Search" button class="btn btn-outline-secondary"></button>
+            <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" button class="btn btn-outline-secondary"></button>
+          </div>	
+        </div>	 	  	
+      </form>
+  </div>
+  
+  
+  <div class="container">
+    <a th:href="@{/admin/listar/new}" class="btn btn-primary btn-lg btn-block">Nuevo</a>
+  </div>
     
   
   
   
   <div class="container-fluid">
-    <table class = "table-responsive">
+    <table class = "table-responsive table-bordered">
       <thead> 
         <tr>
-          <th scope="col"> <p te></p> ID</th>
-          <th scope="col">NOMBRE</th>
-          <th scope="col">TELEFONO</th>
-          <th scope="col">EQUIPO</th>
-          <th scope="col">S/N</th>
-          <th scope="col">ENTRADA</th>
-          <th scope="col">SALIDA</th>
-          <th scope="col">ACCIONES</th>
+          <th scope="col-6">ID</th>
+          <th scope="col-6">NOMBRE</th>
+          <th scope="col-6">TELEFONO</th>
+          <th scope="col-6">EQUIPO</th>
+          <th scope="col-6">S/N</th>
+          <th scope="col-6">ENTRADA</th>
+          <th scope="col-6">SALIDA</th>
+          <th scope="col-6">ACCIONES</th>
           
         </tr>
 
       </thead>
 
       <tbody>
-        <tr th:each = "persona:${personas}">
-          <th  scope="row" th:text="${persona.id}"></td>
-          <td  th:text="${persona.name}"></td>
-          <td  th:text="${persona.telefono}"></td>
-          <td  th:text="${persona.equipo}"></td>
-          <td  th:text="${persona.serie}"></td>
-          <td  th:text="${persona.fechaEntrada}"></td>
-          <td  th:text="${persona.fechaSalida}"></td>
+      	<tr  th:each = "persona:${personas}">
+          <th  th:text="${persona.id}"> </th>
+          <td  th:text="${persona.name}"> </td>
+          <td  th:text="${persona.telefono}"> </td>
+          <td  th:text="${persona.equipo}" ></td>
+          <td  th:text="${persona.serie}"> </td>
+          <td  th:text="${persona.fechaEntrada}"> </td>
+          <td  th:text="${persona.fechaSalida}"> </td>
           
           
           
@@ -110,6 +129,11 @@
     </table>
 
   </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="funciones.js"></script>
+    
    
   </body>
   </html>

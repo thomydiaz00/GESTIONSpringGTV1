@@ -74,6 +74,13 @@ public class PersonaService implements IfServicePersona {
 		data.deleteById(id);
 		
 	}
+
+	@Override
+	public int updatePersona(Persona p) {
+		int res =0;
+		
+		return res;
+	}
 }
 	
 

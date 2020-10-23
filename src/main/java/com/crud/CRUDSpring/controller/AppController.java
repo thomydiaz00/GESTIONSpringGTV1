@@ -120,7 +120,7 @@ public class AppController {
 		Optional<Persona> persona= service.listarId(id);
 		model.addAttribute("persona", persona);
 		
-		return "formulario";
+		return "editar_cliente";
 		
 	}
 	@GetMapping("admin/delete/{id}")

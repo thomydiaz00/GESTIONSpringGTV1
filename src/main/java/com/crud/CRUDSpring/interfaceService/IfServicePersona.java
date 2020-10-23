@@ -14,6 +14,7 @@ public interface IfServicePersona {
 	public List<Persona> listar(String keyword);
 	public Optional<Persona>listarId(int id);
 	public int save(Persona p);
+	public int updatePersona(Persona p);
 	public void delete(int id);
 	
 

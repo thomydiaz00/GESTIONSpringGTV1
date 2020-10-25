@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Clientes</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     
     <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina -->
@@ -33,25 +33,36 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
+      
+
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
+          
           <li class="nav-item active">
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/admin/listarproductos">Productos</a>
           </li>
+        </ul>
+        
+        <ul class="navbar-nav ml-md-auto">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Administrador
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="/logout">Logout</a>
-              
             </div>
           </li>
+        
+        
         </ul>
+
       </div>
+
+      
     </nav>
   </div>
       
@@ -91,7 +102,7 @@
           <th class="col-sm-1">S/N</th>
           <th class="col-sm-1">ENTRADA</th>
           <th class="col-sm-1">SALIDA</th>
-          <th class="col-sm-3">ACCIONES</th>
+          <th class="col-sm-1">ACCIONES</th>
         </tr>
 
       </thead>
@@ -131,7 +142,17 @@
     </table>
 
   </div>
+  <div class="container-fluid pt-3">
+    <div class="row bg-dark text-white">
+      <div class="col-md-12 text-right">
+        <div class="text-white "></div>
+          Desarrollado con <i class= "fas fa-heart"></i> por Thomas Díaz - Estudiante de UNSAdA
+        </div>
+      </div>
+  </div>
+    
 
+    
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="funciones.js"></script>

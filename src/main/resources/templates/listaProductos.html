@@ -8,7 +8,10 @@
     
     <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina -->
     <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" href = "static/css/static-footer.css" th:href="@{/css/static-footer.css}" >
+    
     <script src="/js/bootstrap.min.js"></script>
+    
         
     <!--Iconos de FontAwesome-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
@@ -65,17 +68,16 @@
     <p class="text">Utilizar la barra para buscar Modelo o Marca</p> 
   </div>
   
-  <div class="container-fluid">
-    <form th:action="@{/admin/listarproductos/}">
-        <div class="input-group">
-          <input type="text" class= "form-control" name="busqueda" id="busqueda" th:value="${busqueda}" required placeholder="Buscar...">
-          <div class="input-group-append" id="button-addon4">
-            <input type="submit" value="Search" button class="btn btn-outline-secondary"></button>
-            <input type="button" value="Clear" id="btnClear" onclick="clearSearchProductos()" button class="btn btn-outline-secondary"></button>
-          </div>	
-        </div>	 	  	
-      </form>
-  </div>
+  <footer class="footer mt-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 text-right bg-dark text-center text-white">
+          <div class="text-white "></div>
+            Desarrollado con <i class= "fas fa-heart"></i> por Thomas Díaz- Estudiante de la UNSAdA
+          </div>
+        </div>
+    </div>
+  </footer>
   
   
   <div class="container pt-3">
@@ -137,14 +139,7 @@
 
   </div>
   
-  <div class="container-fluid pt-3">
-    <div class="row bg-dark text-white">
-      <div class="col-md-12 text-right">
-        <div class="text-white "></div>
-          Desarrollado con <i class= "fas fa-heart"></i> por Thomas Díaz - Estudiante de UNSAdA
-        </div>
-      </div>
-  </div>
+
  
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

@@ -68,17 +68,17 @@
     <p class="text">Utilizar la barra para buscar Modelo o Marca</p> 
   </div>
   
-  <footer class="footer mt-3">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12 text-right bg-dark text-center text-white">
-          <div class="text-white "></div>
-            Desarrollado con <i class= "fas fa-heart"></i> por Thomas Díaz- Estudiante de la UNSAdA
-          </div>
-        </div>
-    </div>
-  </footer>
-  
+  <div class="container-fluid">
+    <form th:action="@{/admin/listarproductos/}">
+        <div class="input-group">
+          <input type="text" class= "form-control" name="busqueda" id="busqueda" th:value="${busqueda}" required placeholder="Buscar...">
+          <div class="input-group-append" id="button-addon4">
+            <input type="submit" value="Search" button class="btn btn-outline-secondary"/>
+            <input type="button" value="Clear" id="btnClear" onclick="clearSearchProductos()" button class="btn btn-outline-secondary"/>
+          </div>	
+        </div>	 	  	
+      </form>
+  </div>
   
   <div class="container pt-3">
     <a th:href="@{/admin/listarproductos/new}" class="btn btn-primary btn-lg btn-block">Nuevo Producto</a>
@@ -138,7 +138,18 @@
     </table>
 
   </div>
-  
+  	
+	 <footer class="footer mt-3">
+	   <div class="container-fluid">
+	     <div class="row">
+	       <div class="col-md-12 text-right bg-dark text-center text-white">
+	         <div class="text-white "></div>
+	           Desarrollado con <i class= "fas fa-heart"></i> por Thomas Díaz- Estudiante de la UNSAdA
+	         </div>
+	       </div>
+	   </div>
+	 </footer>
+ 
 
  
 

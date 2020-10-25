@@ -57,7 +57,7 @@
       
   
   <div class="alert alert-info" role="alert">
-    <p class="text">Utilizar la barra para buscar por nombre, telefono o equipo!</p> 
+    <p class="text">Utilizar la barra para buscar Modelo o Marca</p> 
   </div>
   
   <div class="container-fluid">
@@ -73,24 +73,24 @@
   </div>
   
   
-  <div class="container">
+  <div class="container pt-3">
     <a th:href="@{/admin/listarproductos/new}" class="btn btn-primary btn-lg btn-block">Nuevo Producto</a>
   </div>
     
   
   
   
-  <div class="container-fluid">
+  <div class="container-fluid pt-3 mr-auto">
     <table class = "table-responsive table-bordered">
       <thead> 
         <tr>
-          <th scope="col-6">ID</th>
-          <th scope="col-6">MARCA</th>
-          <th scope="col-6">MODELO</th>
-          <th scope="col-6">PRECIO COMPRA</th>
-          <th scope="col-6">PRECIO ORIGINAL</th>
-          <th scope="col-6">CANTIDAD</th>
-          <th scope="col-6">ACCIONES</th>
+          <th scope="col-1">ID</th>
+          <th scope="col-2">MARCA</th>
+          <th scope="col-1">MODELO</th>
+          <th scope="col-1">PRECIO COMPRA</th>
+          <th scope="col-1">PRECIO ORIGINAL</th>
+          <th scope="col-1">CANTIDAD</th>
+          <th scope="col-3">ACCIONES</th>
           
         </tr>
 
@@ -105,17 +105,23 @@
           <td  th:text="${producto.precioVenta}"></td>      
           <td  th:text="${producto.cantidad}"></td>
           
+          
           <td>
-
-            <a th:href="@{/admin/editarproducto/}+${producto.idproducto}" class ="btn btn-warning"> 
-              <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>&nbsp; <p>Editar!</p> 
-            </a>
-            
-            <a type= "button" th:onclick="eliminarproducto([[${producto.idproducto}]])" class = "btn btn-danger" href="#">
-              <span class="fas fa-trash-alt" aria-hidden="true"></span> <p>Eliminar!</p> 
-            </a>
-            
+            <div class="d-flex align-items-stretch">
+              <div class="p-2 border">
+                <a th:href="@{/admin/editarproducto/}+${producto.idproducto}" class ="btn btn-warning"> 
+                  <span class="fa fa-pencil fa-fw"></span>Editar!
+                </a>
+              </div>
+              
+              <div class="p-2 border">
+                <a type= "button" th:onclick="eliminarproducto([[${producto.idproducto}]])" class = "btn btn-danger">
+                  <span class="fas fa-trash-alt"></span>Eliminar!
+                </a>
+              </div>
+            </div>          
           </td>
+          
         
         </tr>
 

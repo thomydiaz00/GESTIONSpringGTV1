@@ -22,8 +22,9 @@
 </head>
 <body>
 
-    <!--Tabla que trae datos desde base de datos--
-    
+    <!--Este form enviará los datos para guardar los datos ingresados
+    	en la b.d. Usamos el tipo de input Hidden para mandar el ID sin
+    	ser este modificado por el usuario
     -->
     <div class="container">
         <div class="card">
@@ -36,14 +37,10 @@
         <div class="card-body">
 
             <form th:action="@{/admin/save}" th:object=${persona} method= "POST">
-                 
-              	<div class="form-group">
-             	 	<label for="idInput">ID</label>
-              		<input th:field="*{id}" type="number" class="form-control">
-              	 </div>
-
-                 
-                
+               <div class="form-group">
+					<input type="hidden" th:field="*{id}" id="id">
+               </div>
+              	 
                 <div class="form-group">
                     <label for="nameInput">Nombre</label>
                     <input th:field="*{name}" type="text" class="form-control">

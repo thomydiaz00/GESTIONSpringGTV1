@@ -65,34 +65,33 @@
         <div class="input-group">
           <input type="text" class= "form-control" name="keyword" id="keyword" th:value="${keyword}" required placeholder="Buscar...">
           <div class="input-group-append" id="button-addon4">
-            <input type="submit" value="Search" button class="btn btn-outline-secondary"></button>
-            <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" button class="btn btn-outline-secondary"></button>
+            <input type="submit" value="Search" button class="btn btn-outline-secondary"/>
+            <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" button class="btn btn-outline-secondary"/>
           </div>	
         </div>	 	  	
       </form>
   </div>
   
   
-  <div class="container">
+  <div class="container pt-3">
     <a th:href="@{/admin/listar/new}" class="btn btn-primary btn-lg btn-block">Nuevo</a>
   </div>
     
   
   
   
-  <div class="container-fluid">
+  <div class="container-fluid pt-3">
     <table class = "table-responsive table-bordered">
       <thead> 
         <tr>
-          <th scope="col-6">ID</th>
-          <th scope="col-6">NOMBRE</th>
-          <th scope="col-6">TELEFONO</th>
-          <th scope="col-6">EQUIPO</th>
-          <th scope="col-6">S/N</th>
-          <th scope="col-6">ENTRADA</th>
-          <th scope="col-6">SALIDA</th>
-          <th scope="col-6">ACCIONES</th>
-          
+          <th class="col-sm-1">ID</th>
+          <th class="col-sm-2">NOMBRE</th>
+          <th class="col-sm-1">TELEFONO</th>
+          <th class="col-sm-2">EQUIPO</th>
+          <th class="col-sm-1">S/N</th>
+          <th class="col-sm-1">ENTRADA</th>
+          <th class="col-sm-1">SALIDA</th>
+          <th class="col-sm-3">ACCIONES</th>
         </tr>
 
       </thead>
@@ -110,19 +109,22 @@
           
           
           <td>
-
-            <a th:href="@{/admin/editar/}+${persona.id}" class ="btn btn-warning"> 
-              <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>&nbsp; <p>Editar!</p> 
-            </a>
-            
-            <a type= "button" th:onclick="eliminarpersona([[${persona.id}]])" class = "btn btn-danger" href="#">
-              <span class="fas fa-trash-alt" aria-hidden="true"></span> <p>Eliminar!</p> 
-            </a>
-            
+            <div class="d-flex align-items-stretch">
+              <div class="p-2 border">
+                <a th:href="@{/admin/editar/}+${persona.id}" class ="btn btn-warning"> 
+                  <span class="fa fa-pencil fa-fw"></span>Editar!
+                </a>
+              </div>
+              
+              <div class="p-2 border">
+                <a th:onclick="eliminarpersona([[${persona.id}]])" class = "btn btn-danger">
+                  <span class="fas fa-trash-alt"></span>Eliminar!
+                </a>
+              </div>
+            </div>          
           </td>
         
         </tr>
-
     
       </tbody>
 

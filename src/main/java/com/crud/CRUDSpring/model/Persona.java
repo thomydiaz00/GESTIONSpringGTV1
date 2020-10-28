@@ -84,8 +84,6 @@ public class Persona {
 	
 	
 	
-	/*Hola, hago un comentario*/
-	
 	
 	
 	

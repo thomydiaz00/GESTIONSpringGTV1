@@ -28,6 +28,7 @@ public class  ProductoService implements IfServiceProducto{
 	@Override
 	public Optional<Producto> ProductolistarId(int idproducto) {
 		return data.findById(idproducto);
+ 
 		
 	}
 	

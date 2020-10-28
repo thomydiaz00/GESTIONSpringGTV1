@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!--JQUERY-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    
+    <!--Iconos de FontAwesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+    <script src="https://kit.fontawesome.com/76bcb4e810.js" crossorigin="anonymous"></script>
+
+    
+     <!-- SweetAlert -->
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="/funciones.js"></script>
+    
+
+
+    
+    
+</head>
+<body>
+
+    <!---NavBar header-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	  <a class="navbar-brand" href="#">
+	  GestionSPRING
+	  <img src="static/img/logo.png" th:src="@{/img/logo.png}"width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+	  </a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+	    <ul class="navbar-nav">
+	      <li class="nav-item active">
+	        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="/user/listar">Clientes</a>
+	      </li>
+	      <li class="nav-item dropdown">
+	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	          Usuario
+	        </a>
+	        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+	          <a class="dropdown-item" href="/logout">Logout</a>
+	          
+	        </div>
+	      </li>
+	    </ul>
+	  </div>
+	</nav>
+               <!--   
+                <a  id="nav-a" href="#">Log out</a>
+                <a id="nav-a" href="#">Update</a>
+                <body>
+                
+			   <ul>
+			      <li><a href="#">Update</a></li>
+			      <li>
+			          <a>Username</a>
+			          <ul class="dropdown">
+			              <li><a href="#">Log out</a></li>
+			          </ul>
+			      </li>
+			   </ul>
+			
+				-->
+
+
+    <!--Tabla que trae datos desde base de datos-->
+    <div class="container mt-4">
+        
+        <!--  Barra de busqueda -->
+        <form th:action="@{/user/listarproductos/}">
+			<div class="input-group">
+			  <input type="text" name="busqueda" id="busqueda" size="80" th:value="${busqueda}" required placeholder="Buscar...">
+			  <div class="input-group-append" id="button-addon4">
+			    <input type="submit" value="Search" button class="btn btn-outline-secondary"></button>
+			    <input type="button" value="Clear" id="btnClear" onclick="clearSearchProductosUser()" button class="btn btn-outline-secondary"></button>
+			  </div>
+			</div>
+		</form>
+		<br> 
+		
+		<div class="alert alert-info" role="alert">
+		  Usar clear luego de la busqueda para volver al listado!
+		</div>
+
+       
+    	
+    	
+	    	
+        <table class = "table">
+            <thead> 
+                <tr >
+                    <th>ID</th>
+                    <th>MARCA</th>
+                    <th>MODELO</th>
+                    <th>PRECIO ALTERNATIVO</th>
+                    <th>PRECIO ORIGINAL</th>
+                    <th>CANTIDAD</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+                <tr th:each = "producto:${productos}">
+                    <td th:text="${producto.idproducto}"></td>
+                    <td  th:text="${producto.marca}"></td>
+                    <td  th:text="${producto.modelo}"></td>
+                    <td  th:text="${producto.precioCompra}"></td>
+                    <td  th:text="${producto.precioVenta}"></td>      
+                    <td  th:text="${producto.cantidad}"></td>
+                    
+                   
+                    
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="funciones.js"></script>
+    
+    
+
+
+    
+   
+	
+    
+</body>
+</html>

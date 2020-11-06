@@ -1,6 +1,7 @@
 package com.crud.CRUDSpring.model;
 
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +22,7 @@ public class Persona {
 	//estableced el id como si fuera una PK
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column 
 	private int id;
 	private String name;
 	private String telefono;

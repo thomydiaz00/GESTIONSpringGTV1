@@ -24,11 +24,17 @@ public class Persona {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column 
 	private int id;
+	@Column 
 	private String name;
+	@Column 
 	private String telefono;
+	@Column 
 	private String equipo;
+	@Column 
 	private String serie;
+	@Column 
 	private String fechaEntrada;
+	@Column 
 	private String fechaSalida;
 	public Persona(int id, String name, String telefono, String equipo, String serie, String fechaEntrada,
 			String fechaSalida) {

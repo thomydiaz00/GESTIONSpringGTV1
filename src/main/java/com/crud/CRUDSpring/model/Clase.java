@@ -27,12 +27,18 @@ public class Clase {
 	
 	
 	
-	
+	//asistencia_clase 1:N
 	@OneToMany(mappedBy = "clase")
 	private Set<Asistencia> asistenciaClases = new HashSet<Asistencia>();
-	//profesor_tiene_clase
+	//profesor_tiene_clase N:N
 	@ManyToMany(mappedBy = "clases")
 	private Set<Profesor> profesores = new HashSet<Profesor>();
+	//alumno_tiene_clase N:N
+	@ManyToMany(mappedBy="clasesAlumno")
+	private Set<Alumno> alumnos = new HashSet<Alumno>();
+	//horario 1:N
+	@OneToMany
+	private Set<Horario> horarios = new HashSet<Horario>();
 	
 	private Clase(int idClase, String deporte, String nombreDep) {
 		this.idClase = idClase;

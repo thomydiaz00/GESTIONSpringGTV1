@@ -62,158 +62,134 @@
             </div>
           </li>
         
-        
         </ul>
-
       </div>
-
-      
     </nav>
+  </div>
+
   
     <!--Barra de busqueda-->
-    <div>
-      <form>
-          <div class="input-group">
-            <input type="text" class= "form-control" required placeholder="Buscar...">
-            <div class="input-group-append" id="button-addon4">
-              <input type="submit" value="Buscar" button class="btn btn-outline-secondary"/>
-              <input type="button" value="Limpiar" id="btnClear" button class="btn btn-outline-secondary"/>
-            </div>	
-          </div>	 	  	
-        </form>
+  <div class="container">
+    <form>
+        <div class="input-group">
+          <input type="text" class= "form-control" required placeholder="Buscar...">
+          <div class="input-group-append" id="button-addon4">
+            <input type="submit" value="Buscar" button class="btn btn-outline-secondary"/>
+            <input type="button" value="Limpiar" id="btnClear" button class="btn btn-outline-secondary"/>
+          </div>	
+        </div>	 	  	
+      </form>
+  </div>
+
+  <!--filtrar-->
+  <div class="container">
+    <div class="d-flex flex-row justify-content-center">
+        <div class="row">
+          <div class="p-2">
+            <div class=form-group><input type="date" class="form-control" id="fecha"></div>
+          </div>
+          <div class="p-2"><button type="submit" class= "btn btn-secondary">Filtrar</button></div>
+          <div class="p-2"><button class="btn btn-primary btn-lg">Nuevo profesor</button></div>
+        </div>
     </div>
   </div>
-    <!--Nuevo-->
+ 
+  <!--Tabla-->
+  <div class="container-fluid">
+    <table class = "table-responsive table-bordered table-striped text-center">
+      <thead> 
+        <tr>
+          <th class="col-sm-1">DNI</th>
+          <th class="col-sm-1">NOMBRE</th>
+          <th class="col-sm-1">APELLIDO</th>
+          <th class="col-sm-1">TELEFONO</th>
+          <th class="col-sm-1">EMAIL</th> 
+          <th class="col-sm-2">ACCIONES</th>
+        </tr>
   
-    <div class="container-fluid pt-2">
+      </thead>
+  
+      <tbody>
+        <tr>
+          <th>2478309012 </th>
+          <td>Juan</td>
+          <td>Perez </td>
+          <td>23121221 </td>
+          <td>jperez@docentes.baradero.com</td>
+          <td>
+            <div class="d-flex align-items-stretch">
+              <div class="p-2">
+                <a class ="btn btn-warning"> 
+                  <span class="fa fa-pencil fa-fw"></span>Editar!
+                </a>
+              </div>
+              <div class="p-2">
+                <a  class = "btn btn-danger">
+                  <span class="fas fa-trash-alt"></span>Eliminar!
+                </a>
+              </div>
+              <div class="p-2">
+                <a class = "btn btn-secondary">
+                  <span class="fas fa-eye"></span>Ver más
+                </a>
+              </div>
+            </div>          
+          </td>
+        
+        </tr>
+        <tr>
+          <td>24783031212</td>
+          <th>Natalia</th>
+          <td>Díaz </td>
+          <td>23121221 </td>
+          <td>ndiaz@docentes.baradero.com</td>
+          <td>
+            <div class="d-flex align-items-stretch">
+              <div class="p-2">
+                <a class ="btn btn-warning"> 
+                  <span class="fa fa-pencil fa-fw"></span>Editar!
+                </a>
+              </div>
+              <div class="p-2">
+                <a  class = "btn btn-danger">
+                  <span class="fas fa-trash-alt"></span>Eliminar!
+                </a>
+              </div>
+              <div class="p-2">
+                <a class = "btn btn-secondary">
+                  <span class="fas fa-eye"></span>Ver más
+                </a>
+              </div>
+            </div>          
+          </td>
+        
+        </tr>
+    
+      </tbody>
+  
+    </table>
+  </div>
+  
+
+      
+    
+ 
+  
+  <!--footer-->
+  <footer class="footer mt-3">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-3">
-          <form>
-            <div class="d-flex flex-row">
-           	  <div class="p-2">
-	           	  <div class=form-group>
-	                <input type="date" class="form-control" id="fecha">
-	              </div>
-			  </div>
-			  <div class="p-2">
-			  	<button type="submit" class= "btn btn-primary">Filtrar</button>
-			  	
-			  </div>
-         
-            </div>
-          </form>
-          <button class="btn btn-lg btn-primary">Nuevo profesor</button>
-            
-          
-        </div>
-        <div class="col-9">
-          <!--Tabla-->
-          <table class = "table-responsive table-bordered table-striped text-center">
-            <thead> 
-              <tr>
-                <th class="col-sm-1">DNI</th>
-                <th class="col-sm-1">NOMBRE</th>
-                <th class="col-sm-1">APELLIDO</th>
-                <th class="col-sm-1">TELEFONO</th>
-                <th class="col-sm-1">EMAIL</th> 
-                <th class="col-sm-1">FECHA NACIMIENTO</th>
-                <th class="col-sm-3">ACCIONES</th>
-              </tr>
-      
-            </thead>
-      
-            <tbody>
-              <tr>
-                <td>2478309012 </td>
-                <th>Juan</th>
-                <td>Perez </td>
-                <td>jperez@docentes.baradero.com</td>
-                <td>23121221 </td>
-                <td>20-09-1982 </td>
-                <td>
-                  <div class="d-flex align-items-stretch">
-                    <div class="p-2">
-                      <a class ="btn btn-warning"> 
-                        <span class="fa fa-pencil fa-fw"></span>Editar!
-                      </a>
-                    </div>
-                    <div class="p-2">
-                      <a  class = "btn btn-danger">
-                        <span class="fas fa-trash-alt"></span>Eliminar!
-                      </a>
-                    </div>
-                    <div class="p-2">
-                      <a class = "btn btn-secondary">
-                        <span class="fas fa-eye"></span>Ver más
-                      </a>
-                    </div>
-                  </div>          
-                </td>
-              
-              </tr>
-              <tr>
-                <td>24783031212</td>
-                <th>Natalia</th>
-                <td>Díaz </td>
-                <td>ndiaz@docentes.baradero.com</td>
-                <td>23121221 </td>
-                <td>20-09-1982 </td>
-                <td>
-                  <div class="d-flex align-items-stretch">
-                    <div class="p-2">
-                      <a class ="btn btn-warning"> 
-                        <span class="fa fa-pencil fa-fw"></span>Editar!
-                      </a>
-                    </div>
-                    <div class="p-2">
-                      <a  class = "btn btn-danger">
-                        <span class="fas fa-trash-alt"></span>Eliminar!
-                      </a>
-                    </div>
-                    <div class="p-2">
-                      <a class = "btn btn-secondary">
-                        <span class="fas fa-eye"></span>Ver más
-                      </a>
-                    </div>
-                  </div>          
-                </td>
-              
-              </tr>
-          
-            </tbody>
-      
-          </table>
-
-        </div>
-      </div>
-    </div>
-  
-  
-    
-    
-
-   
-      
-  
-    
-    
-    <footer class="footer mt-3">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-12 text-right bg-dark text-center text-white">
-            <div class="text-white "></div>
-              Desarrollado por Juan Cruz Colazo, Ignacio Alacia, Valentin Kyska y Thomas Díaz- Estudiantes de la UNSAdA
-            </div>
+        <div class="col-md-12 text-right bg-dark text-center text-white">
+          <div class="text-white "></div>
+            Desarrollado por Juan Cruz Colazo, Ignacio Alacia, Valentin Kyska y Thomas Díaz- Estudiantes de la UNSAdA
           </div>
-      </div>
-    </footer>
+        </div>
+    </div>
+  </footer>
     
-      
-  
-      
-      <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-      <script src="funciones.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="funciones.js"></script>
   
       
     

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina -->
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href = "static/css/static-footer.css" th:href="@{/css/static-footer.css}" >
+        
+    <!--Iconos de FontAwesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+    <script src="https://kit.fontawesome.com/76bcb4e810.js" crossorigin="anonymous"></script>
+
+    
+     <!-- SweetAlert -->
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="/funciones.js"></script>
+</head>
+<body>
+  <!--logos-->
+  <div class="d-flex">
+    <div class="p-2 mr-auto">
+        <img src="static/img/logodeportes.jpg" th:src="@{/img/logodeportes.jpg}" alt="Inicio" />
+    </div>
+    <div class="p-2">
+      <img src="static/img/escudo.png" width="100" height="100"  th:src="@{/img/escudo.png}" alt="deportes" />
+    </div>
+  </div>
+
+  <!--Navbar header-->
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded-bottom">
+      <a class="navbar-brand" href="#">
+      <h3>GestionBaradero</h3> 
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          
+          <li class="nav-item active">
+            <a class="nav-link" href="#"> <h5>Administracion de profesores</h1> <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/listarproductos"><h5>Administrar Clases</h5></a>
+          </li>
+        </ul>
+        
+        <ul class="navbar-nav ml-md-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Administrador
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="/logout">Logout</a>
+            </div>
+          </li>
+        
+        
+        </ul>
+
+      </div>
+
+      
+    </nav>
+  
+    <!--Barra de busqueda-->
+    <div>
+      <form>
+          <div class="input-group">
+            <input type="text" class= "form-control" required placeholder="Buscar...">
+            <div class="input-group-append" id="button-addon4">
+              <input type="submit" value="Buscar" button class="btn btn-outline-secondary"/>
+              <input type="button" value="Limpiar" id="btnClear" button class="btn btn-outline-secondary"/>
+            </div>	
+          </div>	 	  	
+        </form>
+    </div>
+  </div>
+    <!--Nuevo-->
+  
+    <div class="container-fluid pt-2">
+      <div class="row">
+        <div class="col-3">
+          <form>
+            <div class="d-flex flex-row">
+           	  <div class="p-2">
+	           	  <div class=form-group>
+	                <input type="date" class="form-control" id="fecha">
+	              </div>
+			  </div>
+			  <div class="p-2">
+			  	<button type="submit" class= "btn btn-primary">Filtrar</button>
+			  	
+			  </div>
+         
+            </div>
+          </form>
+          <button class="btn btn-lg btn-primary">Nuevo profesor</button>
+            
+          
+        </div>
+        <div class="col-9">
+          <!--Tabla-->
+          <table class = "table-responsive table-bordered table-striped text-center">
+            <thead> 
+              <tr>
+                <th class="col-sm-1">DNI</th>
+                <th class="col-sm-1">NOMBRE</th>
+                <th class="col-sm-1">APELLIDO</th>
+                <th class="col-sm-1">TELEFONO</th>
+                <th class="col-sm-1">EMAIL</th> 
+                <th class="col-sm-1">FECHA NACIMIENTO</th>
+                <th class="col-sm-3">ACCIONES</th>
+              </tr>
+      
+            </thead>
+      
+            <tbody>
+              <tr>
+                <td>2478309012 </td>
+                <th>Juan</th>
+                <td>Perez </td>
+                <td>jperez@docentes.baradero.com</td>
+                <td>23121221 </td>
+                <td>20-09-1982 </td>
+                <td>
+                  <div class="d-flex align-items-stretch">
+                    <div class="p-2">
+                      <a class ="btn btn-warning"> 
+                        <span class="fa fa-pencil fa-fw"></span>Editar!
+                      </a>
+                    </div>
+                    <div class="p-2">
+                      <a  class = "btn btn-danger">
+                        <span class="fas fa-trash-alt"></span>Eliminar!
+                      </a>
+                    </div>
+                    <div class="p-2">
+                      <a class = "btn btn-secondary">
+                        <span class="fas fa-eye"></span>Ver más
+                      </a>
+                    </div>
+                  </div>          
+                </td>
+              
+              </tr>
+              <tr>
+                <td>24783031212</td>
+                <th>Natalia</th>
+                <td>Díaz </td>
+                <td>ndiaz@docentes.baradero.com</td>
+                <td>23121221 </td>
+                <td>20-09-1982 </td>
+                <td>
+                  <div class="d-flex align-items-stretch">
+                    <div class="p-2">
+                      <a class ="btn btn-warning"> 
+                        <span class="fa fa-pencil fa-fw"></span>Editar!
+                      </a>
+                    </div>
+                    <div class="p-2">
+                      <a  class = "btn btn-danger">
+                        <span class="fas fa-trash-alt"></span>Eliminar!
+                      </a>
+                    </div>
+                    <div class="p-2">
+                      <a class = "btn btn-secondary">
+                        <span class="fas fa-eye"></span>Ver más
+                      </a>
+                    </div>
+                  </div>          
+                </td>
+              
+              </tr>
+          
+            </tbody>
+      
+          </table>
+
+        </div>
+      </div>
+    </div>
+  
+  
+    
+    
+
+   
+      
+  
+    
+    
+    <footer class="footer mt-3">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 text-right bg-dark text-center text-white">
+            <div class="text-white "></div>
+              Desarrollado por Juan Cruz Colazo, Ignacio Alacia, Valentin Kyska y Thomas Díaz- Estudiantes de la UNSAdA
+            </div>
+          </div>
+      </div>
+    </footer>
+    
+      
+  
+      
+      <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+      <script src="funciones.js"></script>
+  
+      
+    
+</body>
+</html>

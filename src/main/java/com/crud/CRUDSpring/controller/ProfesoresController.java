@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ProfesoresController {
 
-@GetMapping({"/lista_profesores"})
+@GetMapping({"/admin/lista_profesores"})
 	
 	public String profesores() {
 		return "lista_profesores";

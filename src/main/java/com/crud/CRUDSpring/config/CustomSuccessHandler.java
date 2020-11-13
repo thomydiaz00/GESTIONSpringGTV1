@@ -29,7 +29,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 				redirectUrl = "/user/listar";
 				break;
 			} else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
-				redirectUrl = "/admin/listar";
+				redirectUrl = "/admin/lista_profesores";
 				break;
 			}
 		}

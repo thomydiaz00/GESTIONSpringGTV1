@@ -93,55 +93,153 @@
  
   <!--Tabla-->
   <div class="container-fluid">
-    <table class = "table-responsive table-bordered table-striped text-center">
-      <thead> 
-        <tr>
+    <div class="container">
+      <input class="form-control" id="busqueda_clase" type="text" placeholder="Buscar datos de clases..">   
+    </div>
+    <div class="pt-3">
+      <table class = "table-responsive table-bordered table-striped text-center">
+        <thead> 
+          <tr>
             <th class="col-sm-1">NOMBRE</th>
             <th class="col-sm-1">DEPORTE</th>
+            <th class="col-sm-1">PROFESORES</th>
             <th class="col-sm-1">LUGAR</th>
-            <th class="col-sm-1">PROFESOR</th>
-            <th class="col-sm-1">ALUMNOS</th>
-            <th class="col-sm-4">ACCIONES</th>
-        </tr>
-  
-      </thead>
-  
-      <tbody>
-        <tr>
-          <th>Futbol 13</th>
-          <td>Futbol</td>
-          <td>polideportivo</td>
-          <td>Juan Perez </td>
-          <td>32/40</td>
-          <td>
-            <div class="d-flex align-items-stretch">
-              <div class="p-1">
-                <a class ="btn btn-warning"> 
-                  <span class="fa fa-pencil fa-fw"></span>Editar!
-                </a>
-              </div>
-              <div class="p-1">
-                <a  class = "btn btn-danger">
-                  <span class="fas fa-trash-alt"></span>Eliminar!
-                </a>
-              </div>
-              <div class="p-1">
-                <a class = "btn btn-secondary">
-                  <span class="fas fa-clock"></span>Horarios
-                </a>
-              </div>
-              <div class="p-1">
-                <a class = "btn btn-secondary">
-                  <span class="fas fa-book"></span>Profesor...
-                </a>
-              </div>
-            </div>          
-          </td>
-        
-        </tr>
+            <th class="col-sm-1">ALUMNOS</th> 
+            <th class="col-sm-3">ACCIONES</th>
+          </tr>
     
-      </tbody>
-  
-    </table>
+        </thead>
+    
+        <tbody id="tabla_clases">
+          <tr>
+            <th>Futbol juveniles</th>
+            <td>Futbol</td>
+            <td>Juan Perez</td>
+            <td>Polideportivo</td>
+            <td>32/40</td>
+            <td>
+              <div class="d-flex align-items-stretch">
+                <div class="p-2">
+                  <a class ="btn btn-warning"> 
+                    <span class="fa fa-pencil fa-fw"></span>Editar!
+                  </a>
+                </div>
+                <div class="p-2">
+                  <a  class = "btn btn-danger">
+                    <span class="fas fa-trash-alt"></span>Eliminar!
+                  </a>
+                </div>
+                <div class="p-2">
+                  <a class = "btn btn-secondary">
+                    <span class="fas fa-clock"></span>Horarios
+                  </a>
+                </div>
+                <div class="p-2">
+                  <a class = "btn btn-info">
+                    <span class="fas fa-book"></span>Profesores
+                  </a>
+                </div>
+              </div>          
+            </td>
+          
+          </tr>
+          <tr>
+            <th>Futbol adultos</th>
+            <td>Futbol</td>
+            <td>Juan Perez</td>
+            <td>Polideportivo</td>
+            <td>15/40</td>
+            <td>
+              <div class="d-flex align-items-stretch">
+                <div class="p-2">
+                  <a class ="btn btn-warning"> 
+                    <span class="fa fa-pencil fa-fw"></span>Editar!
+                  </a>
+                </div>
+                <div class="p-2">
+                  <a  class = "btn btn-danger">
+                    <span class="fas fa-trash-alt"></span>Eliminar!
+                  </a>
+                </div>
+                <div class="p-2">
+                  <a class = "btn btn-secondary">
+                    <span class="fas fa-clock"></span>Horarios
+                  </a>
+                </div>
+                <div class="p-2">
+                  <a class = "btn btn-info">
+                    <span class="fas fa-book"></span>Profesores
+                  </a>
+                </div>
+              </div>          
+            </td>
+          
+          </tr>
+          <tr>
+            <th>Futbol senior</th>
+            <td>Futbol</td>
+            <td>Juan Perez</td>
+            <td>Polideportivo</td>
+            <td>12/40</td>
+            <td>
+              <div class="d-flex align-items-stretch">
+                <div class="p-2">
+                  <a class ="btn btn-warning"> 
+                    <span class="fa fa-pencil fa-fw"></span>Editar!
+                  </a>
+                </div>
+                <div class="p-2">
+                  <a  class = "btn btn-danger">
+                    <span class="fas fa-trash-alt"></span>Eliminar!
+                  </a>
+                </div>
+                <div class="p-2">
+                  <a class = "btn btn-secondary">
+                    <span class="fas fa-clock"></span>Horarios
+                  </a>
+                </div>
+                <div class="p-2">
+                  <a class = "btn btn-info">
+                    <span class="fas fa-book"></span>Profesores
+                  </a>
+                </div>
+              </div>          
+            </td>
+          
+          </tr>
+      
+        </tbody>
+    
+      </table>
+      
+    </div>
+    <script>
+      $(document).ready(function(){
+      $("#busqueda_clase").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#tabla_clases tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+      });
+    </script>
   </div>
+   <!--footer-->
+  <footer class="footer mt-3">
+  <div class="container-fluid pt-3">
+    <div class="row">
+      <div class="col-md-12 text-right bg-dark text-center text-white">
+        <div class="text-white "></div>
+          Desarrollado por Juan Cruz Colazo, Ignacio Alacia, Valentin Kyska y Thomas Díaz- Estudiantes de la UNSAdA
+        </div>
+      </div>
+  </div>
+  </footer>
+    
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  
+  
+</body>
+</html>
   

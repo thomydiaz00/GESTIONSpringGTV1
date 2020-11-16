@@ -14,13 +14,13 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-    <div class="wrapper fadeInDown">
+    <div class="wrapper fadeInDown">	
         <div id="formContent">
           <!-- Tabs Titles -->
       
           <!-- Icon  -->
           <div class="fadeIn first">
-            <img src="static/img/user.png" th:src="@{/img/user.png}" id="icono usuario" alt="icono de usuario"/>
+            <img src="static/img/logoUser.png" th:src="@{/img/logoUser.png}" id="icono usuario" alt="icono de usuario"/>
           </div>
       
           <!-- Login Form -->
@@ -42,10 +42,10 @@
           <!-- Remind Passowrd -->
         <div id="formFooter">
             <div id="invalid user" th:if="${param.error}" class="alert alert-danger" role="alert">
-                <label> Invalid username and password. </label> 
+                <label> Usuario o contraseña invalido . </label> 
             </div>
             <div id="loged out" th:if="${param.logout}" class="alert alert-success" role="alert">
-                You have been logged out.
+                usted ha sido desconectado.
             </div>
 
         </div>

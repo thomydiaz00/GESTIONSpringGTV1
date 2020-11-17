@@ -8,14 +8,15 @@
     <!--Iconos de FontAwesome-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
     <script src="https://kit.fontawesome.com/76bcb4e810.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="/funciones.js"></script>
 
-    <!--Iconos de FontAwesome-->
   </head>
 <body>
   <!--logos-->
   <div class="d-flex">
     <div class="p-2 mr-auto">
-        <img src="static/img/logodeportes.jpg" th:src="@{/img/logodeportes.jpg}" alt="Inicio" />
+        <img src="static/img/deportes.png" th:src="@{/img/deportes.png}" alt="Inicio" width="120" height="120" />
     </div>
     <div class="p-2">
       <img src="static/img/escudo.png" width="100" height="100"  th:src="@{/img/escudo.png}" alt="deportes" />
@@ -90,12 +91,12 @@
             <div class="d-flex align-items-stretch">
               <div class="p-2">
                 <a class ="btn btn-warning"> 
-                  <span class="fa fa-pencil fa-fw"></span>Editar!
+                  <span class="fa fa-pencil fa-fw"></span>Editar
                 </a>
               </div>
               <div class="p-2">
-                <a  class = "btn btn-danger">
-                  <span class="fas fa-trash-alt"></span>Eliminar!
+                <a  class = "btn btn-danger"  onclick="eliminarProfesor()">
+                  <span class="fas fa-trash-alt"></span>Eliminar
                 </a>
               </div>
               <div class="p-2">
@@ -121,12 +122,12 @@
             <div class="d-flex align-items-stretch">
               <div class="p-2">
                 <a class ="btn btn-warning"> 
-                  <span class="fa fa-pencil fa-fw"></span>Editar!
+                  <span class="fa fa-pencil fa-fw"></span>Editar
                 </a>
               </div>
               <div class="p-2">
-                <a  class = "btn btn-danger">
-                  <span class="fas fa-trash-alt"></span>Eliminar!
+                <a  class = "btn btn-danger"  onclick="eliminarProfesor()">
+                  <span class="fas fa-trash-alt"></span>Eliminar
                 </a>
               </div>
               <div class="p-2">
@@ -152,12 +153,12 @@
             <div class="d-flex align-items-stretch">
               <div class="p-2">
                 <a class ="btn btn-warning"> 
-                  <span class="fa fa-pencil fa-fw"></span>Editar!
+                  <span class="fa fa-pencil fa-fw"></span>Editar
                 </a>
               </div>
               <div class="p-2">
-                <a  class = "btn btn-danger">
-                  <span class="fas fa-trash-alt"></span>Eliminar!
+                <a  class = "btn btn-danger" onclick="eliminarProfesor()">
+                  <span class="fas fa-trash-alt"></span>Eliminar
                 </a>
               </div>
               <div class="p-2">
@@ -179,8 +180,7 @@
     </table>
 
   </div>
-    
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>    
   <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

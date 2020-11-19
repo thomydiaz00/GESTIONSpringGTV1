@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.crud.CRUDSpring.interfaces.*;
 import com.crud.CRUDSpring.interfaceService.*;
 import com.crud.CRUDSpring.model.*;
-import com.crud.CRUDSpring.repository.PersonaRepository;
 import com.crud.CRUDSpring.service.*;
 /*
  * Implementa la IfServPers que contiene los metodos a implementar
@@ -23,9 +22,6 @@ public class PersonaService implements IfServicePersona {
 	
 	private interfacePersona data; 
 	
-	@Autowired
-	private PersonaRepository searchsv;
-	
 	
 	/*
 	 * Implementacion metodo de busqueda. Si se pasa alguna keyword (parametro para busqueda)
@@ -33,16 +29,8 @@ public class PersonaService implements IfServicePersona {
 	 * de personas. En caso de que no se pase ninguna keyword, simplemente va a listar a todos los clientes
 	 */
 	@Override
-	public List<Persona> listar(String keyword) {
-		
-		if (keyword != null) {
-            return searchsv.search(keyword);
-        }else {
+	public List<Persona> listar() {
         	return (List<Persona>)data.findAll();
-        }
-		
-		
-		
 	}
 
 	/*
@@ -81,6 +69,8 @@ public class PersonaService implements IfServicePersona {
 		
 		return res;
 	}
+
+	
 }
 	
 

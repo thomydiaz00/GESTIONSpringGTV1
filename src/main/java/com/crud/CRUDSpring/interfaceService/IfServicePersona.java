@@ -11,7 +11,7 @@ import java.util.Optional;
  * y Eliminar
  */
 public interface IfServicePersona {
-	public List<Persona> listar(String keyword);
+	public List<Persona> listar();
 	public Optional<Persona>listarId(int id);
 	public int save(Persona p);
 	public int updatePersona(Persona p);

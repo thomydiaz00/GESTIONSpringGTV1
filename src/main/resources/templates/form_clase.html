@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina -->
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <script src="/js/bootstrap.min.js"></script>
+        
+    <!--Iconos de FontAwesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+    <script src="https://kit.fontawesome.com/76bcb4e810.js" crossorigin="anonymous"></script>
+
+    
+     <!-- SweetAlert -->
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="/funciones.js"></script>
+    
+</head>
+<body>
+
+    <!--Tabla que trae datos desde base de datos--
+    asdjasodijasoidjiasjdo
+    -->
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h3>Agregar Clase</h3>
+            </div>
+            
+            <div class="card-body">
+                <form th:action="@{/admin/save_clase}" th:object=${clase} method="POST">
+
+                    <div class="form-group">
+						<input type="hidden" th:field="*{idClase}" id="idclase">
+               		</div>	
+                    <div class="form-group">
+                        <label for="nombre">nombre</label>
+                        <input th:field="*{nombreDep}" type="text" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="apellido">deporte</label>
+                        <input th:field="*{deporte}" type="text" class="form-control"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary" >Guardar</button>
+                    
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

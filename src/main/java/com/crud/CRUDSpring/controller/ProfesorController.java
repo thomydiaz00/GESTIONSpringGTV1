@@ -28,6 +28,7 @@ public class ProfesorController {
 			model.addAttribute("profesores", profesores);
 	        return "lista_profesores";
 	    }
+		
 		@GetMapping("/admin/lista_profesores/nuevo")
 		public String agregar(Model model) {
 			model.addAttribute("profesor", new Profesor());
@@ -35,7 +36,9 @@ public class ProfesorController {
 			
 		}
 		@GetMapping("/admin/lista_profesores_completa")
-		public String lista_profesores_completa() {
+		public String lista_profesores_completa(Model model) {
+			List<Profesor> profesoresComp= service.listarProfesores();
+			model.addAttribute("profesores", profesoresComp);
 			return "lista_profesores_completa";
 		}
 		@PostMapping("/admin/save")

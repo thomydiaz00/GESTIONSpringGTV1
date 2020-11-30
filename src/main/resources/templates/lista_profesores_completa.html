@@ -62,17 +62,14 @@
   <div class="container">
     <div class="d-flex flex-row justify-content-center">
         <div class="row">
-          <div class="p-2">
-            <div class=form-group><input type="text" placeholder="Buscar..." class="form-control" id="fecha"></div>
-          </div>
-          <div class="p-2"><button type="submit" class= "btn btn-secondary">Consultar asistencias</button></div>
+          
           <div class="p-2"><a class="btn btn-primary btn-lg" href="/admin/lista_profesores/nuevo">Nuevo Profesor</a></div>
         </div>
     </div>
   </div>
   
   <div class="container">
-    <table class="table table-striped table-bordered table-responsive tabla_profesores">
+    <table class="table table-striped table-bordered table-responsive tabla_profesores_completa">
       <thead> 
         <tr>
           <th class="col-sm-1">Nombre</th>
@@ -92,8 +89,8 @@
           <td  th:text="${profesor.apellidoProf}"> </td>
           <td  th:text="${profesor.telefonoProf}"> </td>
           <td  th:text="${profesor.dniProf}"></td>
-           <td  th:text="${profesor.fechaNacProf}"></td>
            <td  th:text="${profesor.matriculaProf}"></td>
+           <td  th:text="${profesor.fechaNacProf}"></td>
           <td>
           	<div class="d-flex align-items-stretch">
               <div class="p-2">
@@ -106,11 +103,7 @@
                   <span class="fas fa-trash-alt"></span>Eliminar
                 </a>
               </div>
-              <div class="p-2">
-                <a class = "btn btn-secondary">
-                  <span class="fas fa-eye"></span>Más
-                </a>
-              </div>
+              
               <div class="p-2">
                 <a class = "btn btn-info">
                   <span class="fas fa-user"></span>Clases
@@ -132,7 +125,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
   <script src="https://cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"></script>
    <script>
-    $('.tabla_profesores').DataTable({
+    $('.tabla_profesores_completa').DataTable({
       "language": {
         "sProcessing":     "Procesando...",
         "sLengthMenu":     "Mostrar _MENU_ registros",

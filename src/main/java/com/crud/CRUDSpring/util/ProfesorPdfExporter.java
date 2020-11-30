@@ -39,11 +39,11 @@ public class ProfesorPdfExporter {
 	*/
 	private void writeTableData(PdfPTable tablaProfesores) {
 		listadoProfesores.forEach(profesor -> {
+			tablaProfesores.addCell(profesor.getApellidoProf());
+			tablaProfesores.addCell(profesor.getNombreProf());
 			tablaProfesores.addCell(String.valueOf(profesor.getDniProf()));
 			tablaProfesores.addCell(profesor.getMatriculaProf());
-			tablaProfesores.addCell(String.valueOf(profesor.getFechaNacProf()));
-			tablaProfesores.addCell(profesor.getNombreProf());
-			tablaProfesores.addCell(profesor.getApellidoProf());
+			tablaProfesores.addCell(String.valueOf(profesor.getFechaNacProf()));	
 			tablaProfesores.addCell(profesor.getTelefonoProf());
 
 		});
@@ -54,11 +54,12 @@ public class ProfesorPdfExporter {
 		PdfWriter.getInstance(document, response.getOutputStream());
 		document.open();
 		PdfPTable tablaProfesores = new PdfPTable(6);
+		
+		writeTableHeader(tablaProfesores, "Apellido");
+		writeTableHeader(tablaProfesores, "Nombre");
 		writeTableHeader(tablaProfesores, "DNI");
 		writeTableHeader(tablaProfesores, "Matricula");
 		writeTableHeader(tablaProfesores, "Fecha Nacimiento");
-		writeTableHeader(tablaProfesores, "Nombre");
-		writeTableHeader(tablaProfesores, "Apellido");
 		writeTableHeader(tablaProfesores, "Telefono");
 
 		writeTableData(tablaProfesores);

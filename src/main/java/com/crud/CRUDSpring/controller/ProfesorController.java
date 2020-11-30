@@ -34,6 +34,10 @@ public class ProfesorController {
 			return "form_profesor";
 			
 		}
+		@GetMapping("/admin/lista_profesores_completa")
+		public String lista_profesores_completa() {
+			return "lista_profesores_completa";
+		}
 		@PostMapping("/admin/save")
 		public String save(@Valid Profesor p, Model model) {
 			service.guardarProfesor(p);

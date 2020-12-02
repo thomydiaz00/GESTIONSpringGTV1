@@ -10,7 +10,7 @@
     <script src="https://kit.fontawesome.com/76bcb4e810.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="/funciones.js"></script>
-    
+
   </head>
 <body>
   <!--logos-->
@@ -78,6 +78,8 @@
           <th class="col-sm-1">Telefono</th>
           <th class="col-sm-1">Dni</th>
           <th class="col-sm-2">Acciones</th>
+          <th class="col-sm-2">Clases</th>
+
         </tr>
 
       </thead>
@@ -88,8 +90,7 @@
           <td  th:text="${profesor.apellidoProf}"> </td>
           <td  th:text="${profesor.telefonoProf}"> </td>
           <td  th:text="${profesor.dniProf}"></td>
-
-
+          <td  th:text="${profesor.clases[]}"></td>
 
           <td>
           	<div class="d-flex align-items-stretch">

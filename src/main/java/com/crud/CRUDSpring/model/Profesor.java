@@ -1,10 +1,14 @@
 package com.crud.CRUDSpring.model;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,11 +19,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "profesor")
 public class Profesor {
-	public Profesor() {
-	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idProf;
@@ -42,17 +48,22 @@ public class Profesor {
 	
 	
 	@OneToMany(mappedBy ="profesor")
-	private Set<Asistencia> asistenciaProfesores = new HashSet<Asistencia>();
+	private List<Asistencia> asistenciaProfesores = new ArrayList<Asistencia>();
 	
-	@ManyToMany 
+	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinTable (name= "profesor_tiene_clase",
-			joinColumns= {@JoinColumn (name="idProf")},
-			inverseJoinColumns= {@JoinColumn (name="idClase")}
+			joinColumns= {@JoinColumn (name="id_prof")},
+			inverseJoinColumns= {@JoinColumn (name="id_clase")}
 	)
-	private Set<Clase> clases = new HashSet<Clase>();
-	
-	
-	private Profesor(int idProf, String nombreProf, String apellidoProf, int dniProf, String direccionProf, String telefonoProf, String institucionProf, Date fechaNacProf, String matriculaProf) {
+	private List<Clase> clases = new ArrayList<Clase>();
+
+	public Profesor() {
+	}
+
+	public Profesor(int idProf, String nombreProf, String apellidoProf, int dniProf, String direccionProf,
+			String telefonoProf, String institucionProf, Date fechaNacProf, String matriculaProf,
+			List<Asistencia> asistenciaProfesores, List<Clase> clases) {
+		super();
 		this.idProf = idProf;
 		this.nombreProf = nombreProf;
 		this.apellidoProf = apellidoProf;
@@ -62,7 +73,9 @@ public class Profesor {
 		this.institucionProf = institucionProf;
 		this.fechaNacProf = fechaNacProf;
 		this.matriculaProf = matriculaProf;
-		}
+		this.asistenciaProfesores = asistenciaProfesores;
+		this.clases = clases;
+	}
 
 	public int getIdProf() {
 		return idProf;
@@ -136,11 +149,29 @@ public class Profesor {
 		this.matriculaProf = matriculaProf;
 	}
 
+	public List<Asistencia> getAsistenciaProfesores() {
+		return asistenciaProfesores;
+	}
+
+	public void setAsistenciaProfesores(List<Asistencia> asistenciaProfesores) {
+		this.asistenciaProfesores = asistenciaProfesores;
+	}
+
+	public List<Clase> getClases() {
+		return clases;
+	}
+
+	public void setClases(List<Clase> clases) {
+		this.clases = clases;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((apellidoProf == null) ? 0 : apellidoProf.hashCode());
+		result = prime * result + ((asistenciaProfesores == null) ? 0 : asistenciaProfesores.hashCode());
+		result = prime * result + ((clases == null) ? 0 : clases.hashCode());
 		result = prime * result + ((direccionProf == null) ? 0 : direccionProf.hashCode());
 		result = prime * result + dniProf;
 		result = prime * result + ((fechaNacProf == null) ? 0 : fechaNacProf.hashCode());
@@ -165,6 +196,16 @@ public class Profesor {
 			if (other.apellidoProf != null)
 				return false;
 		} else if (!apellidoProf.equals(other.apellidoProf))
+			return false;
+		if (asistenciaProfesores == null) {
+			if (other.asistenciaProfesores != null)
+				return false;
+		} else if (!asistenciaProfesores.equals(other.asistenciaProfesores))
+			return false;
+		if (clases == null) {
+			if (other.clases != null)
+				return false;
+		} else if (!clases.equals(other.clases))
 			return false;
 		if (direccionProf == null) {
 			if (other.direccionProf != null)
@@ -208,13 +249,15 @@ public class Profesor {
 		return "Profesor [idProf=" + idProf + ", nombreProf=" + nombreProf + ", apellidoProf=" + apellidoProf
 				+ ", dniProf=" + dniProf + ", direccionProf=" + direccionProf + ", telefonoProf=" + telefonoProf
 				+ ", institucionProf=" + institucionProf + ", fechaNacProf=" + fechaNacProf + ", matriculaProf="
-				+ matriculaProf + "]";
+				+ matriculaProf + ", asistenciaProfesores=" + asistenciaProfesores + ", clases=" + clases+ "]";
 	}
-	}
-
 	
-
 	
+	
+	
+	
+	
+}
 	
 	
 	

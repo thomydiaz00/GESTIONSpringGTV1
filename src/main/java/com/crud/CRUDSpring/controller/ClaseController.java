@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
+import com.crud.CRUDSpring.interfaceService.IfServiceHorario;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
 import com.crud.CRUDSpring.model.Clase;
+import com.crud.CRUDSpring.model.Horario;
 import com.crud.CRUDSpring.model.Persona;
 import com.crud.CRUDSpring.model.Profesor;
 
@@ -23,6 +25,9 @@ public class ClaseController {
 	
 		@Autowired
 		private IfServiceClase service;
+		
+		@Autowired
+		private IfServiceHorario serviceHorario;
 		
 		@GetMapping("/admin/lista_clases")
 		public String ListarClases(Model model) {

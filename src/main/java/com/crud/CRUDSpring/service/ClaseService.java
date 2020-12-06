@@ -19,11 +19,7 @@ public class ClaseService implements IfServiceClase {
 		return (List<Clase>)data.findAll();
 	}
 
-	@Override
-	public Optional<Clase> clasePorId(int id) {
-		return data.findById(id);
-		
-	}
+	
 
 	@Override
 	public int guardarClase(Clase c) {
@@ -39,6 +35,13 @@ public class ClaseService implements IfServiceClase {
 	public void borrarClase(int id) {
 		data.deleteById(id);
 		
+	}
+
+
+
+	@Override
+	public Optional<Clase> clasePorId(int id) {
+		return data.findById(id);
 	}
 
 	

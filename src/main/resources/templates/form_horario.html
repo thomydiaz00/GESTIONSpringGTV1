@@ -28,25 +28,32 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h3>Agregar Clase</h3>
+                <h3>Agregar Horario</h3>
             </div>
-            
+
             <div class="card-body">
-                <form th:action="@{/admin/save_clase}" th:object=${clase} method="POST">
+                <form th:action= "@{/admin/save_horario/}+${idclase}" th:object= "${horario}" method="POST">
 
                     <div class="form-group">
-						<input type="hidden" th:field="*{idClase}" id="idclase">
+						<input type="hidden" th:field="*{idHorario}" id="idhorario">
                		</div>	
                     <div class="form-group">
-                        <label for="nombre">nombre</label>
-                        <input th:field="*{nombreDep}" type="text" class="form-control"/>
+                        <label for="hora_inicio">Inicio</label>
+                        <input th:field="*{hora_inicio}" type="time" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="hora_fin">Hora fin</label>
+                        <input th:field="*{hora_fin}" type="time" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="lugar">Lugar de práctica</label>
+                        <input th:field="*{lugar}" type="text" class="form-control"/>
                     </div>
 					                   
-                           
-                    
+                        
                     <div class="form-group">
-                        <label for="depor">horario</label>
-                        <input th:field="*{deporte}" type="text" class="form-control"/>
+                        <label for="dia_semana">Dia Semana</label>
+                        <input th:field="*{dia_semana}" type="text" class="form-control"/>
                     </div>
                     
                     <button type="submit" class="btn btn-primary" >Guardar</button>
@@ -54,6 +61,17 @@
                     
                 </form>
             </div>
+            
+                <!--
+                <form th:action="@{/admin/save_horario}" th:with= "clase : ${clase}"th:object= "${horario}"method="POST">
+                   
+                    
+                </form>
+
+
+                -->
+               
+            
         </div>
     </div>
     

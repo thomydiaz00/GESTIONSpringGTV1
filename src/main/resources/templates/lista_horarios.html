@@ -61,12 +61,13 @@
       </div>
     </nav>
   </div>
-
-  <div class="jumbotron jumbotron-fluid pt-3">
+<div class="container-fluid">
+  <div class="jumbotron jumbotron-fluid">
     <div class="container">
-      <h1 class="display-4">Horarios para la clase </h1>
+      <h1 class="display-4" th:text= " 'Horarios para la clase ' + ${nombreClase} "></h1>
     </div>
   </div>
+</div>
   <!--Barra de busqueda--> 	  	
   <div class="container">
     <div class="d-flex flex-row justify-content-center">

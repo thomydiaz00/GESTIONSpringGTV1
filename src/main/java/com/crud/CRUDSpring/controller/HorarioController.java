@@ -29,6 +29,7 @@ public class HorarioController {
 	@GetMapping("/admin/lista_horarios/{id}")
 	public String listaHorarios(@PathVariable int id, Model model) {
 		Clase cla = serviceClase.clasePorId(id).orElse(null);
+		model.addAttribute("nombreClase",cla.getNombreDep());
 		model.addAttribute("idclase", id);
 		model.addAttribute("clase", cla.getHorarios());
 		return "lista_horarios";

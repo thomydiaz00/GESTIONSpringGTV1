@@ -249,7 +249,7 @@ public class Profesor {
 		return "Profesor [idProf=" + idProf + ", nombreProf=" + nombreProf + ", apellidoProf=" + apellidoProf
 				+ ", dniProf=" + dniProf + ", direccionProf=" + direccionProf + ", telefonoProf=" + telefonoProf
 				+ ", institucionProf=" + institucionProf + ", fechaNacProf=" + fechaNacProf + ", matriculaProf="
-				+ matriculaProf + ", asistenciaProfesores=" + asistenciaProfesores + ", clases=" + clases+ "]";
+				+ matriculaProf +  "]";
 	}
 	
 	

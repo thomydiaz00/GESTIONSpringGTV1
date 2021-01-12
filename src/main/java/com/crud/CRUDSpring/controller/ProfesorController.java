@@ -67,7 +67,9 @@ public class ProfesorController {
 		@GetMapping("/admin/editar_profesor/{id}")
 		public String editar(@PathVariable int id, Model model) {		//Uso PathVariable para establecer id como parametro
 			Optional<Profesor> profesor= service.profesorPorId(id);
+			List<Clase> clases = servClase.listarClase();
 			model.addAttribute("profesor", profesor);
+			model.addAttribute("clases", clases);
 			
 			return "form_profesor";
 			

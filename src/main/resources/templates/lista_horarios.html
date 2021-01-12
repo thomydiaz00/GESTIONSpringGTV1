@@ -89,7 +89,7 @@
           <th class="col-sm-1">Lugar</th>
           <th class="col-sm-1">Horario inicio</th>
           <th class="col-sm-1">Horario fin</th>
-          <th class="col-sm-1">Acciones</th>
+          <th class="col-sm-2">Acciones</th>
         </tr>
 
       </thead>
@@ -105,13 +105,12 @@
             <div class="d-flex align-items-stretch">
               <div class="p-2">
                 <a class ="btn btn-warning" th:href="@{/admin/editar_horario/}+ ${horario.idHorario} + '/' +${idclase}">
-                  <span class="fa fa-pencil fa-fw"></span>Editar!
+                  <span class="fas fa-pencil-alt"></span>
                 </a>
               </div>
               <div class="p-2">
-                <a  class = "btn btn-danger" th:onclick="eliminarhorario([[${horario.idHorario}]])">
-                  <span class="fas fa-trash-alt"></span>Eliminar!
-                </a>
+                <button class ="btn btn-danger" th:onclick="|eliminarhorario('${horario.idHorario}','${idclase}')|">
+                  <span class="fas fa-trash-alt"></span>
               </div>
               
             </div>   

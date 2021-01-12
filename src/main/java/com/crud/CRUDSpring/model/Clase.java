@@ -34,7 +34,7 @@ public class Clase {
 	private String nombreDep;
 	
 	//asistencia_clase 1:N
-	@OneToMany(targetEntity=Horario.class,fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST},  mappedBy= "clase")
+	@OneToMany(targetEntity=Horario.class,fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST}, orphanRemoval = true,  mappedBy= "clase")
 	private List<Horario> horarios = new ArrayList<Horario>();
 	
 	public void agregarHorario(Horario horario) {

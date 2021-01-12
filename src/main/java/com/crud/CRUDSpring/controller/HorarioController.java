@@ -53,8 +53,8 @@ public class HorarioController {
 		Clase clase = serviceClase.clasePorId(id).orElse(null);
 		horario.setClase(clase);
 		clase.agregarHorario(horario);
-		serviceClase.guardarClase(clase);
 		serviceHorario.guardarHorario(horario);
+		serviceClase.guardarClase(clase);
 		System.out.println("guardado");
 		return "redirect:/admin/lista_horarios/{id}";
 	}

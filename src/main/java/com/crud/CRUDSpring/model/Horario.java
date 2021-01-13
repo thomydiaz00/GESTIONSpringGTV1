@@ -79,7 +79,7 @@ public class Horario {
 	@Override
 	public String toString() {
 		return "Horario [idHorario=" + idHorario + ", hora_inicio=" + hora_inicio + ", hora_fin=" + hora_fin
-				+ ", lugar=" + lugar + ", dia_semana=" + dia_semana + ", clase=" + clase + "]";
+				+ ", lugar=" + lugar + ", dia_semana=" + dia_semana + "]";
 	}
 	@Override
 	public int hashCode() {

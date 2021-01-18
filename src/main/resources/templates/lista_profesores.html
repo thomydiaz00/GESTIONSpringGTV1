@@ -89,22 +89,22 @@
           <td  th:text="${profesor.telefonoProf}"> </td>
           <td  th:text="${profesor.dniProf}"></td>
 
-
+          
 
           <td>
           	<div class="d-flex align-items-stretch">
               <div class="p-2">
-                <a class ="btn btn-warning" th:href="@{/admin/editar_profesor/}+${profesor.idProf}" data-toggle="tooltip" data-placement="top" title="Editar">> 
+                <a class ="btn btn-warning" th:href="@{/admin/editar_profesor/}+${profesor.idProf}" data-toggle="tooltip" data-placement="top" title="Editar"> 
                   <span class="fas fa-pencil-alt"></span>
                 </a>
               </div>
               <div class="p-2">
-                <a  class = "btn btn-danger"  th:onclick="eliminarprofesor([[${profesor.idProf}]])">
+                <a  class = "btn btn-danger"  th:onclick="eliminarprofesor([[${profesor.idProf}]])" data-toggle="tooltip" data-placement="top" title="Eliminar">
                   <span class="fas fa-trash-alt"></span>
                 </a>
               </div>
               <div class="p-2">
-	              <a class ="btn btn-info">
+	              <a class ="btn btn-info" th:href="@{/admin/lista_profesores_clases/}+${profesor.idProf}" data-toggle="tooltip" data-placement="top" title="Ver clases">
 	                  <span class="fas fa-book"></span>
 	              </a>
    			  </div>

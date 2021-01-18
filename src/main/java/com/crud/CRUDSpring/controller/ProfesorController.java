@@ -1,5 +1,6 @@
 package com.crud.CRUDSpring.controller;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -19,10 +20,13 @@ import com.crud.CRUDSpring.model.Clase;
 import com.crud.CRUDSpring.model.Persona;
 import com.crud.CRUDSpring.model.Profesor;
 import com.crud.CRUDSpring.service.ProfesorService;
+import com.crud.CRUDSpring.repository.ProfesorRepository;
 
 @Controller
 public class ProfesorController {
-	
+		
+		@Autowired
+		private ProfesorRepository query;
 		@Autowired
 		private IfServiceProfesor service;
 		@Autowired
@@ -51,11 +55,13 @@ public class ProfesorController {
 			return "form_profesor";
 			
 		}
-		@GetMapping("/admin/lista_profesores_completa")
-		public String lista_profesores_completa(Model model) {
-			List<Profesor> profesoresComp= service.listarProfesores();
-			model.addAttribute("profesores", profesoresComp);
-			return "lista_profesores_completa";
+		@GetMapping("/admin/lista_profesores_clases/{id}")
+		public String lista_profesores_completa(@PathVariable int id, Model model) {
+			Optional<Profesor> profesor = service.profesorPorId(id);
+			List<Clase> profClases = profesor.get().getClases();
+			model.addAttribute("clases",profClases);
+			model.addAttribute("profesor", profesor.get());
+			return "lista_profesores_clases";
 		}
 		@PostMapping("/admin/save")
 		public String save(@Valid Profesor p, Model model) {
@@ -63,6 +69,11 @@ public class ProfesorController {
 			return "redirect:/admin/lista_profesores";
 		}
 		
+		@GetMapping("/admin/prueba")
+		public String prueba(Model model) {
+				model.addAttribute("cantidad", query.count());
+				return "user";
+		}
 		
 		@GetMapping("/admin/editar_profesor/{id}")
 		public String editar(@PathVariable int id, Model model) {		//Uso PathVariable para establecer id como parametro
@@ -70,6 +81,7 @@ public class ProfesorController {
 			List<Clase> clases = servClase.listarClase();
 			model.addAttribute("profesor", profesor);
 			model.addAttribute("clases", clases);
+			
 			
 			return "form_profesor";
 			

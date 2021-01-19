@@ -72,10 +72,24 @@
       </div>
     </div>
   </div>
+  
   <div class="container">
     <div class="d-flex flex-row justify-content-center">
         <div class="row">
           <div class="p-2"><a class= "btn btn-info" href="/admin/lista_profesores/export"> <span class="fas fa-book"></span> Generar informe</a></div>
+          <div class="p-2"><button class="btn btn-primary" onclick="mostrar(selector)">Agregar Clase</button></div>
+        </div>
+    </div>
+    <div class="d-flex flex-row justify-content-center" >
+      <div class="row" th:object=${profesor} style="display:none" id="selector">
+          <label>Seleccionar las clases a agregar:</label>
+          <div class="p-2">
+            <select id="selectMultiple"type="text" class="form-control selectpicker ml-2" multiple data-live-search="true" th:field="${profesor.clases}" >
+              <option  th:each= "clase :${todasLasClases}" th:value="${clase.idClase}" th:text="${clase.nombreDep}"></option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -84,8 +98,8 @@
       <thead> 
         <tr>
           <th class="col-sm-2">Clase</th> 
-          <th class="col-sm-2">Deporte</th> 
-          <th class="col-sm-2">Acciones</th>
+          <th class="col-sm-1">Deporte</th> 
+          <th class="col-sm-1">Acciones</th>
         </tr>
 
       </thead>
@@ -96,14 +110,10 @@
           <td  th:text="${clase.deporte}">	</td>
           <td>
             <div class="d-flex align-items-stretch">
+              
               <div class="p-2">
-                <a class ="btn btn-warning" th:href="@{/admin/editar_clase/}+${clase.idClase}" data-toggle="tooltip" data-placement="top" title="Editar">
-                  <span class="fas fa-pencil-alt"></span>
-                </a>
-              </div>
-              <div class="p-2">
-                <a  class = "btn btn-danger"  th:onclick="eliminarclase([[${clase.idClase}]])" data-toggle="tooltip" data-placement="top" title="Eliminar">
-                  <span class="fas fa-trash-alt"></span>
+                <a  class = "btn btn-danger"  th:href="@{/admin/borrar_clase_profesor/}+${profesor.idProf}+ '/' +${clase.idClase}"data-toggle="tooltip" data-placement="top" title="Eliminar">
+                  <span class="fas fa-minus"></span>
                 </a>
               </div>
               <div class="p-2">

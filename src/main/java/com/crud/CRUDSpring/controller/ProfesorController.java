@@ -31,6 +31,7 @@ public class ProfesorController {
 		private IfServiceProfesor service;
 		@Autowired
 		private IfServiceClase servClase;
+		private Optional<Clase> clase;
 		
 		@GetMapping("/admin/lista_profesores")
 		public String ListarProfesores(Model model) {
@@ -59,6 +60,13 @@ public class ProfesorController {
 		public String lista_profesores_completa(@PathVariable int id, Model model) {
 			Optional<Profesor> profesor = service.profesorPorId(id);
 			List<Clase> profClases = profesor.get().getClases();
+			List<Clase> todasLasClases = servClase.listarClase();
+			for (Iterator iterator = profClases.iterator(); iterator.hasNext();) {
+				Clase clase = (Clase) iterator.next();
+				todasLasClases.remove(clase);
+				
+			}
+			model.addAttribute("todasLasClases", todasLasClases);
 			model.addAttribute("clases",profClases);
 			model.addAttribute("profesor", profesor.get());
 			return "lista_profesores_clases";
@@ -74,7 +82,14 @@ public class ProfesorController {
 				model.addAttribute("cantidad", query.count());
 				return "user";
 		}
-		
+		@GetMapping("/admin/asignar_clase/{idProf}")
+		public String asignarClase(@PathVariable int idProf,@PathVariable int idClase, Model model) {
+			Profesor profesor = service.profesorPorId(idProf).get();
+			Clase clase = servClase.clasePorId(idClase).get();
+			profesor.getClases().add(clase);
+			service.guardarProfesor(profesor);
+			return "redirect:/admin/lista_profesores_clases/{idProf}";
+		}
 		@GetMapping("/admin/editar_profesor/{id}")
 		public String editar(@PathVariable int id, Model model) {		//Uso PathVariable para establecer id como parametro
 			Optional<Profesor> profesor= service.profesorPorId(id);
@@ -91,6 +106,24 @@ public class ProfesorController {
 			
 			service.borrarProfesor(idProf);
 			return "redirect:/admin/lista_profesores";
+		}
+		/*
+		 * Se pasan el id del profesor y la clase como parametros,
+		 * se obtiene el profesor y la clase que correspondan,
+		 * luego se elimina la clase que coincida con la asignada
+		 * */
+		@GetMapping("admin/borrar_clase_profesor/{idProf}/{idClase}")
+		public String eliminarClase(@PathVariable int idProf,@PathVariable int idClase, Model model) {
+			Profesor profesor= service.profesorPorId(idProf).get();
+			Clase clase = servClase.clasePorId(idClase).get();
+			System.out.println(clase.getNombreDep());
+			System.out.println("eliminando la clase" + idClase);
+			profesor.getClases().remove(clase);
+			System.out.println("Clase elimminada");
+			service.guardarProfesor(profesor);
+			return "redirect:/admin/lista_profesores_clases/{idProf}";
+			
+
 		}
 		
 	

@@ -64,50 +64,36 @@
             <div class="card-body">
                 <form th:action="@{/admin/save}" th:object=${profesor} method="POST">
 
-                    <div class="form-group">
-						<input type="hidden" th:field="*{idProf}" id="idprofesor">
+                  <div class="form-group">
+						          <input type="hidden" th:field="*{idProf}" id="idprofesor">
                		</div>	
-                    <div class="form-group">
-                        <label for="nombre">nombre</label>
-                        <input th:field="*{nombreProf}" type="text" class="form-control"/>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="apellido">apellido</label>
-                        <input th:field="*{apellidoProf}" type="text" class="form-control"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="telefono">telefono</label>
-                        <input th:field="*{telefonoProf}" type="number" class="form-control"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">DNI</label>
-                        <input th:field="*{dniProf}" type="number" class="form-control"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="matricula">Matricula</label>
-                        <input th:field="*{matriculaProf}" type="text" class="form-control"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="fechaNacimiento">Fecha de nacimiento</label>
-                        <input required th:field="*{fechaNacProf}" type="date" class="form-control"/>
+                    <div class="form-group form-inline">
+                        <label class= "mr-2" for="nombre">Nombre:</label>
+                        <input th:field="*{nombreProf}" type="text" class="form-control mr-3 w-25"/>
+                        <label class= "mr-2" for="apellido">Apellido:</label>
+                        <input th:field="*{apellidoProf}" type="text" class="form-control mr-3 w-25"/>
+                        <label class="mr-2"for="dni">DNI:</label>
+                        <input th:field="*{dniProf}" type="number" class="form-control w-10"/>
                         
                     </div>
-                    <div class="form-group">
-                    	<!-- Se crea el selector con todas las clases. Al seleccionar las clases, guardamos
-                    		los datos en la relacion muchos a muchos -->
-                    	<label>Clases a cargo:</label>
-                        <select type="text" class="form-control selectpicker ml-2" multiple data-live-search="true" th:field="${profesor.clases}" >
+                    <div class="form-group form-inline pt-3">
+                        <label class="mr-2" for="fechaNacimiento">Fecha de Nacimiento:</label>
+                        <input required th:field="*{fechaNacProf}" type="date" class="form-control mr-4 w-25"/>
+                        <label class="mr-2" for="telefono">Teléfono:</label>
+                        <input th:field="*{telefonoProf}" type="number" class="form-control w-25"/>
+                        
+                    </div>
+                        
+                    <div class="form-group form-inline pt-3">
+                        <label class="mr-2" for="matricula">Número de Matricula:</label>
+                        <input th:field="*{matriculaProf}" type="text" class="form-control mr-4 w-25"/>
+                        <label class="mr-2">Clases a cargo:</label>
+                        <select type="text" class="form-control selectpicker mr-2 w-25" multiple data-live-search="true" th:field="${profesor.clases}" >
                             <option  th:each= "clase :${clases}" th:value="${clase.idClase}" th:text="${clase.nombreDep}"></option>
                         </select>
-                        
-                    </div> -->
-                      
-                    
-                    
-                   
+                    </div>
+        
                     <button type="submit" class="btn btn-primary" >Guardar</button>
-                    
                 </form>
 
             </div>

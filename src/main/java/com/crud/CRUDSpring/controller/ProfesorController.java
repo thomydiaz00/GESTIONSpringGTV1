@@ -79,7 +79,6 @@ public class ProfesorController {
 		}
 		@PostMapping("/admin/actualizar_clases")
 		public String actualizarClases(HttpServletRequest request, Profesor clasesParaAsignar,Model model) {
-			System.out.println(clasesParaAsignar.getIdProf());
 			Profesor p = service.profesorPorId(clasesParaAsignar.getIdProf()).get();
 			for (Iterator iterator = clasesParaAsignar.getClases().iterator(); iterator.hasNext();) {
 				Clase clase = (Clase) iterator.next();
@@ -128,10 +127,7 @@ public class ProfesorController {
 		public String eliminarClase(@PathVariable int idProf,@PathVariable int idClase, Model model) {
 			Profesor profesor= service.profesorPorId(idProf).get();
 			Clase clase = servClase.clasePorId(idClase).get();
-			System.out.println(clase.getNombreDep());
-			System.out.println("eliminando la clase" + idClase);
 			profesor.getClases().remove(clase);
-			System.out.println("Clase elimminada");
 			service.guardarProfesor(profesor);
 			return "redirect:/admin/lista_profesores_clases/{idProf}";
 			

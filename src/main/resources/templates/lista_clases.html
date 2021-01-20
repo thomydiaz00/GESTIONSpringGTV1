@@ -11,9 +11,7 @@
     <script src="https://kit.fontawesome.com/76bcb4e810.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="/funciones.js"></script>
-
-
-    
+    <script src="/showSelector.js"></script>   
      <!-- SweetAlert -->
     
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -62,24 +60,39 @@
       </div>
     </nav>
   </div>
-
   
-  <!--Barra de busqueda--> 	  	
-      
-  <!--filtrar-->
-  <div class="container">
-    <div class="d-flex flex-row justify-content-center">
+  <div class="container pt-3">
+      <div class="d-flex flex-row justify-content-center">
         <div class="row">
-          <div class="p-2">
-            <div class=form-group><input type="text" placeholder="Buscar..." class="form-control" id="fecha"></div>
-          </div>
-          <div class="p-2"><button type="submit" class= "btn btn-secondary">Clases en esta fecha</button></div>
-          <div class="p-2"><a class="btn btn-primary btn-lg" href="/admin/lista_clases/nuevo">Nueva clase</a></div>
+          <button class="btn btn-info p-2 mr-2">Generar infome</button>
+          <button class="btn btn-primary btn-lg p-2" onclick="mostrar('formularioClase')">Nueva clase</button>
         </div>
-    </div>
+      </div>
+  </div>
+
+  <div class="container pt-3 w-75 h-25" id="formularioClase" style="display:none">
+      <form th:action="@{/admin/save_clase}" th:object=${clase} method="POST">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-row justify-content-center">
+              <input type="hidden" th:field=*{idClase}>
+              <div class="form-group form-inline p-2">
+                <label class="mr-2" for="nombre">Nombre de la Clase:</label>
+                <input type="text" id="nombre" name="nombre" th:field= *{nombreDep} class="form-control mr-4 w-25">
+                <label class="mr-2" for="deporte">Deporte:</label>
+                <input type="text" id="Deporte" name="deporte" th:field= *{deporte} class="form-control mr-2 w-25">
+                <button type="submit" class="btn btn-primary"> <i class="fas fa-plus"></i></button>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        
+      </form>
   </div>
   
-  <div class="container">
+  
+  <div class="container pt-3">
     <table class="table table-striped table-bordered table-responsive tabla_clases">
       <thead> 
         <tr>

@@ -66,24 +66,16 @@
             <div class="card-body">
                 <form th:action="@{/admin/save_clase}" th:object=${clase} method="POST">
 
-                    <div class="form-group">
-						<input type="hidden" th:field="*{idClase}" id="idclase">
+                  <div class="form-group">
+						        <input type="hidden" th:field="*{idClase}" id="idclase">
                		</div>	
-                    <div class="form-group">
-                        <label for="nombre">nombre</label>
-                        <input th:field="*{nombreDep}" type="text" class="form-control"/>
-                    </div>
-					                   
-                           
-                    
-                    <div class="form-group">
-                        <label for="depor">horario</label>
-                        <input th:field="*{deporte}" type="text" class="form-control"/>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary" >Guardar</button>
-                    
-                    
+                  <div class="form-group form-inline">
+                      <label class="mr-2" for="nombre">Nombre de la Clase</label>
+                      <input th:field="*{nombreDep}" type="text" class="form-control mr-4 w-25"/>
+                      <label class= "mr-2" for="deporte">Deporte</label>
+                      <input th:field="*{deporte}" type="text" class="form-control"/>
+                  </div>
+                  <button type="submit" class="btn btn-primary" >Guardar</button>
                 </form>
             </div>
         </div>

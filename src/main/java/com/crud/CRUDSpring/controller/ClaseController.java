@@ -33,6 +33,7 @@ public class ClaseController {
 		public String ListarClases(Model model) {
 	        List<Clase> clases= service.listarClase();
 			model.addAttribute("clases", clases);
+			model.addAttribute("clase", new Clase());
 	        return "lista_clases";
 	    }
 		@GetMapping("/admin/lista_clases/nuevo")

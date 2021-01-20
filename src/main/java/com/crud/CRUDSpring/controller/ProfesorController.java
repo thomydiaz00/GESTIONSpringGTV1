@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
@@ -56,9 +58,9 @@ public class ProfesorController {
 			return "form_profesor";
 			
 		}
-		@GetMapping("/admin/lista_profesores_clases/{id}")
-		public String lista_profesores_completa(@PathVariable int id, Model model) {
-			Optional<Profesor> profesor = service.profesorPorId(id);
+		@GetMapping("/admin/lista_profesores_clases/{idProf}")
+		public String lista_profesores_completa(@PathVariable int idProf, Model model) {
+			Optional<Profesor> profesor = service.profesorPorId(idProf);
 			List<Clase> profClases = profesor.get().getClases();
 			List<Clase> todasLasClases = servClase.listarClase();
 			for (Iterator iterator = profClases.iterator(); iterator.hasNext();) {
@@ -69,7 +71,24 @@ public class ProfesorController {
 			model.addAttribute("todasLasClases", todasLasClases);
 			model.addAttribute("clases",profClases);
 			model.addAttribute("profesor", profesor.get());
+			Profesor clasesParaAsignar = new Profesor();
+			clasesParaAsignar.setIdProf(profesor.get().getIdProf());
+			model.addAttribute("clasesParaAsignar", clasesParaAsignar);
 			return "lista_profesores_clases";
+		
+		}
+		@PostMapping("/admin/actualizar_clases")
+		public String actualizarClases(HttpServletRequest request, Profesor clasesParaAsignar,Model model) {
+			System.out.println(clasesParaAsignar.getIdProf());
+			Profesor p = service.profesorPorId(clasesParaAsignar.getIdProf()).get();
+			for (Iterator iterator = clasesParaAsignar.getClases().iterator(); iterator.hasNext();) {
+				Clase clase = (Clase) iterator.next();
+				p.getClases().add(clase);
+			}
+			service.guardarProfesor(p);
+			//Se redirige a la pagina anterior
+			return "redirect:"+ request.getHeader("Referer");
+			
 		}
 		@PostMapping("/admin/save")
 		public String save(@Valid Profesor p, Model model) {
@@ -82,14 +101,7 @@ public class ProfesorController {
 				model.addAttribute("cantidad", query.count());
 				return "user";
 		}
-		@GetMapping("/admin/asignar_clase/{idProf}")
-		public String asignarClase(@PathVariable int idProf,@PathVariable int idClase, Model model) {
-			Profesor profesor = service.profesorPorId(idProf).get();
-			Clase clase = servClase.clasePorId(idClase).get();
-			profesor.getClases().add(clase);
-			service.guardarProfesor(profesor);
-			return "redirect:/admin/lista_profesores_clases/{idProf}";
-		}
+	
 		@GetMapping("/admin/editar_profesor/{id}")
 		public String editar(@PathVariable int id, Model model) {		//Uso PathVariable para establecer id como parametro
 			Optional<Profesor> profesor= service.profesorPorId(id);

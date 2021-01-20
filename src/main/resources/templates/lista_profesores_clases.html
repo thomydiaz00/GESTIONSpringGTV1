@@ -75,25 +75,32 @@
   
   <div class="container">
     <div class="d-flex flex-row justify-content-center">
-        <div class="row">
-          <div class="p-2"><a class= "btn btn-info" href="/admin/lista_profesores/export"> <span class="fas fa-book"></span> Generar informe</a></div>
-          <div class="p-2"><button class="btn btn-primary" onclick="mostrar(selector)">Agregar Clase</button></div>
-        </div>
+      <div class="p-2"><a class= "btn btn-info" href="/admin/lista_profesores/export"> <span class="fas fa-book"></span> Generar informe</a></div>
+      <div class="p-2"><button class="btn btn-primary" onclick="mostrar(selector)">Agregar Clase</button></div>
     </div>
-    <div class="d-flex flex-row justify-content-center" >
-      <div class="row" th:object=${profesor} style="display:none" id="selector">
-          <label>Seleccionar las clases a agregar:</label>
-          <div class="p-2">
-            <select id="selectMultiple"type="text" class="form-control selectpicker ml-2" multiple data-live-search="true" th:field="${profesor.clases}" >
-              <option  th:each= "clase :${todasLasClases}" th:value="${clase.idClase}" th:text="${clase.nombreDep}"></option>
-            </select>
+  <div class="container" th:object=${profesor} style="display:none" id="selector">
+    <form th:action="@{/admin/actualizar_clases}" th:object ="${clasesParaAsignar}" method="POST">
+      <div class="d-flex flex-row justify-content-center">
+        <div class="alert alert-dark p-2">
+          <input type="hidden" th:field="${clasesParaAsignar.idProf}">
+          <div>
+            Clases disponibles:
           </div>
         </div>
+        <div class="container p-2">
+          <select id="selectMultiple"type="text" class="form-control selectpicker ml-2" multiple data-live-search="true" th:field="${clasesParaAsignar.clases}" >
+            <option  th:each= "clase :${todasLasClases}" th:value="${clase.idClase}" th:text="${clase.nombreDep}"></option>
+          </select>
+        </div>
+        <div class="p-2">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
+    
 
-  <div class="container">
+  <div class="container pt-3">
     <table class="table table-striped table-bordered table-responsive tabla_profesores">
       <thead> 
         <tr>

@@ -38,7 +38,7 @@ public class ClaseService implements IfServiceClase {
 
 	@Override
 	public void borrarClase(int id) {
-		List<Profesor> profesores = (List<Profesor>) serviceProfesor.findAll();
+		/*List<Profesor> profesores = (List<Profesor>) serviceProfesor.findAll();
 		Optional<Clase> clase = data.findById(id);
 		for (Iterator iterator = profesores.iterator(); iterator.hasNext();) {
 			Profesor profesor = (Profesor) iterator.next();
@@ -47,7 +47,7 @@ public class ClaseService implements IfServiceClase {
 				System.out.println("La clase esta asignada, seguro de eliminar? " + profesor.getNombreProf());
 				serviceProfesor.save(profesor);
 			}
-		}
+		}*/
 		data.deleteById(id);
 
 	}

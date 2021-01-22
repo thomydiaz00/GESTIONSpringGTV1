@@ -58,8 +58,17 @@ public class ProfesorController {
 			return "form_profesor";
 			
 		}
+		
+		/*
+		 * Muestra las clases asignadas al profesor
+		 * profClases es el atributo con las clases asignadas, todasLasClases
+		 * son las clases que se pueden asignar.
+		 * ClasesParaAsignar es el profesor con las nuevas clases, si se crea llama va
+		 * al controlador actualizarClases()
+		 */
 		@GetMapping("/admin/lista_profesores_clases/{idProf}")
 		public String lista_profesores_completa(@PathVariable int idProf, Model model) {
+			//Muestra la lista con clases disponibles para agregar
 			Optional<Profesor> profesor = service.profesorPorId(idProf);
 			List<Clase> profClases = profesor.get().getClases();
 			List<Clase> todasLasClases = servClase.listarClase();
@@ -68,15 +77,21 @@ public class ProfesorController {
 				todasLasClases.remove(clase);
 				
 			}
+			Profesor clasesParaAsignar = new Profesor();
+			
+			clasesParaAsignar.setIdProf(profesor.get().getIdProf());
 			model.addAttribute("todasLasClases", todasLasClases);
 			model.addAttribute("clases",profClases);
 			model.addAttribute("profesor", profesor.get());
-			Profesor clasesParaAsignar = new Profesor();
-			clasesParaAsignar.setIdProf(profesor.get().getIdProf());
 			model.addAttribute("clasesParaAsignar", clasesParaAsignar);
 			return "lista_profesores_clases";
 		
 		}
+		/*
+		 * Obtiene un profesor con una lista de nuevas clases, se trae
+		 * al profesor guardado en la bd, se le agregan las clases y se
+		 * guarda nuevamente en la bd
+		 */
 		@PostMapping("/admin/actualizar_clases")
 		public String actualizarClases(HttpServletRequest request, Profesor clasesParaAsignar,Model model) {
 			Profesor p = service.profesorPorId(clasesParaAsignar.getIdProf()).get();

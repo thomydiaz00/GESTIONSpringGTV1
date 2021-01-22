@@ -1,4 +1,5 @@
 package com.crud.CRUDSpring.service;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,15 @@ import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaces.interfaceClase;
 import com.crud.CRUDSpring.interfaces.interfaceProfesor;
 import com.crud.CRUDSpring.model.Clase;
+import com.crud.CRUDSpring.model.Profesor;
 @Service
 public class ClaseService implements IfServiceClase {
 	
 	@Autowired
 	private interfaceClase data;
+	
+	@Autowired
+	private interfaceProfesor serviceProfesor;
 
 	@Override
 	public List<Clase> listarClase() {
@@ -33,8 +38,18 @@ public class ClaseService implements IfServiceClase {
 
 	@Override
 	public void borrarClase(int id) {
+		List<Profesor> profesores = (List<Profesor>) serviceProfesor.findAll();
+		Optional<Clase> clase = data.findById(id);
+		for (Iterator iterator = profesores.iterator(); iterator.hasNext();) {
+			Profesor profesor = (Profesor) iterator.next();
+			if(profesor.getClases().contains(clase.get())) {
+				profesor.getClases().remove(clase.get());
+				System.out.println("La clase esta asignada, seguro de eliminar? " + profesor.getNombreProf());
+				serviceProfesor.save(profesor);
+			}
+		}
 		data.deleteById(id);
-		
+
 	}
 
 

@@ -50,7 +50,7 @@ public class Profesor {
 	@OneToMany(mappedBy ="profesor")
 	private List<Asistencia> asistenciaProfesores = new ArrayList<Asistencia>();
 	
-	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
 	@JoinTable (name= "profesor_tiene_clase",
 			joinColumns= {@JoinColumn (name="id_prof")},
 			inverseJoinColumns= {@JoinColumn (name="id_clase")}

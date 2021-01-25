@@ -6,14 +6,20 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
@@ -38,9 +44,9 @@ public class ProfesorController {
 		@GetMapping("/admin/lista_profesores")
 		public String ListarProfesores(Model model) {
 	        List<Profesor> profesores= service.listarProfesores();
-	        List<Clase> cla = servClase.listarClase();
-	        
-			model.addAttribute("clases", cla);
+	        List<Clase> clases = servClase.listarClase();
+	        model.addAttribute("profesor", new Profesor());
+			model.addAttribute("clases", clases);
 			model.addAttribute("profesores", profesores);
 	        return "lista_profesores";
 	    }
@@ -122,8 +128,6 @@ public class ProfesorController {
 			List<Clase> clases = servClase.listarClase();
 			model.addAttribute("profesor", profesor);
 			model.addAttribute("clases", clases);
-			
-			
 			return "form_profesor";
 			
 		}
@@ -147,6 +151,14 @@ public class ProfesorController {
 			return "redirect:/admin/lista_profesores_clases/{idProf}";
 			
 
+		}
+		@RequestMapping(value="/logout", method = RequestMethod.GET)
+		public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+		    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		    if (auth != null){    
+		        new SecurityContextLogoutHandler().logout(request, response, auth);
+		    }
+		    return "redirect:/login?logout"; //You can redirect wherever you want, but generally it's a good practice to show login screen again.
 		}
 		
 	

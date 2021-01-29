@@ -1,105 +1,188 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agregar profesor</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+      crossorigin="anonymous"
+    ></script>
 
     <!--select mult-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-     <!-- SweetAlert -->
-    
-  <script src="/funciones.js"></script>
+    <!-- SweetAlert -->
 
-    
-</head>
-<body>
-
+    <script src="/funciones.js"></script>
+  </head>
+  <body>
     <!--Tabla que trae datos desde base de datos--
     asdjasodijasoidjiasjdo
     -->
     <!--Navbar header-->
-  <div class="container-fluid">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded-bottom">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-          
-          <li class="nav-item active">
-            <a class="nav-link" href="/admin/lista_profesores"> <h3>Administracion de profesores</h3> <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/lista_clases"><h5>Administrar Clases</h5></a>
-          </li>
-        </ul>
-        
-        <ul class="navbar-nav ml-md-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Administrador
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="/logout">Cerrar sesión</a>
-            </div>
-          </li>
-        
-        </ul>
-      </div>
-    </nav>
-  </div>
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded-bottom">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/admin/lista_profesores">
+                <h3>Administracion de profesores</h3>
+                <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/lista_clases"
+                ><h5>Administrar Clases</h5></a
+              >
+            </li>
+          </ul>
+
+          <ul class="navbar-nav ml-md-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                th:text="${#authentication.getPrincipal().getUsername()}"
+              >
+              </a>
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <a class="dropdown-item" href="/admin/configuracion"
+                  ><i class="fas fa-cog"></i> Configuracion</a
+                >
+                <li>
+                  <a class="dropdown-item" href="/admin/configuracion">
+                    <i class="fas fa-envelope"></i> Support</a
+                  >
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a class="dropdown-item" href="/logout"
+                    ><i class="fas fa-power-off"></i> Cerrar Sesión</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
 
     <div class="container pt-3">
-        <div class="card">
-            <div class="card-header">
-                <h3>Agregar profesor</h3>
-            </div>
-            
-            <div class="card-body">
-                <form th:action="@{/admin/save}" th:object=${profesor} method="POST">
-
-                  <div class="form-group">
-						          <input type="hidden" th:field="*{idProf}" id="idprofesor">
-               		</div>	
-                    <div class="form-group form-inline">
-                        <label class= "mr-2" for="nombre">Nombre:</label>
-                        <input th:field="*{nombreProf}" type="text" class="form-control mr-3 w-25"/>
-                        <label class= "mr-2" for="apellido">Apellido:</label>
-                        <input th:field="*{apellidoProf}" type="text" class="form-control mr-3 w-25"/>
-                        <label class="mr-2"for="dni">DNI:</label>
-                        <input th:field="*{dniProf}" type="number" class="form-control w-10"/>
-                        
-                    </div>
-                    <div class="form-group form-inline pt-3">
-                        <label class="mr-2" for="fechaNacimiento">Fecha de Nacimiento:</label>
-                        <input required th:field="*{fechaNacProf}" type="date" class="form-control mr-4 w-25"/>
-                        <label class="mr-2" for="telefono">Teléfono:</label>
-                        <input th:field="*{telefonoProf}" type="number" class="form-control w-25"/>
-                        
-                    </div>
-                        
-                    <div class="form-group form-inline pt-3">
-                        <label class="mr-2" for="matricula">Número de Matricula:</label>
-                        <input th:field="*{matriculaProf}" type="text" class="form-control mr-4 w-25"/>
-                        <label class="mr-2">Clases a cargo:</label>
-                        <select type="text" class="form-control selectpicker mr-2 w-25" multiple data-live-search="true" th:field="${profesor.clases}" >
-                            <option  th:each= "clase :${clases}" th:value="${clase.idClase}" th:text="${clase.nombreDep}"></option>
-                        </select>
-                    </div>
-        
-                    <button type="submit" class="btn btn-primary" >Guardar</button>
-                </form>
-
-            </div>
-
+      <div class="card">
+        <div class="card-header">
+          <h3>Agregar profesor</h3>
         </div>
+
+        <div class="card-body">
+          <form
+            th:action="@{/admin/save}"
+            th:object="${profesor}"
+            method="POST"
+          >
+            <div class="form-group">
+              <input type="hidden" th:field="*{idProf}" id="idprofesor" />
+            </div>
+            <div class="form-group form-inline">
+              <label class="mr-2" for="nombre">Nombre:</label>
+              <input
+                th:field="*{nombreProf}"
+                type="text"
+                class="form-control mr-3 w-25"
+              />
+              <label class="mr-2" for="apellido">Apellido:</label>
+              <input
+                th:field="*{apellidoProf}"
+                type="text"
+                class="form-control mr-3 w-25"
+              />
+              <label class="mr-2" for="dni">DNI:</label>
+              <input
+                th:field="*{dniProf}"
+                type="number"
+                class="form-control w-10"
+              />
+            </div>
+            <div class="form-group form-inline pt-3">
+              <label class="mr-2" for="fechaNacimiento"
+                >Fecha de Nacimiento:</label
+              >
+              <input
+                required
+                th:field="*{fechaNacProf}"
+                type="date"
+                class="form-control mr-4 w-25"
+              />
+              <label class="mr-2" for="telefono">Teléfono:</label>
+              <input
+                th:field="*{telefonoProf}"
+                type="number"
+                class="form-control w-25"
+              />
+            </div>
+
+            <div class="form-group form-inline pt-3">
+              <label class="mr-2" for="matricula">Número de Matricula:</label>
+              <input
+                th:field="*{matriculaProf}"
+                type="text"
+                class="form-control mr-4 w-25"
+              />
+              <label class="mr-2">Clases a cargo:</label>
+              <select
+                type="text"
+                class="form-control selectpicker mr-2 w-25"
+                multiple
+                data-live-search="true"
+                th:field="${profesor.clases}"
+              >
+                <option
+                  th:each="clase :${clases}"
+                  th:value="${clase.idClase}"
+                  th:text="${clase.nombreDep}"
+                ></option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </form>
+        </div>
+      </div>
     </div>
-    
-</body>
+  </body>
 </html>

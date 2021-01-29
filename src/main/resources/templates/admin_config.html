@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<head>
+    <title>Clases</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--StyleSheets CSS-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <!--Iconos de FontAwesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+    <script src="https://kit.fontawesome.com/76bcb4e810.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="/funciones.js"></script>
+    <script src="/showSelector.js"></script>
+
+    <!--tablas-->
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>    
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+</head>
+
+<!------ Include the above in your HEAD tag ---------->
+<body>
+
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded-bottom">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+        
+            <li class="nav-item">
+            <a class="nav-link" href="/admin/lista_profesores"><h5>Administrar Profesores</h5></a>
+            </li>
+            <li class="nav-item active">
+            <a class="nav-link" href="#"> <h3>Administracion de clases</h3> <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        
+        <ul class="navbar-nav ml-md-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text ="${#authentication.getPrincipal().getUsername()}">
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="/admin/configuracion"><i class="fas fa-cog"></i> Configuracion</a>
+              <li><a class="dropdown-item" href="/admin/configuracion"> <i class="fas fa-envelope"></i> Support</a></li>
+              <li class="divider"></li>
+              <li><a class="dropdown-item" href="/logout"><i class="fas fa-power-off"></i> Cerrar Sesión</a></li>
+            </ul>
+          </li>
+        </ul>
+        </div>
+    </nav>
+</div>
+
+<div class="container pt-3">
+    <div class="row">
+        <div class="col-6">
+        <div class="card">
+            <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" id="lista" role="tablist">
+                <li class="nav-item">
+                <a class="nav-link active" href="#"  aria-selected="true">Ajustes del usuario</a> 
+                </li>
+                <li class="nav-item">
+                <a class="nav-link"  href="/admin/configuracion/agregar_usuario"  aria-selected="false">Administradores del sistema</a>
+                </li>
+                
+            </ul>
+            </div>
+            <div class="card-body">
+            <form th:action="@{/admin/save}" th:object=${user} method="POST">
+                <div class="form-group">
+                    <input type="hidden" th:field="*{id}" id="id">
+                </div>	
+                <div class="form-group">
+                    <label class= "mr-2" for="username">Nombre de usuario:</label>
+                    <input th:value="*{username}" type="text" id="username" name="username" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label class= "mr-2" for="password">Rol</label>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th></th>Roles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr  th:each= "roles : ${user.authority}">
+                                    <td th:text="${roles.id}"></td>
+                                    <td th:text="${roles.authority}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>   
+            
+                <button type="submit" class="btn btn-primary" >Guardar</button>
+                
+            
+            </form>
+            
+                
+        </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

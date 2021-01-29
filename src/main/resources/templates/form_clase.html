@@ -1,85 +1,134 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    
+
     <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina -->
-    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="static/css/bootstrap.min.css"
+      th:href="@{/css/bootstrap.min.css}"
+    />
     <script src="/js/bootstrap.min.js"></script>
-        
+
     <!--Iconos de FontAwesome-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
-    <script src="https://kit.fontawesome.com/76bcb4e810.js" crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/76bcb4e810.js"
+      crossorigin="anonymous"
+    ></script>
 
-    
-     <!-- SweetAlert -->
-    
+    <!-- SweetAlert -->
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-	<script src="/funciones.js"></script>
-    
-</head>
-<body>
-
+    <script src="/funciones.js"></script>
+  </head>
+  <body>
     <!--Tabla que trae datos desde base de datos--
     asdjasodijasoidjiasjdo
     -->
     <!--Navbar header-->
-  <div class="container-fluid">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded-bottom">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-      
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/lista_profesores"><h5>Administrar Profesores</h5></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="#"> <h3>Administracion de clases</h3> <span class="sr-only">(current)</span></a>
-          </li>
-        </ul>
-        
-        <ul class="navbar-nav ml-md-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Administrador
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="/logout">Cerrar sesión</a>
-            </div>
-          </li>
-        
-        </ul>
-      </div>
-    </nav>
-  </div>
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded-bottom">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/lista_profesores"
+                ><h5>Administrar Profesores</h5></a
+              >
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#">
+                <h3>Administracion de clases</h3>
+                <span class="sr-only">(current)</span></a
+              >
+            </li>
+          </ul>
+
+          <ul class="navbar-nav ml-md-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                th:text="${#authentication.getPrincipal().getUsername()}"
+              >
+              </a>
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <a class="dropdown-item" href="/admin/configuracion"
+                  ><i class="fas fa-cog"></i> Configuracion</a
+                >
+                <li>
+                  <a class="dropdown-item" href="/admin/configuracion">
+                    <i class="fas fa-envelope"></i> Support</a
+                  >
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a class="dropdown-item" href="/logout"
+                    ><i class="fas fa-power-off"></i> Cerrar Sesión</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
 
     <div class="container pt-3">
-        <div class="card">
-            <div class="card-header">
-                <h3>Agregar Clase</h3>
-            </div>
-            
-            <div class="card-body">
-                <form th:action="@{/admin/save_clase}" th:object=${clase} method="POST">
-
-                  <div class="form-group">
-						        <input type="hidden" th:field="*{idClase}" id="idclase">
-               		</div>	
-                  <div class="form-group form-inline">
-                      <label class="mr-2" for="nombre">Nombre de la Clase</label>
-                      <input th:field="*{nombreDep}" type="text" class="form-control mr-4 w-25"/>
-                      <label class= "mr-2" for="deporte">Deporte</label>
-                      <input th:field="*{deporte}" type="text" class="form-control"/>
-                  </div>
-                  <button type="submit" class="btn btn-primary" >Guardar</button>
-                </form>
-            </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>Agregar Clase</h3>
         </div>
+
+        <div class="card-body">
+          <form
+            th:action="@{/admin/save_clase}"
+            th:object="${clase}"
+            method="POST"
+          >
+            <div class="form-group">
+              <input type="hidden" th:field="*{idClase}" id="idclase" />
+            </div>
+            <div class="form-group form-inline">
+              <label class="mr-2" for="nombre">Nombre de la Clase</label>
+              <input
+                th:field="*{nombreDep}"
+                type="text"
+                class="form-control mr-4 w-25"
+              />
+              <label class="mr-2" for="deporte">Deporte</label>
+              <input th:field="*{deporte}" type="text" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </form>
+        </div>
+      </div>
     </div>
-    
-</body>
+  </body>
 </html>

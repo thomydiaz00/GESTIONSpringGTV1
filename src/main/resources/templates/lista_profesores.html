@@ -55,14 +55,15 @@
         
         <ul class="navbar-nav ml-md-auto">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Administrador
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text ="${#authentication.getPrincipal().getUsername()}">
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="/logout">Cerrar sesión</a>
-            </div>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="/admin/configuracion"><i class="fas fa-cog"></i> Configuracion</a>
+              <li><a class="dropdown-item" href="/admin/configuracion"> <i class="fas fa-envelope"></i> Support</a></li>
+              <li class="divider"></li>
+              <li><a class="dropdown-item" href="/logout"><i class="fas fa-power-off"></i> Cerrar Sesión</a></li>
+            </ul>
           </li>
-        
         </ul>
       </div>
     </nav>

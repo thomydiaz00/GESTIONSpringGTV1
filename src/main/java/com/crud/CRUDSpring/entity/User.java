@@ -1,6 +1,11 @@
 package com.crud.CRUDSpring.entity;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,15 +15,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import com.crud.CRUDSpring.entity.Authority;
-
 @Entity
-public class User {
-
+public class User implements Serializable{
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="native")
+	@GenericGenerator(name="native",strategy="native")
+	private int id;
 
 	@Column
 	private String username;
@@ -30,14 +37,28 @@ public class User {
 	private boolean enabled;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "authorities_users", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "authority_id"))
-	private Set<Authority> authority;
+	@JoinTable(name = "authorities_users", 
+		joinColumns = @JoinColumn(name = "usuario_id"), 
+		inverseJoinColumns = @JoinColumn(name = "authority_id"))
+	private List<Authority> authority = new ArrayList<Authority>();
 
-	public Long getId() {
-		return id;
+	
+	public User() {
 	}
 
-	public void setId(Long id) {
+	public User(int id, String username, String password, boolean enabled, List<Authority> authority) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
+		this.authority = authority;
+	}
+
+	public int getId() {
+		return id; 
+	}
+
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -65,19 +86,25 @@ public class User {
 		this.enabled = enabled;
 	}
 
-	public Set<Authority> getAuthority() {
+	public List<Authority> getAuthority() {
 		return authority;
 	}
 
-	public void setAuthority(Set<Authority> authority) {
+	public void setAuthority(List<Authority> authority) {
 		this.authority = authority;
 	}
+
+	
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((authority == null) ? 0 : authority.hashCode());
+		result = prime * result + (enabled ? 1231 : 1237);
+		result = prime * result + id;
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -90,10 +117,24 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (authority == null) {
+			if (other.authority != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!authority.equals(other.authority))
+			return false;
+		if (enabled != other.enabled)
+			return false;
+		if (id != other.id)
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
 			return false;
 		return true;
 	}

@@ -2,8 +2,10 @@ package com.crud.CRUDSpring.model;
 import java.sql.Time;
 import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,9 +30,11 @@ public class Horario {
 	private String lugar;
 	@Column
 	private String dia_semana;
+	
 	@ManyToOne
 	@JoinColumn(name = "idClase")
 	private Clase clase;
+	
 	public Horario(int idHorario, String hora_inicio, String hora_fin, String lugar, String dia_semana, Clase clase) {
 		super();
 		this.idHorario = idHorario;

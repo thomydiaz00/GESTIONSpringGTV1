@@ -44,23 +44,60 @@ public class Asistencia {
 	@Column
 	private Date fechaAsistencia;
 	@Column
-	private char estadoAsistencia;
+	private boolean estadoAsistencia;
 	
 	
 	
-	
-	public Asistencia(Profesor profesor, Clase clase, Date fechaAsistencia, char estadoAsistencia) {
+	public Asistencia(int idAsistencia, Profesor profesor, Clase clase, Date fechaAsistencia,
+			boolean estadoAsistencia) {
+		super();
+		this.idAsistencia = idAsistencia;
 		this.profesor = profesor;
 		this.clase = clase;
 		this.fechaAsistencia = fechaAsistencia;
 		this.estadoAsistencia = estadoAsistencia;
+	}
+	public int getIdAsistencia() {
+		return idAsistencia;
+	}
+	public void setIdAsistencia(int idAsistencia) {
+		this.idAsistencia = idAsistencia;
+	}
+	public Profesor getProfesor() {
+		return profesor;
+	}
+	public void setProfesor(Profesor profesor) {
+		this.profesor = profesor;
+	}
+	public Clase getClase() {
+		return clase;
+	}
+	public void setClase(Clase clase) {
+		this.clase = clase;
+	}
+	public Date getFechaAsistencia() {
+		return fechaAsistencia;
+	}
+	public void setFechaAsistencia(Date fechaAsistencia) {
+		this.fechaAsistencia = fechaAsistencia;
+	}
+	public boolean isEstadoAsistencia() {
+		return estadoAsistencia;
+	}
+	public void setEstadoAsistencia(boolean estadoAsistencia) {
+		this.estadoAsistencia = estadoAsistencia;
+	}
+	@Override
+	public String toString() {
+		return "Asistencia [idAsistencia=" + idAsistencia + ", profesor=" + profesor + ", clase=" + clase
+				+ ", fechaAsistencia=" + fechaAsistencia + ", estadoAsistencia=" + estadoAsistencia + "]";
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((clase == null) ? 0 : clase.hashCode());
-		result = prime * result + estadoAsistencia;
+		result = prime * result + (estadoAsistencia ? 1231 : 1237);
 		result = prime * result + ((fechaAsistencia == null) ? 0 : fechaAsistencia.hashCode());
 		result = prime * result + idAsistencia;
 		result = prime * result + ((profesor == null) ? 0 : profesor.hashCode());
@@ -96,11 +133,8 @@ public class Asistencia {
 			return false;
 		return true;
 	}
-	@Override
-	public String toString() {
-		return "Asistencia [idAsistencia=" + idAsistencia + ", profesor=" + profesor + ", clase=" + clase
-				+ ", fechaAsistencia=" + fechaAsistencia + ", estadoAsistencia=" + estadoAsistencia + "]";
-	}
+	
+	
 	
 	
 	

@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -33,19 +34,12 @@ public class Clase {
 	@Column
 	private String nombreDep;
 	
-	//asistencia_clase 1:N
-	@OneToMany(targetEntity=Horario.class,fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST}, orphanRemoval = true,  mappedBy= "clase")
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "clase")
 	private List<Horario> horarios = new ArrayList<Horario>();
 	
-	public void agregarHorario(Horario horario) {
-		//asocia el horario con la clase
-		//agrega el horario a la lista
-		horarios.add(horario);
-	}
 	
-	@OneToMany(targetEntity=Asistencia.class,cascade = CascadeType.ALL, 
-            fetch = FetchType.LAZY, orphanRemoval = true)
-	private List<Asistencia> asistencias = new ArrayList<Asistencia>();
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "clase")
+	private List<Asistencia> asistencias= new ArrayList<Asistencia>();
 	//profesor_tiene_clase N:N
 	
 	@JsonBackReference
@@ -152,6 +146,7 @@ public class Clase {
 			return false;
 		return true;
 	}
+	
 	
 	
 	

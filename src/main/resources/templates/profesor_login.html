@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+    <script src="https://kit.fontawesome.com/76bcb4e810.js" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" type="text/css" href="static/css/index.css" th:href="@{/css/index.css}">
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container wrapper fadeInDown mr-4">
+        <div class="row">
+            <div class="col-sm-4 col-xs-2 pt-3">
+                <div class="card pt-3">
+                    <div class="card-header">
+                        <h1>Bienvenido!</h1>
+                    </div>
+                    <div class="card-body">
+                        <p class=>Bienvenido al sistema de gestión de asistencias,
+                            ingrese su número de DNI para administrar sus asistencias
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8 col-xs-4 pt-3">	
+                <div id="formContent">
+                    <div class="fadeIn first">
+                        <div class="row">
+                            <div class="col-sm-8 col-xs-4 mx-auto d-block">
+                                <img src="static/img/escudo.png" th:src="@{/img/escudo.png}" class="img-fluid rounded mx-auto d-block" id="icono usuario" alt="icono de usuario"/>
+                            </div>
+                        </div>
+                    </div>
+                    <form th:action="@{/profesor/redirect}">
+                    <div class="form-group">
+                        <i class="fa fa-user icon"></i>
+                        <input type="text" class="fadeIn second" placeholder="Numero de DNI" name="dniProfesor"/>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-sign-in-alt"></i> Ingresar </button>
+                    </div>
+                </form>
+                <div id="formFooter">
+                    <div id="invalid user" th:if="${error}" class="alert alert-danger" role="alert">
+                        <label> Usuario o contraseña invalido . </label> 
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</body>
+</html>
+

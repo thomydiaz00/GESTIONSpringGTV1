@@ -51,20 +51,18 @@ public class UserController {
 		return "admin_config";
 		
 	}
-	@GetMapping({"/admin/configuracion/agregar_usuario","/admin/configuracion/agregar_usuario/{mensaje}"} )
-	public String agregarUsuario(Model model, @PathVariable(required=false) Optional<String> mensaje) {
+	@GetMapping({"/admin/configuracion/agregar_usuario"} )
+	public String agregarUsuario(Model model, @RequestParam(value="usernameRepeated", required=false) Optional<String> usernameRepeated) {
 		model.addAttribute("user", new User());
 		model.addAttribute("users", userService.listarUser());
 		model.addAttribute("roles", authority.listarAuthorities());
-		boolean op = true;
-		if(mensaje.isPresent()) {
-			model.addAttribute("usernameRepeated", op);
+		if(usernameRepeated.isPresent()) {
+			model.addAttribute("usernameRepeated", true);
 			System.out.println("hay dup");
 			return "agregar_usuario";
 
 		}else {
-			op = false;
-			model.addAttribute("usernameRepeated", op);
+			model.addAttribute("usernameRepeated", false);
 			System.out.println("no hay dup");
 			return "agregar_usuario";
 		}
@@ -80,8 +78,8 @@ public class UserController {
 				userService.guardarUser(user);
 				return "admin_config";
 			}else {
-				redirectAttributes.addAttribute("username", user.getUsername()).addFlashAttribute("message", "Nombre duplicado!");;
-				return "redirect:../configuracion/agregar_usuario/{username}";
+				redirectAttributes.addAttribute("usernameRepeated", true);
+				return "redirect:../configuracion/agregar_usuario";
 				
 			}
 	}

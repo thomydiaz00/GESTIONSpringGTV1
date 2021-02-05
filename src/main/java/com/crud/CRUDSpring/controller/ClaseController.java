@@ -53,13 +53,11 @@ public class ClaseController {
 		public String editarClase(@PathVariable int id, Model model) {		//Uso PathVariable para establecer id como parametro
 			Optional<Clase> clase= service.clasePorId(id);
 			model.addAttribute("clase", clase);
-			
 			return "form_clase";
 			
 		}
 		@GetMapping("admin/delete_clase/{id}")
 		public String eliminar(@PathVariable int id, Model model) {
-			
 			service.borrarClase(id);
 			return "redirect:/admin/lista_clases";
 		}

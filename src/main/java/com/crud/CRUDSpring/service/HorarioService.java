@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crud.CRUDSpring.interfaceService.IfServiceHorario;
+import com.crud.CRUDSpring.interfaces.interfaceClase;
 import com.crud.CRUDSpring.interfaces.interfaceHorario;
 import com.crud.CRUDSpring.model.Horario;
 
@@ -14,6 +15,8 @@ import com.crud.CRUDSpring.model.Horario;
 public class HorarioService implements IfServiceHorario {
 	@Autowired 
 	interfaceHorario data;
+	@Autowired
+	interfaceClase clases;
 
 	@Override
 	public List<Horario> listarHorarios() {

@@ -1,4 +1,5 @@
 package com.crud.CRUDSpring.model;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -24,7 +25,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "clase")
 public class Clase {
 	public Clase() {
-		}
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
@@ -33,18 +35,18 @@ public class Clase {
 	private String deporte;
 	@Column
 	private String nombreDep;
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "clase")
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "clase")
 	private List<Horario> horarios = new ArrayList<Horario>();
-	
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "clase")
-	private List<Asistencia> asistencias= new ArrayList<Asistencia>();
-	//profesor_tiene_clase N:N
-	
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "clase")
+	private List<Asistencia> asistencias = new ArrayList<Asistencia>();
+	// profesor_tiene_clase N:N
+
 	@JsonBackReference
-    @ManyToMany(fetch = FetchType.EAGER ,mappedBy =  "clases")
-    private List<Profesor> profesores = new ArrayList<>();
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "clases")
+	private List<Profesor> profesores = new ArrayList<>();
+
 	public Clase(int idClase, String deporte, String nombreDep, List<Horario> horarios, List<Asistencia> asistencias,
 			List<Profesor> profesores) {
 		super();
@@ -55,47 +57,61 @@ public class Clase {
 		this.asistencias = asistencias;
 		this.profesores = profesores;
 	}
+
 	public int getIdClase() {
 		return idClase;
 	}
+
 	public void setIdClase(int idClase) {
 		this.idClase = idClase;
 	}
+
 	public String getDeporte() {
 		return deporte;
 	}
+
 	public void setDeporte(String deporte) {
 		this.deporte = deporte;
 	}
+
 	public String getNombreDep() {
 		return nombreDep;
 	}
+
 	public void setNombreDep(String nombreDep) {
 		this.nombreDep = nombreDep;
 	}
+
 	public List<Horario> getHorarios() {
 		return horarios;
 	}
+
 	public void setHorarios(List<Horario> horarios) {
 		this.horarios = horarios;
 	}
+
 	public List<Asistencia> getAsistencias() {
 		return asistencias;
 	}
+
 	public void setAsistencias(List<Asistencia> asistencias) {
 		this.asistencias = asistencias;
 	}
+
 	public List<Profesor> getProfesores() {
 		return profesores;
 	}
+
 	public void setProfesores(List<Profesor> profesores) {
 		this.profesores = profesores;
 	}
+
 	@Override
 	public String toString() {
 		return "Clase [idClase=" + idClase + ", deporte=" + deporte + ", nombreDep=" + nombreDep + ", horarios="
 				+ horarios + ", asistencias=" + asistencias + ", profesores=" + profesores + "]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -108,6 +124,7 @@ public class Clase {
 		result = prime * result + ((profesores == null) ? 0 : profesores.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -146,12 +163,5 @@ public class Clase {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
 
-	
-	
-	
 }

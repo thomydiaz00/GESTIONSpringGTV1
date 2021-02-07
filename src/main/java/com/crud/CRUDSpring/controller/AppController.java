@@ -38,22 +38,18 @@ public class AppController {
 	public String index() {
 		return "index";
 	}
-	
-	
-	@GetMapping("/menu")
-	public String menu() {
-		return "menu";
+	@GetMapping("/login_profesor")
+	public String profIndex(@RequestParam(value="error",required=false) Optional<Boolean> noHayUsuario, Model model) {
+		if(noHayUsuario.isPresent()) {
+			model.addAttribute("error",true);
+			return "profesor_login";
+		}else {
+			model.addAttribute("error",false);
+			return "profesor_login";
+		}
+
 	}
 	
-	@GetMapping("/user")
-	public String user() {
-		return "user";
-	}
-	
-	@GetMapping("/admin")
-	public String admin() {
-		return "admin";
-	}
 	
 	//-----------Declaro las interfaces que proveen los metodos CRUD (listById(), etc) para usarlos en mi implementacion---
 

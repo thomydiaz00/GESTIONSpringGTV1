@@ -138,12 +138,20 @@
                 type="text"
                 class="form-control mr-4"
               />
-              <label class="mr-3" for="dia_semana">Dias de la Semana</label>
-              <input
-                th:field="*{dia_semana}"
+              <label class="mr-2">Clases a cargo:</label>
+              <select
                 type="text"
-                class="form-control"
-              />
+                class="form-control selectpicker mr-2 w-25"
+                multiple
+                data-live-search="true"
+                th:field="${horario.dias}"
+              >
+                <option
+                  th:each="dia :${dias}"
+                  th:value="${dia.idDia}"
+                  th:text="${dia.diaDeLaSemana}"
+                ></option>
+              </select>
             </div>
             <div class="form-group form-inline">
               <label class="mr-2" for="hora_inicio">Inicio</label>

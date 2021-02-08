@@ -80,25 +80,27 @@
                 <thead>                
                     <tr>
                         <td class="col-2">Nombre de la clase</td>
-                        <td class="col-2">Lugares de practica</td>
-                        <td class="col-2">Dias de la semana</td>
                         <td class="col-2">Deporte a practicar</td>
                         <td class="col-2">Dias de la semana</td>
+                        <td class="col-2">Lugares de practica</td>
                         <td class="col-2">Acciones</td>
                     </tr>
                 </thead>
                 <tbody>
                     
-                        <tr th:each=" clase : ${clases}">
-                        <td th:text="${clase.deporte}"></td>
+                    <tr th:each=" clase : ${clases}">
                         <td th:text="${clase.nombreDep}"></td>
-                        <th:block th:each=" horario : ${clase.horarios} ">
-                            <td>
-                                <span><h1 th:text=" ${horario.lugar}"></h1></span>
-                            </td>
-                        </th:block>
-                        
+                        <td th:text="${clase.deporte}"></td>
                         <td>
+                            <span th:each=" horario, iterStat  : ${clase.horarios} ">
+                                <span th:each ="dia: ${horario.dias} " th:text="!${iterStat.last} ? ${dia.diaDeLaSemana} + ', ' : ${dia.diaDeLaSemana} "></span> 
+                            </span>
+                        </td>
+                        <td>
+                            <p th:each=" horario : ${clase.horarios} " th:text="${horario.lugar}"></p>
+                        </td>
+                        
+                        <td> 
                             <div class="d-flex align-items-stretch">
                                 <div class="p-2">
                                 <a class ="btn btn-success" th:href="@{/profesor/registar_asistencia/} + ${clase.idClase}" data-toggle="tooltip" data-placement="top" title="Registrar asistencia"> 

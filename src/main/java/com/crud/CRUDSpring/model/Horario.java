@@ -1,5 +1,8 @@
 package com.crud.CRUDSpring.model;
+
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.CascadeType;
@@ -10,14 +13,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "horario")
 public class Horario {
-	public Horario() {
-		}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
@@ -30,73 +35,105 @@ public class Horario {
 	private String lugar;
 	@Column
 	private String dia_semana;
-	
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "horario_dia", joinColumns = { @JoinColumn(name = "id_horario") }, inverseJoinColumns = {
+			@JoinColumn(name = "id_dia") })
+	private List<DiaDePractica> dias = new ArrayList<DiaDePractica>();
 	@ManyToOne
 	@JoinColumn(name = "idClase")
 	private Clase clase;
-	
-	public Horario(int idHorario, String hora_inicio, String hora_fin, String lugar, String dia_semana, Clase clase) {
-		super();
+
+	public Horario(int idHorario, String hora_inicio, String hora_fin, String lugar, String dia_semana,
+			List<DiaDePractica> dias, Clase clase) {
 		this.idHorario = idHorario;
 		this.hora_inicio = hora_inicio;
 		this.hora_fin = hora_fin;
 		this.lugar = lugar;
 		this.dia_semana = dia_semana;
+		this.dias = dias;
 		this.clase = clase;
 	}
+
+	public Horario() {
+	}
+
 	public int getIdHorario() {
 		return idHorario;
 	}
+
 	public void setIdHorario(int idHorario) {
 		this.idHorario = idHorario;
 	}
+
 	public String getHora_inicio() {
 		return hora_inicio;
 	}
+
 	public void setHora_inicio(String hora_inicio) {
 		this.hora_inicio = hora_inicio;
 	}
+
 	public String getHora_fin() {
 		return hora_fin;
 	}
+
 	public void setHora_fin(String hora_fin) {
 		this.hora_fin = hora_fin;
 	}
+
 	public String getLugar() {
 		return lugar;
 	}
+
 	public void setLugar(String lugar) {
 		this.lugar = lugar;
 	}
+
 	public String getDia_semana() {
 		return dia_semana;
 	}
+
 	public void setDia_semana(String dia_semana) {
 		this.dia_semana = dia_semana;
 	}
+
+	public List<DiaDePractica> getDias() {
+		return dias;
+	}
+
+	public void setDias(List<DiaDePractica> dias) {
+		this.dias = dias;
+	}
+
 	public Clase getClase() {
 		return clase;
 	}
+
 	public void setClase(Clase clase) {
 		this.clase = clase;
 	}
+
 	@Override
 	public String toString() {
-		return "Horario [idHorario=" + idHorario + ", hora_inicio=" + hora_inicio + ", hora_fin=" + hora_fin
-				+ ", lugar=" + lugar + ", dia_semana=" + dia_semana + "]";
+		return "Horario [clase=" + clase + ", dia_semana=" + dia_semana + ", dias=" + dias + ", hora_fin=" + hora_fin
+				+ ", hora_inicio=" + hora_inicio + ", idHorario=" + idHorario + ", lugar=" + lugar + "]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((clase == null) ? 0 : clase.hashCode());
 		result = prime * result + ((dia_semana == null) ? 0 : dia_semana.hashCode());
+		result = prime * result + ((dias == null) ? 0 : dias.hashCode());
 		result = prime * result + ((hora_fin == null) ? 0 : hora_fin.hashCode());
 		result = prime * result + ((hora_inicio == null) ? 0 : hora_inicio.hashCode());
 		result = prime * result + idHorario;
 		result = prime * result + ((lugar == null) ? 0 : lugar.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -115,6 +152,11 @@ public class Horario {
 			if (other.dia_semana != null)
 				return false;
 		} else if (!dia_semana.equals(other.dia_semana))
+			return false;
+		if (dias == null) {
+			if (other.dias != null)
+				return false;
+		} else if (!dias.equals(other.dias))
 			return false;
 		if (hora_fin == null) {
 			if (other.hora_fin != null)
@@ -135,8 +177,5 @@ public class Horario {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
+
 }

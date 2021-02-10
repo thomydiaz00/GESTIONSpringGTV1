@@ -70,7 +70,7 @@ public class DiaDePractica {
 
     @Override
     public String toString() {
-        return "DiaDePractica [diaDeLaSemana=" + diaDeLaSemana + ", horarios=" + horarios + ", idDia=" + idDia + "]";
+        return "DiaDePractica [diaDeLaSemana=" + diaDeLaSemana + ", idDia=" + idDia + "]";
     }
 
     @Override
@@ -78,7 +78,6 @@ public class DiaDePractica {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((diaDeLaSemana == null) ? 0 : diaDeLaSemana.hashCode());
-        result = prime * result + ((horarios == null) ? 0 : horarios.hashCode());
         result = prime * result + idDia;
         return result;
     }
@@ -96,11 +95,6 @@ public class DiaDePractica {
             if (other.diaDeLaSemana != null)
                 return false;
         } else if (!diaDeLaSemana.equals(other.diaDeLaSemana))
-            return false;
-        if (horarios == null) {
-            if (other.horarios != null)
-                return false;
-        } else if (!horarios.equals(other.horarios))
             return false;
         if (idDia != other.idDia)
             return false;

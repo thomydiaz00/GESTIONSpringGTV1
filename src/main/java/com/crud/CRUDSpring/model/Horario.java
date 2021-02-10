@@ -116,8 +116,8 @@ public class Horario {
 
 	@Override
 	public String toString() {
-		return "Horario [clase=" + clase + ", dia_semana=" + dia_semana + ", dias=" + dias + ", hora_fin=" + hora_fin
-				+ ", hora_inicio=" + hora_inicio + ", idHorario=" + idHorario + ", lugar=" + lugar + "]";
+		return "Horario [clase=" + clase + ", dia_semana=" + dia_semana + ", hora_fin=" + hora_fin + ", hora_inicio="
+				+ hora_inicio + ", idHorario=" + idHorario + ", lugar=" + lugar + "]";
 	}
 
 	@Override
@@ -126,7 +126,6 @@ public class Horario {
 		int result = 1;
 		result = prime * result + ((clase == null) ? 0 : clase.hashCode());
 		result = prime * result + ((dia_semana == null) ? 0 : dia_semana.hashCode());
-		result = prime * result + ((dias == null) ? 0 : dias.hashCode());
 		result = prime * result + ((hora_fin == null) ? 0 : hora_fin.hashCode());
 		result = prime * result + ((hora_inicio == null) ? 0 : hora_inicio.hashCode());
 		result = prime * result + idHorario;
@@ -152,11 +151,6 @@ public class Horario {
 			if (other.dia_semana != null)
 				return false;
 		} else if (!dia_semana.equals(other.dia_semana))
-			return false;
-		if (dias == null) {
-			if (other.dias != null)
-				return false;
-		} else if (!dias.equals(other.dias))
 			return false;
 		if (hora_fin == null) {
 			if (other.hora_fin != null)

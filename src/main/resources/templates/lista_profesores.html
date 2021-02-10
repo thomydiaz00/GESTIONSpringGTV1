@@ -75,19 +75,22 @@
   <!--filtrar-->
   <div class="container pt-3">
     <div class="d-flex flex-row justify-content-center">
+      
       <div class="row">
         <div class="p-2">
-          <div class="dropdown show">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-             <i class="fas fa-file-pdf"></i> Generar un informe
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <i class="fas fa-file-pdf"></i> Generar un informe
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="/admin/lista_profesores/export">Listado de profesores</a>
               <a class="dropdown-item" href="/admin/lista_clases/export">Listado de clases</a>
+              <a class="dropdown-item" href="#">Horarios por clase</a>
             </div>
           </div>
-        </div class="p-2">
-          <button class="btn btn-primary btn-lg" onclick="mostrar('formularioProfesor')">Nuevo Profesor</button>
+        </div>
+        <div class="-2">
+            <button class="btn btn-primary btn-lg" onclick="mostrar('formularioProfesor')">Nuevo Profesor</button>
         </div>
       </div>
     </div>

@@ -108,8 +108,7 @@ public class Clase {
 
 	@Override
 	public String toString() {
-		return "Clase [idClase=" + idClase + ", deporte=" + deporte + ", nombreDep=" + nombreDep + ", horarios="
-				+ horarios + ", asistencias=" + asistencias + ", profesores=" + profesores + "]";
+		return "Clase [deporte=" + ", idClase=" + idClase + ", nombreDep=" + nombreDep + "]";
 	}
 
 	@Override
@@ -121,7 +120,6 @@ public class Clase {
 		result = prime * result + ((horarios == null) ? 0 : horarios.hashCode());
 		result = prime * result + idClase;
 		result = prime * result + ((nombreDep == null) ? 0 : nombreDep.hashCode());
-		result = prime * result + ((profesores == null) ? 0 : profesores.hashCode());
 		return result;
 	}
 
@@ -155,11 +153,6 @@ public class Clase {
 			if (other.nombreDep != null)
 				return false;
 		} else if (!nombreDep.equals(other.nombreDep))
-			return false;
-		if (profesores == null) {
-			if (other.profesores != null)
-				return false;
-		} else if (!profesores.equals(other.profesores))
 			return false;
 		return true;
 	}

@@ -1,4 +1,5 @@
 package com.crud.CRUDSpring.model;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,19 +26,19 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "profesor")
 public class Profesor {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idProf;
-	@Column 
+	@Column
 	private String nombreProf;
-	@Column 
+	@Column
 	private String apellidoProf;
 	@Column
 	private int dniProf;
 	@Column
 	private String direccionProf;
-	@Column 
+	@Column
 	private String telefonoProf;
 	@Column
 	private String institucionProf;
@@ -45,16 +46,13 @@ public class Profesor {
 	private Date fechaNacProf;
 	@Column
 	private String matriculaProf;
-	
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "clase")
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "clase")
 	private List<Asistencia> asistenciaProfesores = new ArrayList<Asistencia>();
-	
-	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
-	@JoinTable (name= "profesor_tiene_clase",
-			joinColumns= {@JoinColumn (name="id_prof")},
-			inverseJoinColumns= {@JoinColumn (name="id_clase")}
-	)
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "profesor_tiene_clase", joinColumns = { @JoinColumn(name = "id_prof") }, inverseJoinColumns = {
+			@JoinColumn(name = "id_clase") })
 	private List<Clase> clases = new ArrayList<Clase>();
 
 	public Profesor() {
@@ -166,12 +164,18 @@ public class Profesor {
 	}
 
 	@Override
+	public String toString() {
+		return "Profesor [apellidoProf=" + apellidoProf + ", direccionProf=" + direccionProf + ", dniProf=" + dniProf
+				+ ", fechaNacProf=" + fechaNacProf + ", idProf=" + idProf + ", institucionProf=" + institucionProf
+				+ ", matriculaProf=" + matriculaProf + ", nombreProf=" + nombreProf + ", telefonoProf=" + telefonoProf
+				+ "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((apellidoProf == null) ? 0 : apellidoProf.hashCode());
-		result = prime * result + ((asistenciaProfesores == null) ? 0 : asistenciaProfesores.hashCode());
-		result = prime * result + ((clases == null) ? 0 : clases.hashCode());
 		result = prime * result + ((direccionProf == null) ? 0 : direccionProf.hashCode());
 		result = prime * result + dniProf;
 		result = prime * result + ((fechaNacProf == null) ? 0 : fechaNacProf.hashCode());
@@ -196,16 +200,6 @@ public class Profesor {
 			if (other.apellidoProf != null)
 				return false;
 		} else if (!apellidoProf.equals(other.apellidoProf))
-			return false;
-		if (asistenciaProfesores == null) {
-			if (other.asistenciaProfesores != null)
-				return false;
-		} else if (!asistenciaProfesores.equals(other.asistenciaProfesores))
-			return false;
-		if (clases == null) {
-			if (other.clases != null)
-				return false;
-		} else if (!clases.equals(other.clases))
 			return false;
 		if (direccionProf == null) {
 			if (other.direccionProf != null)
@@ -244,20 +238,4 @@ public class Profesor {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Profesor [idProf=" + idProf + ", nombreProf=" + nombreProf + ", apellidoProf=" + apellidoProf
-				+ ", dniProf=" + dniProf + ", direccionProf=" + direccionProf + ", telefonoProf=" + telefonoProf
-				+ ", institucionProf=" + institucionProf + ", fechaNacProf=" + fechaNacProf + ", matriculaProf="
-				+ matriculaProf +  "]";
-	}
-	
-	
-	
-	
-	
-	
 }
-	
-	
-	

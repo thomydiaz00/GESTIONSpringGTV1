@@ -77,12 +77,16 @@
     <div class="d-flex flex-row justify-content-center">
       <div class="row">
         <div class="p-2">
-          <a class= "btn btn-lg btn-info mr-2" href="/admin/lista_profesores/export"> <span class="fas fa-book"></span> Listado de profesores</a>
-        </div>
-        <div class="p-2">
-          <a class= "btn btn-lg btn-info mr-2" href="/admin/lista_profesores/export"> <span class="fas fa-book"></span> Listado de profesores</a>
-        </div>
-        <div class="-2">
+          <div class="dropdown show">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             <i class="fas fa-file-pdf"></i> Generar un informe
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="/admin/lista_profesores/export">Listado de profesores</a>
+              <a class="dropdown-item" href="/admin/lista_clases/export">Listado de clases</a>
+            </div>
+          </div>
+        </div class="p-2">
           <button class="btn btn-primary btn-lg" onclick="mostrar('formularioProfesor')">Nuevo Profesor</button>
         </div>
       </div>

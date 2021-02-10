@@ -47,7 +47,7 @@
                     </div>
                 </form>
                 <div id="formFooter">
-                    <div id="invalid user" th:if="${error}" class="alert alert-danger" role="alert">
+                    <div id="invalid user" th:if="${error != null}" class="alert alert-danger" role="alert">
                         <label> Usuario o contraseña invalido . </label> 
                     </div>
                 </div>

@@ -33,26 +33,24 @@ import net.bytebuddy.asm.Advice.Local;
 
 @Controller
 public class AppController {
-	
-	@GetMapping({"/","/login"})
+
+	@GetMapping({ "/", "/login" })
 	public String index() {
 		return "index";
 	}
+
+	// Si no existe el usuario, mando el status de error en la vista.
 	@GetMapping("/login_profesor")
-	public String profIndex(@RequestParam(value="error",required=false) Optional<Boolean> noHayUsuario, Model model) {
-		if(noHayUsuario.isPresent()) {
-			model.addAttribute("error",true);
-			return "profesor_login";
-		}else {
-			model.addAttribute("error",false);
-			return "profesor_login";
+	public String profIndex(@RequestParam(value = "error", required = false) Optional<Boolean> noHayUsuario,
+			Model model) {
+		if (noHayUsuario.isPresent()) {
+			model.addAttribute("error", true);
 		}
+		return "profesor_login";
 
 	}
-	
-	
-	//-----------Declaro las interfaces que proveen los metodos CRUD (listById(), etc) para usarlos en mi implementacion---
 
-	
+	// -----------Declaro las interfaces que proveen los metodos CRUD (listById(),
+	// etc) para usarlos en mi implementacion---
+
 }
-

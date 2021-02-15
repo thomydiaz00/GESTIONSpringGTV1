@@ -214,18 +214,31 @@ public class AdminController {
 	@GetMapping("admin/consultar_asistencia/{idProf}/{idClase}")
 	public String consultarAsistencia(Model model, @PathVariable int idProf, @PathVariable int idClase,
 			RedirectAttributes ra) {
+
 		Clase clase = servClase.clasePorId(idClase).get();
 		Profesor profesor = service.profesorPorId(idProf).get();
+
+		Date currentDate = new Date();
+		LocalDate localCurrentDate = currentDate.toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
+				.toLocalDate();
 		List<LocalDate> fechas = new ArrayList<LocalDate>();
 		List<LocalDate> fechasFin = new ArrayList<LocalDate>();
 		List<LocalDate> fechasIncompletas = new ArrayList<LocalDate>();
-
+		List<String> nombresDias = new ArrayList<String>();
+		List<LocalDate> fechasFaltantes = new ArrayList<LocalDate>();
 		List<Asistencia> asistencias = new ArrayList<Asistencia>();
 		List<Horario> horarios = clase.getHorarios();
 		List<Integer> diasHorario = new ArrayList<Integer>();
 
 		for (Horario horario : clase.getHorarios()) {
 			List<Asistencia> asis = interfaceAsis.findByHorarioInAndProfesor(horario, profesor);
+			for (DiaDePractica dia : horario.getDias()) {
+				String nomDia = dia.getDiaDeLaSemana();
+				if (!nombresDias.contains(nomDia)) {
+					nombresDias.add(nomDia);
+
+				}
+			}
 			asistencias.addAll(asis);
 		}
 
@@ -267,6 +280,9 @@ public class AdminController {
 		for (LocalDate feIn : fechasIncompletas) {
 			System.out.println(feIn.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		}
+
+		model.addAttribute("nombresDias", nombresDias);
+		model.addAttribute("fechaCreacion", clase.getFechaCreacion());
 		model.addAttribute("fechasIncompletas", fechasIncompletas);
 		model.addAttribute("fechasCompletas", fechasFin);
 		model.addAttribute("clase", idClase);

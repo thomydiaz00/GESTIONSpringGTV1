@@ -40,7 +40,6 @@
                     <th class="col-1">Viernes</th>
                     <th class="col-1">Sabado</th>
                 </tr>
-                </thead>
                 <tbody id="calendar-body">
 
                 </tbody>
@@ -76,7 +75,7 @@
                     <option value=2028>2028</option>
                     <option value=2029>2029</option>
                     <option value=2030>2030</option>
-                </select></form>
+                </select>
         </div>
     </div>
 </div>
@@ -84,8 +83,9 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
     let today = new Date();
-    let dateCompletas = new Array();
-    let dateIncompletas = new Array();
+    today.setHours(0,0,0,0);
+    
+    
     let currentMonth = today.getMonth();
     let currentYear = today.getFullYear();
     let selectYear = document.getElementById("year");
@@ -94,6 +94,8 @@
     const fechasCompletas =/*[[${fechasCompletas}]]*/ 'defaultanyvalue';
     const fechasIncompletas =/*[[${fechasIncompletas}]]*/ 'defaultanyvalue';
     const fechaCreacion =/*[[${fechaCreacion}]]*/ 'defaultanyvalue';
+    const nombresDias =/*[[${nombresDias}]]*/ 'defaultanyvalue';
+
 
 
     let selectMonth = document.getElementById("month");
@@ -119,10 +121,28 @@
         currentMonth = parseInt(selectMonth.value);
         showCalendar(currentMonth, currentYear);
     }
-
+    function maskDay(dia) {
+        switch (dia) {
+            case 0:
+                
+                break;
+        
+            default:
+                break;
+        }
+    }
+    
     function showCalendar(month, year) {
+        let fechasFaltantes = new Array();
+        var dateFaltantes = new Array();
+        var todasLasDate = new Array();
+        var dateCompletas = [];
+        var dateIncompletas = [];
+        var datesPorDiaDeHorario = new Array();
 
         let firstDay = (new Date(year, month)).getDay();
+        console.log("el primer dia del mes es: ", firstDay);
+
         let daysInMonth = 32 - new Date(year, month, 32).getDate();
 
         let tbl = document.getElementById("calendar-body"); // body of the calendar
@@ -133,7 +153,6 @@
         monthAndYear.innerHTML = months[month] + " " + year;
         selectYear.value = year;
         selectMonth.value = month;
-
         // creating all cells
         let date = 1;
         for (let i = 0; i < 6; i++) {
@@ -151,67 +170,98 @@
                 else if (date > daysInMonth) {
                     break;
                 }
-
+                
                 else {
-                    let cell = document.createElement("td");
-                    let cellText = document.createTextNode(date);
-                    let partesCreacion = fechaCreacion.split('-');
-                    let dateCreacion = new Date (partesCreacion[0], partesCreacion[1] - 1, partesCreacion[2]);
-                    let indexDate = new Date(year, month, date);
-                    fechasCompletas.forEach(fecha => {
-                        parts = fecha.split('-');
-                        // Resto porque JS cuenta meses desde 0:
-                        let myDate = new Date(parts[0], parts[1] - 1, parts[2]);
-                        dateCompletas.push(myDate);
-                        if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-                            cell.classList.add("bg-info");
-                        }
-                        if (date === myDate.getDate() && year === myDate.getFullYear() && month === myDate.getMonth()) {
-                            cell.classList.add("bg-success");
-                        } // co
-                     });
-                     fechasIncompletas.forEach(fechaIncompleta => {
-                        parts = fechaIncompleta.split('-');
-                        // Resto porque JS cuenta meses desde 0:
-                        let fechaInc = new Date(parts[0], parts[1] - 1, parts[2]);
-                        dateIncompletas.push(fechaInc);
-                        if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-                            cell.classList.add("bg-info");
-                        }
-                        if (date === fechaInc.getDate() && year === fechaInc.getFullYear() && month === fechaInc.getMonth()) {
-                            cell.classList.add("bg-warning");
-                        } // co
-                     });
-
-                    if (indexDate >= dateCreacion){
-                        console.log(days[indexDate.getDay()]);
-                    }else{
-                        console.log("soy mas peke");
-                    }   
-                    
-                     
-                    cell.appendChild(cellText);
-                    row.appendChild(cell);
-                    date++;
+                    if (date <= daysInMonth){
+                        
+                        let indexDate = new Date(year, month, date);
+                        let cell = document.createElement("td");
+                        let cellText = document.createTextNode(date);
+                        let partesCreacion = fechaCreacion.split('-');
+                        let dateCreacion = new Date (partesCreacion[0], partesCreacion[1] - 1, partesCreacion[2]);
+                        var todasArray = new Array();
+                        var horariosDateArray = new Array();
+                       
+                        fechasCompletas.forEach(fecha => {
+                            parts = fecha.split('-');
+                            // Resto porque JS cuenta meses desde 0:
+                            let myDate = new Date(parts[0], parts[1] - 1, parts[2]);
+                            if(!dateCompletas.some(fecha => fecha.getDate === myDate.getDate)){
+                                dateCompletas.push(myDate);
+                                todasLasDate.push(myDate);
+    
+                            }
+                            if (date === myDate.getDate() && year === myDate.getFullYear() && month === myDate.getMonth()) {
+                                cell.classList.add("bg-success");
+                            } // co
+                         });
+                         fechasIncompletas.forEach(fechaIncompleta => {
+                            parts = fechaIncompleta.split('-');
+                            // Resto porque JS cuenta meses desde 0:
+                            let fechaInc = new Date(parts[0], parts[1] - 1, parts[2]);
+                            if(!dateIncompletas.some(fecha => fecha.getDate === fechaInc.getDate)){
+                                dateIncompletas.push(fechaInc);
+                                todasLasDate.push(fechaInc);
+                            }
+                            if (date === fechaInc.getDate() && year === fechaInc.getFullYear() && month === fechaInc.getMonth()) {
+                                cell.classList.add("bg-warning");
+                            } // co
+                            });
+                            
+                            
+                            let dia = days[date];
+                            if(nombresDias.includes(dia)){
+                                if(!datesPorDiaDeHorario.some(fecha => fecha.getDate().toString() === date.toString())){
+                                    datesPorDiaDeHorario.push(indexDate);
+                                }
+                            }
+                            if((indexDate>= dateCreacion) && (indexDate < today)){
+                                
+                               
+            
+                                todasLasDate.forEach(element => {
+                                    todasArray.push(element.getDate());
+                                    
+                                });
+                                datesPorDiaDeHorario.forEach(element => {
+                                    horariosDateArray.push(element.getDate());                                    
+                                });
+                               
+                                horariosConFalta = horariosDateArray.filter(val => !todasArray.includes(val));
+                            
+                                horariosConFalta.forEach(element => {
+                                    if (element === indexDate.getDate() && year === indexDate.getFullYear() && month === indexDate.getMonth()) {
+                                        cell.classList.add("bg-danger");
+                                }
+                                });
+                            
+                            }
+                            
+                            
+                         
+                        cell.appendChild(cellText);
+                        row.appendChild(cell);
+                        date++;
+                    }
+                   
                 }
+               
 
-
+            
             }
 
             tbl.appendChild(row); // appending each row into calendar body.
         }
+        
+
+        // console.log("----------break-------");
+        // todasLasDate.forEach(element => {
+        //    console.log(element) ;
+        // });
         /*]]>*/
     }
-</script>
-<script>
-    
+   
+   
 </script>
 </body>
 </html>
-
-<!--<button name="jump" onclick="jump()">Go</button>-->
-
-<!-- Optional JavaScript for bootstrap -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-
-

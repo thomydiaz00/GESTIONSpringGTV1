@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceHorario;
@@ -62,9 +63,10 @@ public class ClaseController {
 	}
 
 	@GetMapping("admin/delete_clase/{id}")
+	@ResponseBody
 	public String eliminar(@PathVariable int id, Model model) {
-		service.borrarClase(id);
-		return "redirect:/admin/lista_clases";
+		int response = service.borrarClase(id);
+		return Integer.toString(response);
 	}
 
 }

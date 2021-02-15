@@ -7,5 +7,5 @@ public interface IfServiceClase {
 	public List<Clase> listarClase();
 	public Optional<Clase> clasePorId(int id);
 	public int guardarClase(Clase clase);
-	public void borrarClase(int id);
+	public int borrarClase(int id);
 }

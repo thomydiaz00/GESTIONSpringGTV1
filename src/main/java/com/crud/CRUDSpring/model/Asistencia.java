@@ -1,7 +1,7 @@
 package com.crud.CRUDSpring.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,80 +18,96 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
-
 /* 
  * Esta tabla va a representar una relacion n:m
  * entre Profesor y clase. La declaramos como una
  * clase porque deben agregarse columnas adicionales
  */
 @Entity
-@Table(name="asistencia")
+@Table(name = "asistencia")
 public class Asistencia {
 	public Asistencia() {
 	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idAsistencia;
-	
+
 	@ManyToOne
-	@JoinColumn(name= "idProf")
+	@JoinColumn(name = "idProf")
 	private Profesor profesor;
-	
+
 	@ManyToOne
-	@JoinColumn(name="idClase")
+	@JoinColumn(name = "idClase")
 	private Clase clase;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "idHorario")
+	private Horario horario;
+
 	@Column
-	private Date fechaAsistencia;
+	private LocalDate fechaAsistencia;
 	@Column
 	private boolean estadoAsistencia;
-	
-	
-	
-	public Asistencia(int idAsistencia, Profesor profesor, Clase clase, Date fechaAsistencia,
+
+	public Asistencia(int idAsistencia, Profesor profesor, Clase clase, Horario horario, LocalDate fechaAsistencia,
 			boolean estadoAsistencia) {
-		super();
 		this.idAsistencia = idAsistencia;
 		this.profesor = profesor;
 		this.clase = clase;
+		this.horario = horario;
 		this.fechaAsistencia = fechaAsistencia;
 		this.estadoAsistencia = estadoAsistencia;
 	}
+
 	public int getIdAsistencia() {
 		return idAsistencia;
 	}
+
 	public void setIdAsistencia(int idAsistencia) {
 		this.idAsistencia = idAsistencia;
 	}
+
 	public Profesor getProfesor() {
 		return profesor;
 	}
+
 	public void setProfesor(Profesor profesor) {
 		this.profesor = profesor;
 	}
+
 	public Clase getClase() {
 		return clase;
 	}
+
 	public void setClase(Clase clase) {
 		this.clase = clase;
 	}
-	public Date getFechaAsistencia() {
+
+	public Horario getHorario() {
+		return horario;
+	}
+
+	public void setHorario(Horario horario) {
+		this.horario = horario;
+	}
+
+	public LocalDate getFechaAsistencia() {
 		return fechaAsistencia;
 	}
-	public void setFechaAsistencia(Date fechaAsistencia) {
+
+	public void setFechaAsistencia(LocalDate fechaAsistencia) {
 		this.fechaAsistencia = fechaAsistencia;
 	}
+
 	public boolean isEstadoAsistencia() {
 		return estadoAsistencia;
 	}
+
 	public void setEstadoAsistencia(boolean estadoAsistencia) {
 		this.estadoAsistencia = estadoAsistencia;
 	}
-	@Override
-	public String toString() {
-		return "Asistencia [idAsistencia=" + idAsistencia + ", profesor=" + profesor + ", clase=" + clase
-				+ ", fechaAsistencia=" + fechaAsistencia + ", estadoAsistencia=" + estadoAsistencia + "]";
-	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -99,10 +115,12 @@ public class Asistencia {
 		result = prime * result + ((clase == null) ? 0 : clase.hashCode());
 		result = prime * result + (estadoAsistencia ? 1231 : 1237);
 		result = prime * result + ((fechaAsistencia == null) ? 0 : fechaAsistencia.hashCode());
+		result = prime * result + ((horario == null) ? 0 : horario.hashCode());
 		result = prime * result + idAsistencia;
 		result = prime * result + ((profesor == null) ? 0 : profesor.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -124,6 +142,11 @@ public class Asistencia {
 				return false;
 		} else if (!fechaAsistencia.equals(other.fechaAsistencia))
 			return false;
+		if (horario == null) {
+			if (other.horario != null)
+				return false;
+		} else if (!horario.equals(other.horario))
+			return false;
 		if (idAsistencia != other.idAsistencia)
 			return false;
 		if (profesor == null) {
@@ -133,16 +156,6 @@ public class Asistencia {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
 }

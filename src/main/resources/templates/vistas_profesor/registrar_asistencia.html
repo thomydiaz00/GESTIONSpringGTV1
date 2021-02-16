@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Mis Horarios</title>
+    <title>Mis asistencias</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
@@ -49,16 +49,7 @@
                 <ul class="navbar-nav">
                 
                 <li class="nav-item active">
-                    <a class="nav-link" href="#"> <h3>Sistema de Gestión</h3></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profesor/lista_clases"><h5>Mis clases</h5></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profesor/lista_clases"><h3>Mis horarios</h3> <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profesor/lista_clases"><h5>Mis Asistencias</h5></a>
+                    <a class="nav-link" href="#"> <h3>Sistema de Gestión</h3> <span class="sr-only">(current)</span></a>
                 </li>
                 </ul>
                 
@@ -67,14 +58,22 @@
         </div>
         
         <div class="container pt-3">
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 th:text=" 'Bienvenido, ' + ${profesor.nombreProf} + ' ' + ${profesor.apellidoProf}"  ></h1>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="mostrar('x')">Registrar asistencias</button>
+        </div> 
+       
+        <div class="container pt-3">
             <table class="table table-striped table-bordered table-responsive" style="display:none" id="x">
                 <thead>                
                     <tr>
                         <td class="col-2">Nombre de la clase</td>
                         <td class="col-2">Deporte a practicar</td>
-                        <td class="col-2">Dias de la semana</td>
                         <td class="col-2">Lugares de practica</td>
-                        <td class="col-2">Acciones</td>
+                        <td class="col-2">Registrar asistencia</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -101,11 +100,7 @@
                                     <span class="fas fa-plus"></span>
                                 </a>
                                 </div>
-                                <div class="p-2">
-                                    <a class ="btn btn-info" th:href="@{/profesor/consultar_horarios/} +${profesor.idProf}+ '/' +${clase.idClase}"data-toggle="tooltip" data-placement="top" title="Consultar horarios">
-                                        <span class="fas fa-clock"></span>
-                                    </a>
-                                </div>
+                               
                             </div>          
                         </td>
                     </tr>
@@ -125,5 +120,4 @@
     
     
 </body>
-</html>
 </html>

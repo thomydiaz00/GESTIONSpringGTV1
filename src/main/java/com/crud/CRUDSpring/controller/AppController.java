@@ -46,7 +46,7 @@ public class AppController {
 		if (noHayUsuario.isPresent()) {
 			model.addAttribute("error", true);
 		}
-		return "profesor_login";
+		return "vistas_profesor/profesor_login";
 
 	}
 

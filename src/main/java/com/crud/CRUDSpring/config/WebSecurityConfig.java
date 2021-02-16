@@ -9,6 +9,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
 
 import com.crud.CRUDSpring.service.UserDetailsServiceImpl;
 
@@ -23,16 +30,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     AuthenticationSuccessHandler successHandler;
 
+    // para permitir una url tipo /profesor/redirect/*/* hay que poner /profesor/**
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(resources).permitAll()
-                .antMatchers("/", "/index", "/login_profesor", "/profesor/*").permitAll()
-                .antMatchers("/admin/lista_profesores").access("hasRole('ADMIN')").antMatchers("/admin/prueba")
-                .access("hasRole('ADMIN')").antMatchers("/admin/lista_clases").access("hasRole('ADMIN')")
-                .antMatchers("/admin/lista_profesores_completa").access("hasRole('ADMIN')").anyRequest().authenticated()
-                .and().formLogin().loginPage("/login").successHandler(successHandler).permitAll()
-                .failureUrl("/login?error=true").usernameParameter("username").passwordParameter("password").and()
-                .logout().permitAll().logoutSuccessUrl("/login?logout");
+                .antMatchers("/", "/index", "/login_profesor", "/profesor/*", "/profesor/redirect_to_horarios/**",
+                        "/profesor/save_asistencia")
+                .permitAll().antMatchers("/admin/lista_profesores").access("hasRole('ADMIN')")
+                .antMatchers("/admin/prueba").access("hasRole('ADMIN')").antMatchers("/admin/lista_clases")
+                .access("hasRole('ADMIN')").antMatchers("/admin/lista_profesores_completa").access("hasRole('ADMIN')")
+                .anyRequest().authenticated().and().formLogin().loginPage("/login").successHandler(successHandler)
+                .permitAll().failureUrl("/login?error=true").usernameParameter("username").passwordParameter("password")
+                .and().logout().permitAll().logoutSuccessUrl("/login?logout");
     }
 
     BCryptPasswordEncoder bCryptPasswordEncoder;

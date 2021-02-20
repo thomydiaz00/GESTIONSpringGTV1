@@ -73,7 +73,23 @@
   <div class="container">
     <div class="d-flex flex-row justify-content-center">
         <div class="row">
-          <div class="p-2"><a class="btn btn-primary btn-lg" th:href="@{/admin/agregar_horario/}+${idclase}">Agregar Horario</a></div>
+          <div class="p-2">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Generar un informe <i class="fas fa-file-pdf fa-lg"></i>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/admin/lista_profesores/export">Listado de profesores</a>
+                <a class="dropdown-item" href="/admin/lista_clases/export">Listado de clases</a>
+                <a class="dropdown-item" href="#">Horarios por clase</a>
+              </div>
+            </div>
+          </div>
+          <div class="p-2">
+            <a class="btn btn-primary" th:href="@{/admin/agregar_horario/}+${idclase}">
+              Agregar Horario <i class="fas fa-plus-square fa-lg"></i>
+            </a>
+          </div>
         </div>
     </div>
   </div>
@@ -83,17 +99,17 @@
     <table class="table table-striped table-bordered table-responsive tabla_horarios">
       <thead> 
         <tr>
-          <th class="col-sm-1">Lugar</th>
+          <th class="col-sm-3">Lugar</th>
           <th class="col-sm-1">Dia</th>
           <th class="col-sm-1">Horario inicio</th>
           <th class="col-sm-1">Horario fin</th>
-          <th class="col-sm-2">Acciones</th>
+          <th class="col-sm-1">Acciones</th>
         </tr>
       </thead>
   
       <tbody>
         <tr  th:each = "horario:${clase}">
-            <td  th:text="${horario.lugar}"> </td>
+            <td  th:text="${horario.lugar}"></td>
             <td>
               <span class="card" th:each= "dia : ${horario.dias}"><p th:text="${dia.diaDeLaSemana}"></p></span> 
             </td>

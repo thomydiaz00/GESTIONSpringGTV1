@@ -74,9 +74,10 @@ public class HorarioController {
 
 	@GetMapping("/admin/editar_horario/{id}/{idclase}")
 	public String editar(@PathVariable int id, Model model, @PathVariable int idclase) {
-		Horario horario = serviceHorario.HorarioPorId(id).orElse(null);
+		Optional<Horario> horario = serviceHorario.HorarioPorId(id);
 		model.addAttribute("idclase", idclase);
 		model.addAttribute("horario", horario);
+		model.addAttribute("dias", serviceDia.listarDiaDePractica());
 
 		return "form_horario";
 

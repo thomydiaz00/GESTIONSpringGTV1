@@ -15,7 +15,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="/funciones.js"></script>
     <script src="/showSelector.js"></script>
-        <script src="/showSelector.js"></script>
+    <script src="/showSelector.js"></script>
 
 
     <!--tablas-->
@@ -90,8 +90,23 @@
   
   <div class="container">
     <div class="d-flex flex-row justify-content-center">
-      <div class="p-2"><a class= "btn btn-info" href="/admin/lista_profesores/export"> <span class="fas fa-book"></span> Generar informe</a></div>
-      <div class="p-2"><button class="btn btn-primary" onclick="mostrar('selector')">Agregar Clase</button></div>
+      <div class="p-2">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Generar un informe <i class="fas fa-file-pdf fa-lg"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="/admin/lista_profesores/export">Listado de profesores</a>
+            <a class="dropdown-item" href="/admin/lista_clases/export">Listado de clases</a>
+            <a class="dropdown-item" href="#">Horarios por clase</a>
+          </div>
+        </div>
+      </div>
+      <div class="p-2">
+        <button class="btn btn-primary" onclick="mostrar('selector')">
+          Agregar Clase  <i class="fas fa-plus-square fa-lg"></i>
+        </button>
+      </div>
     </div>
 
   <div class="container" th:object=${profesor} style="display:none" id="selector">
@@ -139,6 +154,9 @@
                 <a class ="btn btn-info" th:href="@{/admin/lista_horarios/}+${clase.idClase}" data-toggle="tooltip" data-placement="top" title="Horarios">
                   <span class="fas fa-clock"></span>
                 </a>
+              </div>
+              <div class="p-2">
+                <a class = "btn btn-success" th:href="@{/admin/consultar_asistencia/}+${profesor.idProf}+ '/' +${clase.idClase}" data-toggle="tooltip" data-placement="top" title="Asistencias"><i class="far fa-calendar-alt"></i></a>
               </div>
               
             </div>   

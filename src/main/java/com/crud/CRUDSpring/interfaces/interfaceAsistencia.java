@@ -10,8 +10,10 @@ import java.util.Optional;
 
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Horario;
+import com.crud.CRUDSpring.model.Profesor;
 
 @Repository
 public interface interfaceAsistencia extends CrudRepository<Asistencia, Integer> {
     public Optional<Asistencia> findByHorarioInAndFechaAsistencia(Horario horario, LocalDate tras);
+    public List<Asistencia> findByHorarioInAndProfesor(Horario horario, Profesor profesor);
 }

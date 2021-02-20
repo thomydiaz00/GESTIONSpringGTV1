@@ -2,6 +2,7 @@ package com.crud.CRUDSpring.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import com.crud.CRUDSpring.interfaces.interfaceClase;
 import com.crud.CRUDSpring.interfaces.interfaceProfesor;
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
+import com.crud.CRUDSpring.model.DiaDePractica;
 import com.crud.CRUDSpring.model.Profesor;
 import com.crud.CRUDSpring.model.Horario;
 
@@ -114,7 +116,6 @@ public class ProfesorController {
 				Asistencia asis = new Asistencia();
 				asis.setEstadoAsistencia(false);
 				asistencias.add(asis);
-				System.out.println(asis.isEstadoAsistencia());
 
 			}
 		}
@@ -131,7 +132,9 @@ public class ProfesorController {
 
 		// get current time
 		Date currentDate = new Date();
-		LocalDate tras = currentDate.toInstant().atZone(ZoneId.of("America/Argentina/Catamarca")).toLocalDate();
+		LocalDate localCurrentDate = currentDate.toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
+				.toLocalDate();
+		DayOfWeek currentDay = localCurrentDate.getDayOfWeek();
 		DateTime currentDateTime = new DateTime();
 		int currentHour = currentDateTime.getHourOfDay();
 		// get the relationships
@@ -143,29 +146,70 @@ public class ProfesorController {
 		// String fechaAsString = currentDateTime.toString().substring(0, 10);
 		String horarioFinString = horario.getHora_fin();
 		int horaFin = Integer.parseInt(horarioFinString.substring(0, 2));
-		System.out.println(currentHour - horaFin);
 		// Evalua, si ya hay una clase registrada en esta fecha para este horario,
 		// informo
-		if (interfaceAsis.findByHorarioInAndFechaAsistencia(horario, tras).isPresent()) {
+		List<String> diasDisponibles = new ArrayList<String>();
+		List<DiaDePractica> diasDePractica = horario.getDias();
+		for (DiaDePractica diaDePractica : diasDePractica) {
+			String dia = diaDePractica.getDiaDeLaSemana();
+			diasDisponibles.add(dia);
+			System.out.println(dia);
+		}
+
+		String currentDayAsString = new String();
+		switch (currentDay) {
+			case MONDAY:
+				currentDayAsString = "Lunes";
+				break;
+			case TUESDAY:
+				currentDayAsString = "Martes";
+				break;
+			case WEDNESDAY:
+				currentDayAsString = "Miercoles";
+				break;
+			case THURSDAY:
+				currentDayAsString = "Jueves";
+				break;
+			case FRIDAY:
+				currentDayAsString = "Viernes";
+				break;
+			case SUNDAY:
+				currentDayAsString = "Sabado";
+				break;
+			case SATURDAY:
+				currentDayAsString = "Domingo";
+				break;
+			default:
+				break;
+		}
+		if (interfaceAsis.findByHorarioInAndFechaAsistencia(horario, localCurrentDate).isPresent()) {
 			System.out.println("ya hay una clase registrada");
 			return "alertas/alerta_repetida.html";
+		}
+		if (!diasDisponibles.contains(currentDayAsString)) {
+			System.out.println("No puede fichar en este día");
+			return "alertas/alerta_dia.html";
 		} else if ((currentHour - horaFin) >= 3) {
 			System.out.println("No puede cargar la asistencia pasadas 3 Horas de finalizada la clase");
 			return "alertas/alerta_tarde.html";
 		} else if ((currentHour - horaFin) < 0) {
 			System.out.println("Solo puede cargas la asistencia una vez termine la clase");
 			return "alertas/alerta_temprano.html";
-		} else {
+		} else if (diasDisponibles.contains(currentDayAsString)) {
 			System.out.println("cargando la asistencia");
+			System.out.println(currentDay);
 			asistencia.setProfesor(profesor);
 			asistencia.setClase(clase);
 			asistencia.setHorario(horario);
-			asistencia.setFechaAsistencia(tras);
+			asistencia.setFechaAsistencia(localCurrentDate);
 			asistencia.setEstadoAsistencia(true);
 			serviceAsistencia.guardarAsistencia(asistencia);
 			return "alertas/alerta_success.html";
 
+		} else {
+			return "alertas/alerta_tarde.html";
 		}
+
 	}
 
 }

@@ -1,10 +1,15 @@
 package com.crud.CRUDSpring.controller;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-
+import java.text.DateFormatSymbols;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -25,9 +30,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
+import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
+import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
+import com.crud.CRUDSpring.model.Horario;
 import com.crud.CRUDSpring.model.Persona;
 import com.crud.CRUDSpring.model.Profesor;
+import com.crud.CRUDSpring.service.ClaseService;
 import com.crud.CRUDSpring.service.ProfesorService;
 import com.crud.CRUDSpring.repository.ProfesorRepository;
 
@@ -40,7 +49,8 @@ public class AdminController {
 	private IfServiceProfesor service;
 	@Autowired
 	private IfServiceClase servClase;
-	private Optional<Clase> clase;
+	@Autowired
+	private interfaceAsistencia interfaceAsis;
 
 	@GetMapping("/admin/lista_profesores")
 	public String ListarProfesores(Model model) {
@@ -164,6 +174,58 @@ public class AdminController {
 		}
 		return "redirect:/login?logout"; // You can redirect wherever you want, but generally it's a good practice to
 											// show login screen again.
+	}
+
+	@GetMapping("admin/consultar_asistencia/{idProf}/{idClase}")
+	public String consultarAsistencia(Model model, @PathVariable int idProf, @PathVariable int idClase,
+			RedirectAttributes ra) {
+		Clase clase = servClase.clasePorId(idClase).get();
+		Profesor profesor = service.profesorPorId(idProf).get();
+
+		String fecha = null;
+		List<String> fechas = new ArrayList<String>();
+		List<String> fechasFin = new ArrayList<String>();
+		List<Asistencia> asistencias = new ArrayList<Asistencia>();
+		List<Horario> horarios = clase.getHorarios();
+		for (Horario horario : clase.getHorarios()) {
+			asistencias.addAll(interfaceAsis.findByHorarioInAndProfesor(horario, profesor));
+		}
+		System.out.println("Esta clase tiene esta cantidad de asistencias registradas: " + asistencias.size());
+		for (Asistencia asistencia : asistencias) {
+			fecha = asistencia.getFechaAsistencia().now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+			fechas.add(fecha);
+			System.out.println("Asistencia registrada el día: " + fecha);
+		}
+		// aca, si todos los horarios están agregamos a la lista. Corregir que se agrega
+		// la fecha mas de una vez
+		if (horarios.size() > 1) {
+			System.out.println("esta clase tiene tantos horarios: " + horarios.size());
+			for (String fecha2 : fechas) {
+				if (Collections.frequency(fechas, fecha2) == horarios.size()) {
+					fechasFin.add(fecha2);
+				}
+			}
+		}
+		model.addAttribute("indexFechas", fechasFin.size());
+		model.addAttribute("fechas", fechasFin);
+		model.addAttribute("clase", idClase);
+		model.addAttribute("profesor", idProf);
+		return "asistencia_clase";
+
+	}
+
+	@GetMapping(value = "admin/request_asistencias")
+	public String getAsistenciasSheet(@RequestParam(value = "idprof") int idProf,
+			@RequestParam(value = "idclase") int idClase, @RequestParam(value = "month") int month) {
+		System.out.println(idClase);
+		System.out.println(idProf);
+		System.out.println(month);
+		System.out.println(maskMonth(month));
+		return "index";
+	}
+
+	public String maskMonth(int month) {
+		return new DateFormatSymbols().getMonths()[month];
 	}
 
 }

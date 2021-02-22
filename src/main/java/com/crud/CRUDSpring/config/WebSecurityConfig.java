@@ -31,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     AuthenticationSuccessHandler successHandler;
 
     // para permitir una url tipo /profesor/redirect/*/* hay que poner /profesor/**
+    // Temporal hago publico consultar asis
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(resources).permitAll()

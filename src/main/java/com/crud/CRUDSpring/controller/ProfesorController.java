@@ -173,10 +173,10 @@ public class ProfesorController {
 			case FRIDAY:
 				currentDayAsString = "Viernes";
 				break;
-			case SUNDAY:
+			case SATURDAY:
 				currentDayAsString = "Sabado";
 				break;
-			case SATURDAY:
+			case SUNDAY:
 				currentDayAsString = "Domingo";
 				break;
 			default:

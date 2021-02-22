@@ -1,9 +1,12 @@
 package com.crud.CRUDSpring.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -34,6 +37,11 @@ import net.bytebuddy.asm.Advice.Local;
 @Controller
 public class AppController {
 
+	@PostConstruct
+	public void init(){
+		TimeZone.setDefault(TimeZone.getTimeZone("GMT"));   // It will set UTC timezone
+		System.out.println("Spring boot application running in UTC timezone :"+new Date());   // It will print UTC timezone
+	}
 	@GetMapping({ "/", "/login" })
 	public String index() {
 		return "index";

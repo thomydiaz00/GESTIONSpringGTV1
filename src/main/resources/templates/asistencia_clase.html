@@ -84,19 +84,24 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
     let today = new Date();
+    let dateCompletas = new Array();
+    let dateIncompletas = new Array();
     let currentMonth = today.getMonth();
     let currentYear = today.getFullYear();
     let selectYear = document.getElementById("year");
-    const fechas = [[${fechas}]];
+    const days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+    
+    const fechasCompletas =/*[[${fechasCompletas}]]*/ 'defaultanyvalue';
+    const fechasIncompletas =/*[[${fechasIncompletas}]]*/ 'defaultanyvalue';
+    const fechaCreacion =/*[[${fechaCreacion}]]*/ 'defaultanyvalue';
+
+
     let selectMonth = document.getElementById("month");
     let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Sep", "Octubre", "Noviembre", "Diciembre"];
     let monthAndYear = document.getElementById("monthAndYear");
-    fechas.forEach(fecha => {
-        console.log(fecha);
-    });
+    
     showCalendar(currentMonth, currentYear);
-    console.log(fechas.lenght);
-
+    
     function next() {
         currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
         currentMonth = (currentMonth + 1) % 12;
@@ -121,7 +126,6 @@
         let daysInMonth = 32 - new Date(year, month, 32).getDate();
 
         let tbl = document.getElementById("calendar-body"); // body of the calendar
-        let heady = document.getElementById("header-variable");
         // clearing all previous cells
         tbl.innerHTML = "";
 
@@ -151,9 +155,41 @@
                 else {
                     let cell = document.createElement("td");
                     let cellText = document.createTextNode(date);
-                    if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-                        cell.classList.add("bg-info");
-                    } // color today's date
+                    let partesCreacion = fechaCreacion.split('-');
+                    let dateCreacion = new Date (partesCreacion[0], partesCreacion[1] - 1, partesCreacion[2]);
+                    let indexDate = new Date(year, month, date);
+                    fechasCompletas.forEach(fecha => {
+                        parts = fecha.split('-');
+                        // Resto porque JS cuenta meses desde 0:
+                        let myDate = new Date(parts[0], parts[1] - 1, parts[2]);
+                        dateCompletas.push(myDate);
+                        if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+                            cell.classList.add("bg-info");
+                        }
+                        if (date === myDate.getDate() && year === myDate.getFullYear() && month === myDate.getMonth()) {
+                            cell.classList.add("bg-success");
+                        } // co
+                     });
+                     fechasIncompletas.forEach(fechaIncompleta => {
+                        parts = fechaIncompleta.split('-');
+                        // Resto porque JS cuenta meses desde 0:
+                        let fechaInc = new Date(parts[0], parts[1] - 1, parts[2]);
+                        dateIncompletas.push(fechaInc);
+                        if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+                            cell.classList.add("bg-info");
+                        }
+                        if (date === fechaInc.getDate() && year === fechaInc.getFullYear() && month === fechaInc.getMonth()) {
+                            cell.classList.add("bg-warning");
+                        } // co
+                     });
+
+                    if (indexDate >= dateCreacion){
+                        console.log(days[indexDate.getDay()]);
+                    }else{
+                        console.log("soy mas peke");
+                    }   
+                    
+                     
                     cell.appendChild(cellText);
                     row.appendChild(cell);
                     date++;
@@ -166,6 +202,9 @@
         }
         /*]]>*/
     }
+</script>
+<script>
+    
 </script>
 </body>
 </html>

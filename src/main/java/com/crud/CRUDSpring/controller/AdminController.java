@@ -1,5 +1,6 @@
 package com.crud.CRUDSpring.controller;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -33,6 +35,7 @@ import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
 import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
+import com.crud.CRUDSpring.model.DiaDePractica;
 import com.crud.CRUDSpring.model.Horario;
 import com.crud.CRUDSpring.model.Persona;
 import com.crud.CRUDSpring.model.Profesor;
@@ -59,6 +62,7 @@ public class AdminController {
 		model.addAttribute("profesor", new Profesor());
 		model.addAttribute("clases", clases);
 		model.addAttribute("profesores", profesores);
+		System.out.println(interfaceAsis.contarNumeroDeAsistenciasPorFechaYNombreDia("2021-02-21", "PEPE"));
 		return "lista_profesores";
 	}
 
@@ -176,38 +180,95 @@ public class AdminController {
 											// show login screen again.
 	}
 
+	private String maskDay(DayOfWeek currentDay) {
+		String currentDayAsString = new String();
+		switch (currentDay) {
+			case MONDAY:
+				currentDayAsString = "Lunes";
+				break;
+			case TUESDAY:
+				currentDayAsString = "Martes";
+				break;
+			case WEDNESDAY:
+				currentDayAsString = "Miercoles";
+				break;
+			case THURSDAY:
+				currentDayAsString = "Jueves";
+				break;
+			case FRIDAY:
+				currentDayAsString = "Viernes";
+				break;
+			case SATURDAY:
+				currentDayAsString = "Sabado";
+				break;
+			case SUNDAY:
+				currentDayAsString = "Domingo";
+				break;
+			default:
+				break;
+		}
+		return currentDayAsString;
+
+	}
+
 	@GetMapping("admin/consultar_asistencia/{idProf}/{idClase}")
 	public String consultarAsistencia(Model model, @PathVariable int idProf, @PathVariable int idClase,
 			RedirectAttributes ra) {
 		Clase clase = servClase.clasePorId(idClase).get();
 		Profesor profesor = service.profesorPorId(idProf).get();
+		List<LocalDate> fechas = new ArrayList<LocalDate>();
+		List<LocalDate> fechasFin = new ArrayList<LocalDate>();
+		List<LocalDate> fechasIncompletas = new ArrayList<LocalDate>();
 
-		String fecha = null;
-		List<String> fechas = new ArrayList<String>();
-		List<String> fechasFin = new ArrayList<String>();
 		List<Asistencia> asistencias = new ArrayList<Asistencia>();
 		List<Horario> horarios = clase.getHorarios();
+		List<Integer> diasHorario = new ArrayList<Integer>();
+
 		for (Horario horario : clase.getHorarios()) {
-			asistencias.addAll(interfaceAsis.findByHorarioInAndProfesor(horario, profesor));
+			List<Asistencia> asis = interfaceAsis.findByHorarioInAndProfesor(horario, profesor);
+			asistencias.addAll(asis);
 		}
-		System.out.println("Esta clase tiene esta cantidad de asistencias registradas: " + asistencias.size());
+
+		System.out.println("xxxxxxxxxxxxxxxx Fin de carga xxxxxxxxxxxxxxxxxx");
 		for (Asistencia asistencia : asistencias) {
-			fecha = asistencia.getFechaAsistencia().now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-			fechas.add(fecha);
-			System.out.println("Asistencia registrada el día: " + fecha);
+			fechas.add(asistencia.getFechaAsistencia());
 		}
-		// aca, si todos los horarios están agregamos a la lista. Corregir que se agrega
-		// la fecha mas de una vez
-		if (horarios.size() > 1) {
-			System.out.println("esta clase tiene tantos horarios: " + horarios.size());
-			for (String fecha2 : fechas) {
-				if (Collections.frequency(fechas, fecha2) == horarios.size()) {
-					fechasFin.add(fecha2);
+		// Aca evaluamos. Si la cantidad de horarios corresponde con las asistencias
+		// registradas para esa fecha, la asistencia está completa para ese dia
+		// Si es un solo horario, y tiene un registro de asistencia para la fecha, se
+		// agrega a la lista
+		// Si hay menos registros de los necesarios, sumamos a la lista de incompletos
+		for (LocalDate fecha : fechas) {
+			String nombreDia = maskDay(fecha.getDayOfWeek());
+			int frecuencia = interfaceAsis.contarNumeroDeAsistenciasPorFechaYNombreDia(fecha.toString(), nombreDia);
+			int cantidadDeRegistrosNecesarios = interfaceAsis.contarCantidadDeHorarios(nombreDia);
+			System.out.println("El horario de la fecha" + fecha.toString() + "debe tener : "
+					+ interfaceAsis.contarCantidadDeHorarios(nombreDia) + "registros para estar completo");
+
+			if (frecuencia == cantidadDeRegistrosNecesarios) {
+				if (!fechasFin.contains(fecha)) {
+					fechasFin.add(fecha);
+				}
+			} else {
+				if (!fechasIncompletas.contains(fecha)) {
+					fechasIncompletas.add(fecha);
 				}
 			}
 		}
-		model.addAttribute("indexFechas", fechasFin.size());
-		model.addAttribute("fechas", fechasFin);
+
+		System.out.println("Esta clase tiene esta cantidad de asistencias registradas: " + asistencias.size());
+		System.out.println("----------------STATUSES------------------");
+		System.out.println("Las siguientes fechas estan completas");
+		for (LocalDate feFin : fechasFin) {
+			System.out.println(feFin.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		}
+		System.out.println("----------------STATUSES------------------");
+		System.out.println("Las siguientes fechas estan incompletas");
+		for (LocalDate feIn : fechasIncompletas) {
+			System.out.println(feIn.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		}
+		model.addAttribute("fechasIncompletas", fechasIncompletas);
+		model.addAttribute("fechasCompletas", fechasFin);
 		model.addAttribute("clase", idClase);
 		model.addAttribute("profesor", idProf);
 		return "asistencia_clase";

@@ -199,7 +199,6 @@ public class ProfesorController {
 			return "alertas/alerta_temprano.html";
 		} else if (diasDisponibles.contains(currentDayAsString)) {
 			System.out.println("cargando la asistencia");
-			System.out.println(currentDay);
 			asistencia.setProfesor(profesor);
 			asistencia.setClase(clase);
 			asistencia.setHorario(horario);

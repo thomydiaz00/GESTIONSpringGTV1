@@ -245,7 +245,7 @@ public class AdminController {
 			System.out.println("El horario de la fecha" + fecha.toString() + "debe tener : "
 					+ interfaceAsis.contarCantidadDeHorarios(nombreDia) + "registros para estar completo");
 
-			if (frecuencia == cantidadDeRegistrosNecesarios) {
+			if ((frecuencia % cantidadDeRegistrosNecesarios) == 0) {
 				if (!fechasFin.contains(fecha)) {
 					fechasFin.add(fecha);
 				}

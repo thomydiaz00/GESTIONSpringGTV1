@@ -109,7 +109,8 @@ public class ProfesorController {
 		model.addAttribute("horarios", horarios);
 		for (Horario horario : horarios) {
 			try {
-				Asistencia asis = interfaceAsis.findByHorarioInAndFechaAsistencia(horario, tras).get();
+				Asistencia asis = interfaceAsis.findByHorarioInAndFechaAsistenciaInAndProfesor(horario, tras, profesor)
+						.get();
 				asistencias.add(asis);
 				System.out.println(asis.isEstadoAsistencia());
 			} catch (NoSuchElementException e) {
@@ -182,7 +183,8 @@ public class ProfesorController {
 			default:
 				break;
 		}
-		if (interfaceAsis.findByHorarioInAndFechaAsistencia(horario, localCurrentDate).isPresent()) {
+		if (interfaceAsis.findByHorarioInAndFechaAsistenciaInAndProfesor(horario, localCurrentDate, profesor)
+				.isPresent()) {
 			System.out.println("ya hay una clase registrada");
 			return "alertas/alerta_repetida.html";
 		}

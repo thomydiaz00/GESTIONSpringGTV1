@@ -24,13 +24,15 @@ public interface interfaceAsistencia extends CrudRepository<Asistencia, Integer>
     public static final String numeroHorarios = ("SELECT COUNT(*) FROM horario_dia hd INNER JOIN dia_de_practica d ON hd.id_dia = d.id_dia WHERE d.dia_de_la_semana = :nombreDia");
     public static final String nombreDias = ("SELECT d.dia_de_la_semana FROM horario_dia hd INNER JOIN dia_de_practica d ON hd.id_dia = d.id_dia WHERE d.dia_de_la_semana = :nombreDia");
 
-    public Optional<Asistencia> findByHorarioInAndFechaAsistencia(Horario horario, LocalDate tras);
+    public Optional<Asistencia> findByHorarioInAndFechaAsistenciaInAndProfesor(Horario horario, LocalDate tras,
+            Profesor profesor);
+
     public List<Asistencia> findByHorarioInAndProfesor(Horario horario, Profesor profesor);
 
     @Query(value = numeroAsistencias, nativeQuery = true)
     public int contarNumeroDeAsistenciasPorFechaYNombreDia(@Param("fecha") String fecha,
             @Param("nombreDia") String nombreDia);
-            
+
     @Query(value = numeroHorarios, nativeQuery = true)
     public int contarCantidadDeHorarios(@Param("nombreDia") String nombreDia);
 }

@@ -1,4 +1,8 @@
 package com.crud.CRUDSpring.service;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +33,10 @@ public class ClaseService implements IfServiceClase {
 	@Override
 	public int guardarClase(Clase c) {
 		int res=0;
+		Date currentDate = new Date();
+		LocalDate localCurrentDate = currentDate.toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
+				.toLocalDate();
+		c.setFechaCreacion(localCurrentDate);
 		Clase clase=data.save(c);
 		if(!clase.equals(null)) {
 			res=1;

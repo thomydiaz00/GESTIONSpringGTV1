@@ -36,11 +36,13 @@ public class Clase {
 	private String deporte;
 	@Column
 	private String nombreDep;
+	@Column
+	private LocalDate fechaCreacion;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "clase")
 	private List<Horario> horarios = new ArrayList<Horario>();
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "clase")
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "clase", orphanRemoval = true)
 	private List<Asistencia> asistencias = new ArrayList<Asistencia>();
 	// profesor_tiene_clase N:N
 
@@ -48,12 +50,17 @@ public class Clase {
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "clases")
 	private List<Profesor> profesores = new ArrayList<>();
 
-	public Clase(int idClase, String deporte, String nombreDep, List<Horario> horarios, List<Asistencia> asistencias,
-			List<Profesor> profesores) {
-		super();
+	@Override
+	public String toString() {
+		return "Clase [deporte=" + ", idClase=" + idClase + ", nombreDep=" + nombreDep + "]";
+	}
+
+	public Clase(int idClase, String deporte, String nombreDep, LocalDate fechaCreacion, List<Horario> horarios,
+			List<Asistencia> asistencias, List<Profesor> profesores) {
 		this.idClase = idClase;
 		this.deporte = deporte;
 		this.nombreDep = nombreDep;
+		this.fechaCreacion = fechaCreacion;
 		this.horarios = horarios;
 		this.asistencias = asistencias;
 		this.profesores = profesores;
@@ -83,6 +90,14 @@ public class Clase {
 		this.nombreDep = nombreDep;
 	}
 
+	public LocalDate getFechaCreacion() {
+		return fechaCreacion;
+	}
+
+	public void setFechaCreacion(LocalDate fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
 	public List<Horario> getHorarios() {
 		return horarios;
 	}
@@ -108,19 +123,16 @@ public class Clase {
 	}
 
 	@Override
-	public String toString() {
-		return "Clase [deporte=" + ", idClase=" + idClase + ", nombreDep=" + nombreDep + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((asistencias == null) ? 0 : asistencias.hashCode());
 		result = prime * result + ((deporte == null) ? 0 : deporte.hashCode());
+		result = prime * result + ((fechaCreacion == null) ? 0 : fechaCreacion.hashCode());
 		result = prime * result + ((horarios == null) ? 0 : horarios.hashCode());
 		result = prime * result + idClase;
 		result = prime * result + ((nombreDep == null) ? 0 : nombreDep.hashCode());
+		result = prime * result + ((profesores == null) ? 0 : profesores.hashCode());
 		return result;
 	}
 
@@ -143,6 +155,11 @@ public class Clase {
 				return false;
 		} else if (!deporte.equals(other.deporte))
 			return false;
+		if (fechaCreacion == null) {
+			if (other.fechaCreacion != null)
+				return false;
+		} else if (!fechaCreacion.equals(other.fechaCreacion))
+			return false;
 		if (horarios == null) {
 			if (other.horarios != null)
 				return false;
@@ -155,7 +172,13 @@ public class Clase {
 				return false;
 		} else if (!nombreDep.equals(other.nombreDep))
 			return false;
+		if (profesores == null) {
+			if (other.profesores != null)
+				return false;
+		} else if (!profesores.equals(other.profesores))
+			return false;
 		return true;
 	}
 
+	
 }

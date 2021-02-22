@@ -48,7 +48,7 @@ public class Horario {
 	@JoinColumn(name = "idClase")
 	private Clase clase;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "horario")
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "horario", orphanRemoval = true)
 	private List<Asistencia> asistencias = new ArrayList<Asistencia>();
 
 	public Horario() {

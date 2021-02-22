@@ -47,7 +47,7 @@ public class Profesor {
 	@Column
 	private String matriculaProf;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "clase")
+	@OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "profesor", orphanRemoval = true)
 	private List<Asistencia> asistenciaProfesores = new ArrayList<Asistencia>();
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)

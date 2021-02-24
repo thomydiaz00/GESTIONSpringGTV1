@@ -76,7 +76,6 @@
                     
                 </ul>
                 </div>
-                <button class="btn btn-lg btn-primary pt-1" onclick="mostrar('password')">Mostar contraseñas</button>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="userList" class="table table-bordered table-hover table-striped">
@@ -84,14 +83,12 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Username</th>
-                                <th scope="col">Contraseñas</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="user: ${users}">
                                 <td th:text="${user.id}"></td>
-                                <td th:text="${user.username}"></td>
-                                <td th:text="${user.password}"></td>
+                                <td th:text="${user.username}"></td>                          
                             </tr>
                             </tbody>
                         </table>

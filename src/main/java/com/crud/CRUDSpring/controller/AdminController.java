@@ -32,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
+import com.crud.CRUDSpring.interfaceService.IfServiceUser;
 import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
@@ -52,6 +53,8 @@ public class AdminController {
 	private IfServiceProfesor service;
 	@Autowired
 	private IfServiceClase servClase;
+	@Autowired
+	private IfServiceUser servUser;
 	@Autowired
 	private interfaceAsistencia interfaceAsis;
 
@@ -152,6 +155,12 @@ public class AdminController {
 	public String eliminar(@PathVariable int idProf, Model model) {
 
 		service.borrarProfesor(idProf);
+		return "redirect:/admin/lista_profesores";
+	}
+
+	@GetMapping("admin/delete_usuario/{id}")
+	public String eliminarUsuario(@PathVariable int id, Model model) {
+		servUser.borrarUser(id);
 		return "redirect:/admin/lista_profesores";
 	}
 

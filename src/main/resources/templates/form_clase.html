@@ -117,9 +117,10 @@
                 th:field="*{nombreDep}"
                 type="text"
                 class="form-control mr-4 w-25"
+                required
               />
               <label class="mr-2" for="deporte">Deporte</label>
-              <input th:field="*{deporte}" type="text" class="form-control" />
+              <input th:field="*{deporte}" type="text" class="form-control" required />
             </div>
             <button type="submit" class="btn btn-primary">Guardar</button>
           </form>

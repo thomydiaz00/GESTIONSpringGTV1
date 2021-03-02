@@ -105,19 +105,19 @@
         </div>	
         <div class="form-group form-inline">
             <label class= "mr-2" for="nombre">Nombre:</label>
-            <input th:field="*{nombreProf}" type="text" class="form-control mr-3 col-lg-3"/>
+            <input th:field="*{nombreProf}" type="text" class="form-control mr-3 col-lg-3" required/>
             <label class= "mr-2" for="apellido">Apellido:</label>
-            <input th:field="*{apellidoProf}" type="text" class="form-control mr-3 col-lg-3"/>
-            <label class="mr-2" for="dni">DNI:</label>
-            <input th:field="*{dniProf}" type="number" class="form-control col-lg-2"/>
+            <input th:field="*{apellidoProf}" type="text" class="form-control mr-3 col-lg-3" required/>
+            <label class="mr-2" for="dni" required>DNI:</label>
+            <input th:field="*{dniProf}" type="number" class="form-control col-lg-2" required/>
         </div>
         <div class="form-group form-inline pt-3">
             <label class="mr-2" for="fechaNacimiento">Fecha de Nacimiento:</label>
-            <input required th:field="*{fechaNacProf}" type="date" class="form-control mr-3 col-lg-2"/>
+            <input  th:field="*{fechaNacProf}" type="date" class="form-control mr-3 col-lg-2" required />
             <label class="mr-2" for="telefono">Teléfono:</label>
-            <input th:field="*{telefonoProf}" type="number" class="form-control mr-4 col-lg-2"/>
+            <input th:field="*{telefonoProf}" type="number" class="form-control mr-4 col-lg-2" required/>
             <label class="mr-2" for="matricula">Matrícula:</label>
-            <input th:field="*{matriculaProf}" type="text" class="form-control mr-3 col-lg-2"/>
+            <input th:field="*{matriculaProf}" type="text" class="form-control mr-3 col-lg-2" required/>
             
         </div>
             

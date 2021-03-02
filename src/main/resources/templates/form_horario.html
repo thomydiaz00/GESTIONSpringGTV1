@@ -24,6 +24,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+  <script> 
+  function evaluar() {
+    var horaIni = document.getElementById("hora_inicio").value;
+    var horaFin = document.getElementById("hora_fin").value;
+    if(horaIni < horaFin){
+      console.log("submit form");
+      return true;
+    }else{
+      swal("Ingresar horarios válidos", "El horario de inicio debe ser de una hora anterior al horario de finalización", "warning");
+      return false;
+    }
+  }
+  </script>
   </head>
   <body>
     <div class="d-flex">
@@ -115,6 +128,8 @@
         </div>
         <div class="card-body">
           <form
+            id="form"
+            name="form"
             th:action="@{/admin/save_horario/} +${idclase}"
             th:object="${horario}"
             method="POST"
@@ -128,7 +143,7 @@
             </div>
 
             <div class="form-group form-inline">
-              <label class="mr-3" for="lugar">Lugar de práctica</label>
+              <label class="mr-3" for="lugar" required>Lugar de práctica</label>
               <input
                 th:field="*{lugar}"
                 type="text"
@@ -152,15 +167,17 @@
             <div class="form-group form-inline">
               <label class="mr-2" for="hora_inicio">Inicio</label>
               <input
+              id="hora_inicio"
                 th:field="*{hora_inicio}"
                 type="time"
                 class="form-control mr-4"
+                required
               />
               <label class="mr-4" for="hora_fin">Hora fin</label>
-              <input th:field="*{hora_fin}" type="time" class="form-control" />
+              <input th:field="*{hora_fin}" type="time" class="form-control" id="hora_fin" required />
             </div>
 
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button onclick="return evaluar()" type="submit" class="btn btn-primary">Guardar</button>
           </form>
         </div>
       </div>

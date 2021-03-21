@@ -1,28 +1,19 @@
 package com.crud.CRUDSpring.service;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaces.interfaceClase;
-import com.crud.CRUDSpring.interfaces.interfaceProfesor;
 import com.crud.CRUDSpring.model.Clase;
-import com.crud.CRUDSpring.model.Profesor;
+import com.crud.CRUDSpring.model.Horario;
 
 @Service
 public class ClaseService implements IfServiceClase {
 
 	@Autowired
 	private interfaceClase data;
-
-	@Autowired
-	private interfaceProfesor serviceProfesor;
 
 	@Override
 	public List<Clase> listarClase() {
@@ -32,15 +23,39 @@ public class ClaseService implements IfServiceClase {
 	@Override
 	public int guardarClase(Clase c) {
 		int res = 0;
-		Date currentDate = new Date();
-		LocalDate localCurrentDate = currentDate.toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
-				.toLocalDate();
-		c.setFechaCreacion(localCurrentDate);
 		Clase clase = data.save(c);
 		if (!clase.equals(null)) {
 			res = 1;
 		}
+		// Horario horario = new Horario();
+		// DiaDePractica dia = new DiaDePractica();
+		// dia.setDiaDeLaSemana("MONDAY");
+		// List<DiaDePractica> dias = new ArrayList<DiaDePractica>();
+		// dias.add(dia);
+
+		// crearRegistrosAsistencia(c, horario);
 		return res;
+	}
+
+	// Ejemplo, se crea una lista con las fechas que correspondan a los dias que
+	// tienen que marcarse
+	public void crearRegistrosAsistencia(Clase c, Horario h) {
+		// List<String> dias = new ArrayList<String>();
+		// for (DiaDePractica dia : h.getDias()) {
+		// dias.add(dia.getDiaDeLaSemana());
+		// }
+		// List<LocalDate> todasLasFechas =
+		// c.getFechaInicio().datesUntil(c.getFechaFin()).collect(Collectors.toList());
+		// List<LocalDate> filteredDates = new ArrayList<LocalDate>();
+		// for (LocalDate date : todasLasFechas) {
+		// System.out.println(date.getDayOfWeek().name());
+		// if (dias.contains(date.getDayOfWeek().name())) {
+		// System.out.println("dia lunes encontrado, -------------");
+		// filteredDates.add(date);
+		// }
+		// }
+		// System.out.println(filteredDates.toString());
+
 	}
 
 	@Override

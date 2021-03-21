@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,8 +18,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -31,16 +34,26 @@ public class DiaDePractica {
     @Column
     private String diaDeLaSemana;
 
-    @JsonBackReference
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "dias")
-    private List<Horario> horarios = new ArrayList<>();
+   
+
+    @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "dia", orphanRemoval = true)
+    private List<Horario> horarios = new ArrayList<Horario>();
 
     public DiaDePractica() {
     }
+    
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dias")
+	private List<Clase> clases = new ArrayList<Clase>();
 
-    public DiaDePractica(int idDia, String diaDeLaSemana, List<Horario> horarios) {
+    @Override
+    public String toString() {
+        return "DiaDePractica [diaDeLaSemana=" + diaDeLaSemana + ", idDia=" + idDia + "]";
+    }
+
+    public DiaDePractica(int idDia, String diaDeLaSemana, List<Clase> clases, List<Horario> horarios) {
         this.idDia = idDia;
         this.diaDeLaSemana = diaDeLaSemana;
+        this.clases = clases;
         this.horarios = horarios;
     }
 
@@ -60,45 +73,20 @@ public class DiaDePractica {
         this.diaDeLaSemana = diaDeLaSemana;
     }
 
+    public List<Clase> getClases() {
+        return clases;
+    }
+
+    public void setClases(List<Clase> clases) {
+        this.clases = clases;
+    }
+
     public List<Horario> getHorarios() {
         return horarios;
     }
 
     public void setHorarios(List<Horario> horarios) {
         this.horarios = horarios;
-    }
-
-    @Override
-    public String toString() {
-        return "DiaDePractica [diaDeLaSemana=" + diaDeLaSemana + ", idDia=" + idDia + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((diaDeLaSemana == null) ? 0 : diaDeLaSemana.hashCode());
-        result = prime * result + idDia;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        DiaDePractica other = (DiaDePractica) obj;
-        if (diaDeLaSemana == null) {
-            if (other.diaDeLaSemana != null)
-                return false;
-        } else if (!diaDeLaSemana.equals(other.diaDeLaSemana))
-            return false;
-        if (idDia != other.idDia)
-            return false;
-        return true;
     }
 
 }

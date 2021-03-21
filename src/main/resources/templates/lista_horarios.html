@@ -107,10 +107,10 @@
       </thead>
   
       <tbody>
-        <tr  th:each = "horario:${clase}">
+        <tr  th:each = "horario:${horarios}">
             <td  th:text="${horario.lugar}"></td>
             <td>
-              <span class="card" th:each= "dia : ${horario.dias}"><p th:text="${dia.diaDeLaSemana}"></p></span> 
+              <span class="card"><p th:text="${horario.dia.diaDeLaSemana}"></p></span> 
             </td>
             <td  th:text="${horario.hora_inicio}">	</th>
             <td  th:text="${horario.hora_fin}"> </td>

@@ -126,7 +126,7 @@
                 <a class="dropdown-item" href="/admin/configuracion"
                   ><i class="fas fa-cog"></i> Configuracion</a
                 >
-                
+
                 <li class="divider"></li>
                 <li>
                   <a class="dropdown-item" href="/logout"
@@ -141,29 +141,49 @@
     </div>
 
     <div class="container pt-3">
-    <div class="d-flex flex-row justify-content-center">
-      <div class="row">
-        <div class="p-2">
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Generar un informe <i class="fas fa-file-pdf"></i>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="/admin/lista_profesores/export">Listado de profesores</a>
-              <a class="dropdown-item" href="/admin/lista_clases/export">Listado de clases</a>
-              <a class="dropdown-item" href="#">Horarios por clase</a>
+      <div class="d-flex flex-row justify-content-center">
+        <div class="row">
+          <div class="p-2">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Generar un informe <i class="fas fa-file-pdf"></i>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/admin/lista_profesores/export"
+                  >Listado de profesores</a
+                >
+                <a class="dropdown-item" href="/admin/lista_clases/export"
+                  >Listado de clases</a
+                >
+                <a class="dropdown-item" href="#">Horarios por clase</a>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="p-2">
-          <button class="btn btn-primary" onclick="mostrar('formularioClase')">
-            Nueva Clase <i class="fas fa-plus-square"></i>
-          </button>
+          <div class="p-2">
+            <button
+              class="btn btn-primary"
+              onclick="mostrar('formularioClase')"
+            >
+              Nueva Clase <i class="fas fa-plus-square"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-    <div class="alert alert-danger" role="alert" th:if="${noExisteClase} == true"> <p>La ultima clase no fue editada, no existe clase con este ID</p></div>
+    <div
+      class="alert alert-danger"
+      role="alert"
+      th:if="${noExisteClase} == true"
+    >
+      <p>La ultima clase no fue editada, no existe clase con este ID</p>
+    </div>
     <div
       class="container pt-3 w-75 h-25"
       id="formularioClase"
@@ -172,8 +192,8 @@
       <form th:action="@{/admin/save_clase}" th:object="${clase}" method="POST">
         <div class="card">
           <div class="card-body">
-            <div class="d-flex flex-row justify-content-center">
-              <input type="hidden" th:field="*{idClase}" />
+            <input type="hidden" th:field="*{idClase}" />
+            <div class="row">
               <div class="form-group form-inline p-2">
                 <label class="mr-2" for="nombre">Nombre de la Clase:</label>
                 <input
@@ -182,7 +202,6 @@
                   name="nombre"
                   th:field="*{nombreDep}"
                   class="form-control mr-4 col-lg-3"
-                  required
                 />
                 <label class="mr-2" for="deporte">Deporte:</label>
                 <input
@@ -191,12 +210,48 @@
                   name="deporte"
                   th:field="*{deporte}"
                   class="form-control mr-2 col-lg-3"
-                  required
                 />
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-plus"></i>
                 </button>
               </div>
+            </div>
+            <div class="row">
+              <div class="form-group form-inline p-2">
+                <label for="fechaInicio">Fecha de inicio:</label>
+                <input
+                  class="form-control m-3"
+                  id="fechaInicio"
+                  name="fechaInicio"
+                  th:field="*{fechaInicio}"
+                  type="date"
+                />
+
+                <label for="fechaFin">Fecha de Finalización:</label>
+                <input
+                  class="form-control m-3"
+                  id="fechaFin"
+                  name="fechaFin"
+                  th:field="*{fechaFin}"
+                  type="date"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <label for="dias">Dias de la semana</label>
+              <select
+                type="text"
+                class="form-control selectpicker col-lg-4"
+                multiple
+                data-live-search="true"
+                th:field="${clase.dias}"
+              >
+                <option
+                  th:each="dia, iter :${dias}"
+                  th:value="${dia.idDia}"
+                  th:text="${dia.diaDeLaSemana}"
+                ></option>
+              </select>
             </div>
           </div>
         </div>

@@ -1,22 +1,14 @@
 package com.crud.CRUDSpring.controller;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.text.DateFormatSymbols;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -27,21 +19,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
 import com.crud.CRUDSpring.interfaceService.IfServiceUser;
 import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
-import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
-import com.crud.CRUDSpring.model.DiaDePractica;
-import com.crud.CRUDSpring.model.Horario;
-import com.crud.CRUDSpring.model.Persona;
 import com.crud.CRUDSpring.model.Profesor;
-import com.crud.CRUDSpring.service.ClaseService;
-import com.crud.CRUDSpring.service.ProfesorService;
 import com.crud.CRUDSpring.repository.ProfesorRepository;
 
 @Controller
@@ -65,7 +48,8 @@ public class AdminController {
 		model.addAttribute("profesor", new Profesor());
 		model.addAttribute("clases", clases);
 		model.addAttribute("profesores", profesores);
-		System.out.println(interfaceAsis.contarNumeroDeAsistenciasPorFechaYNombreDia("2021-02-21", "PEPE"));
+		// System.out.println(interfaceAsis.contarNumeroDeAsistenciasPorFechaYNombreDia("2021-02-21",
+		// "PEPE"));
 		return "lista_profesores";
 	}
 
@@ -190,128 +174,129 @@ public class AdminController {
 	}
 
 	private String maskDay(DayOfWeek currentDay) {
-		String currentDayAsString = new String();
 		switch (currentDay) {
-			case MONDAY:
-				currentDayAsString = "Lunes";
-				break;
-			case TUESDAY:
-				currentDayAsString = "Martes";
-				break;
-			case WEDNESDAY:
-				currentDayAsString = "Miercoles";
-				break;
-			case THURSDAY:
-				currentDayAsString = "Jueves";
-				break;
-			case FRIDAY:
-				currentDayAsString = "Viernes";
-				break;
-			case SATURDAY:
-				currentDayAsString = "Sabado";
-				break;
-			case SUNDAY:
-				currentDayAsString = "Domingo";
-				break;
-			default:
-				break;
+		case MONDAY:
+			return "Lunes";
+
+		case TUESDAY:
+			return "Martes";
+
+		case WEDNESDAY:
+			return "Miercoles";
+
+		case THURSDAY:
+			return "Jueves";
+
+		case FRIDAY:
+			return "Viernes";
+
+		case SATURDAY:
+			return "Sabado";
+
+		case SUNDAY:
+			return "Domingo";
+
+		default:
+			return null;
 		}
-		return currentDayAsString;
 
 	}
 
-	@GetMapping("admin/consultar_asistencia/{idProf}/{idClase}")
-	public String consultarAsistencia(Model model, @PathVariable int idProf, @PathVariable int idClase,
-			RedirectAttributes ra) {
+	// @GetMapping("admin/consultar_asistencia/{idProf}/{idClase}")
+	// public String consultarAsistencia(Model model, @PathVariable int idProf,
+	// @PathVariable int idClase,
+	// RedirectAttributes ra) {
 
-		Clase clase = servClase.clasePorId(idClase).get();
-		Profesor profesor = service.profesorPorId(idProf).get();
+	// Clase clase = servClase.clasePorId(idClase).get();
+	// Profesor profesor = service.profesorPorId(idProf).get();
 
-		Date currentDate = new Date();
-		LocalDate localCurrentDate = currentDate.toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
-				.toLocalDate();
-		List<LocalDate> fechas = new ArrayList<LocalDate>();
-		List<LocalDate> fechasFin = new ArrayList<LocalDate>();
-		List<LocalDate> fechasIncompletas = new ArrayList<LocalDate>();
-		List<String> nombresDias = new ArrayList<String>();
-		List<LocalDate> fechasFaltantes = new ArrayList<LocalDate>();
-		List<Asistencia> asistencias = new ArrayList<Asistencia>();
-		List<Horario> horarios = clase.getHorarios();
-		List<Integer> diasHorario = new ArrayList<Integer>();
+	// Date currentDate = new Date();
+	// LocalDate localCurrentDate =
+	// currentDate.toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
+	// .toLocalDate();
 
-		for (Horario horario : clase.getHorarios()) {
-			List<Asistencia> asis = interfaceAsis.findByHorarioInAndProfesor(horario, profesor);
-			for (DiaDePractica dia : horario.getDias()) {
-				String nomDia = dia.getDiaDeLaSemana();
-				if (!nombresDias.contains(nomDia)) {
-					nombresDias.add(nomDia);
+	// // for (Horario horario : clase.getHorarios()) {
+	// // List<Asistencia> asis =
+	// // interfaceAsis.findByHorarioInAndProfesor(horario,profesor);
+	// // for (DiaDePractica dia : clase.getDias()) {
+	// // String nomDia = dia.getDiaDeLaSemana();
+	// // if (!nombresDias.contains(nomDia)) {
+	// // nombresDias.add(nomDia);
 
-				}
-			}
-			asistencias.addAll(asis);
-		}
+	// // }
+	// // }
+	// // asistencias.addAll(asis);
+	// // }
 
-		System.out.println("xxxxxxxxxxxxxxxx Fin de carga xxxxxxxxxxxxxxxxxx");
-		for (Asistencia asistencia : asistencias) {
-			fechas.add(asistencia.getFechaAsistencia());
-		}
-		// Aca evaluamos. Si la cantidad de horarios corresponde con las asistencias
-		// registradas para esa fecha, la asistencia está completa para ese dia
-		// Si es un solo horario, y tiene un registro de asistencia para la fecha, se
-		// agrega a la lista
-		// Si hay menos registros de los necesarios, sumamos a la lista de incompletos
-		for (LocalDate fecha : fechas) {
-			String nombreDia = maskDay(fecha.getDayOfWeek());
-			int frecuencia = interfaceAsis.contarNumeroDeAsistenciasPorFechaYNombreDia(fecha.toString(), nombreDia);
-			int cantidadDeRegistrosNecesarios = interfaceAsis.contarCantidadDeHorarios(nombreDia);
-			System.out.println("El horario de la fecha" + fecha.toString() + "debe tener : "
-					+ interfaceAsis.contarCantidadDeHorarios(nombreDia) + "registros para estar completo");
+	// // System.out.println("xxxxxxxxxxxxxxxx Fin de carga xxxxxxxxxxxxxxxxxx");
+	// // for (Asistencia asistencia : asistencias) {
+	// // fechas.add(asistencia.getFechaAsistencia());
+	// // }
+	// // // Aca evaluamos. Si la cantidad de horarios corresponde con las
+	// asistencias
+	// // registradas para esa fecha, la asistencia está completa para ese dia
+	// // Si es un solo horario, y tiene un registro de asistencia para la fecha, se
+	// // agrega a la lista
+	// // Si hay menos registros de los necesarios, sumamos a la lista de
+	// incompletos
+	// for (LocalDate fecha : fechas) {
+	// String nombreDia = maskDay(fecha.getDayOfWeek());
+	// int frecuencia =
+	// interfaceAsis.contarNumeroDeAsistenciasPorFechaYNombreDia(fecha.toString(),
+	// nombreDia);
+	// int cantidadDeRegistrosNecesarios =
+	// interfaceAsis.contarCantidadDeHorarios(nombreDia);
+	// System.out.println("El horario de la fecha" + fecha.toString() + "debe tener
+	// : "
+	// + interfaceAsis.contarCantidadDeHorarios(nombreDia) + "registros para estar
+	// completo");
 
-			if ((frecuencia % cantidadDeRegistrosNecesarios) == 0) {
-				if (!fechasFin.contains(fecha)) {
-					fechasFin.add(fecha);
-				}
-			} else {
-				if (!fechasIncompletas.contains(fecha)) {
-					fechasIncompletas.add(fecha);
-				}
-			}
-		}
+	// if ((frecuencia % cantidadDeRegistrosNecesarios) == 0) {
+	// if (!fechasFin.contains(fecha)) {
+	// fechasFin.add(fecha);
+	// }
+	// } else {
+	// if (!fechasIncompletas.contains(fecha)) {
+	// fechasIncompletas.add(fecha);
+	// }
+	// }
+	// }
 
-		System.out.println("Esta clase tiene esta cantidad de asistencias registradas: " + asistencias.size());
-		System.out.println("----------------STATUSES------------------");
-		System.out.println("Las siguientes fechas estan completas");
-		for (LocalDate feFin : fechasFin) {
-			System.out.println(feFin.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-		}
-		System.out.println("----------------STATUSES------------------");
-		System.out.println("Las siguientes fechas estan incompletas");
-		for (LocalDate feIn : fechasIncompletas) {
-			System.out.println(feIn.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-		}
+	// System.out.println("Esta clase tiene esta cantidad de asistencias
+	// registradas: " + asistencias.size());
+	// System.out.println("----------------STATUSES------------------");
+	// System.out.println("Las siguientes fechas estan completas");
+	// for (LocalDate feFin : fechasFin) {
+	// System.out.println(feFin.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+	// }
+	// System.out.println("----------------STATUSES------------------");
+	// System.out.println("Las siguientes fechas estan incompletas");
+	// for (LocalDate feIn : fechasIncompletas) {
+	// System.out.println(feIn.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+	// }
 
-		model.addAttribute("nombresDias", nombresDias);
-		model.addAttribute("fechaCreacion", clase.getFechaCreacion());
-		model.addAttribute("fechasIncompletas", fechasIncompletas);
-		model.addAttribute("fechasCompletas", fechasFin);
-		model.addAttribute("clase", idClase);
-		model.addAttribute("profesor", idProf);
-		return "asistencia_clase";
+	// model.addAttribute("nombresDias", nombresDias);
+	// model.addAttribute("fechaCreacion", clase.getFechaInicio());
+	// model.addAttribute("fechasIncompletas", fechasIncompletas);
+	// model.addAttribute("fechasCompletas", fechasFin);
+	// model.addAttribute("clase", idClase);
+	// model.addAttribute("profesor", idProf);
+	// return "asistencia_clase";
 
-	}
+	// }
 
-	@GetMapping(value = "admin/request_asistencias")
-	public String getAsistenciasSheet(@RequestParam(value = "idprof") int idProf,
-			@RequestParam(value = "idclase") int idClase, @RequestParam(value = "month") int month) {
-		System.out.println(idClase);
-		System.out.println(idProf);
-		System.out.println(month);
-		System.out.println(maskMonth(month));
-		return "index";
-	}
+	// @GetMapping(value = "admin/request_asistencias")
+	// public String getAsistenciasSheet(@RequestParam(value = "idprof") int idProf,
+	// @RequestParam(value = "idclase") int idClase, @RequestParam(value = "month")
+	// int month) {
+	// System.out.println(idClase);
+	// System.out.println(idProf);
+	// System.out.println(month);
+	// System.out.println(maskMonth(month));
+	// return "index";
+	// }
 
-	public String maskMonth(int month) {
-		return new DateFormatSymbols().getMonths()[month];
-	}
-
+	// public String maskMonth(int month) {
+	// return new DateFormatSymbols().getMonths()[month];
+	// }
 }

@@ -38,10 +38,6 @@ public class Asistencia {
 	private Profesor profesor;
 
 	@ManyToOne
-	@JoinColumn(name = "idClase")
-	private Clase clase;
-
-	@ManyToOne
 	@JoinColumn(name = "idHorario")
 	private Horario horario;
 
@@ -54,7 +50,6 @@ public class Asistencia {
 			boolean estadoAsistencia) {
 		this.idAsistencia = idAsistencia;
 		this.profesor = profesor;
-		this.clase = clase;
 		this.horario = horario;
 		this.fechaAsistencia = fechaAsistencia;
 		this.estadoAsistencia = estadoAsistencia;
@@ -74,14 +69,6 @@ public class Asistencia {
 
 	public void setProfesor(Profesor profesor) {
 		this.profesor = profesor;
-	}
-
-	public Clase getClase() {
-		return clase;
-	}
-
-	public void setClase(Clase clase) {
-		this.clase = clase;
 	}
 
 	public Horario getHorario() {
@@ -112,7 +99,6 @@ public class Asistencia {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((clase == null) ? 0 : clase.hashCode());
 		result = prime * result + (estadoAsistencia ? 1231 : 1237);
 		result = prime * result + ((fechaAsistencia == null) ? 0 : fechaAsistencia.hashCode());
 		result = prime * result + ((horario == null) ? 0 : horario.hashCode());
@@ -130,11 +116,6 @@ public class Asistencia {
 		if (getClass() != obj.getClass())
 			return false;
 		Asistencia other = (Asistencia) obj;
-		if (clase == null) {
-			if (other.clase != null)
-				return false;
-		} else if (!clase.equals(other.clase))
-			return false;
 		if (estadoAsistencia != other.estadoAsistencia)
 			return false;
 		if (fechaAsistencia == null) {
@@ -156,6 +137,5 @@ public class Asistencia {
 			return false;
 		return true;
 	}
-
 
 }

@@ -15,12 +15,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "clase")
@@ -36,34 +39,52 @@ public class Clase {
 	private String deporte;
 	@Column
 	private String nombreDep;
-	@Column
-	private LocalDate fechaCreacion;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "clase")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate fechaInicio;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate fechaFin;
+
+	// @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy =
+	// "clase")
+	// private List<Horario> horarios = new ArrayList<Horario>();
+
+	// @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy =
+	// "clase")
+	// private List<DiaDePractica> dias = new ArrayList<DiaDePractica>();
+
+	// @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "clase", orphanRemoval =
+	// true)
+	// private List<Asistencia> asistencias = new ArrayList<Asistencia>();
+	// // profesor_tiene_clase N:N
+
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "clases")
+	private List<Profesor> profesores = new ArrayList<Profesor>();
+
+	@ManyToMany()
+	@JoinTable(name = "clase_has_dias", joinColumns = { @JoinColumn(name = "id_clase") }, inverseJoinColumns = {
+			@JoinColumn(name = "id_dia") })
+	private List<DiaDePractica> dias = new ArrayList<DiaDePractica>();
+
+	@OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "clase", orphanRemoval = true)
 	private List<Horario> horarios = new ArrayList<Horario>();
-
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "clase", orphanRemoval = true)
-	private List<Asistencia> asistencias = new ArrayList<Asistencia>();
-	// profesor_tiene_clase N:N
-
-	@JsonBackReference
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "clases")
-	private List<Profesor> profesores = new ArrayList<>();
 
 	@Override
 	public String toString() {
 		return "Clase [deporte=" + ", idClase=" + idClase + ", nombreDep=" + nombreDep + "]";
 	}
 
-	public Clase(int idClase, String deporte, String nombreDep, LocalDate fechaCreacion, List<Horario> horarios,
-			List<Asistencia> asistencias, List<Profesor> profesores) {
+	public Clase(int idClase, String deporte, String nombreDep, LocalDate fechaInicio, LocalDate fechaFin,
+			List<Profesor> profesores, List<DiaDePractica> dias, List<Horario> horarios) {
 		this.idClase = idClase;
 		this.deporte = deporte;
 		this.nombreDep = nombreDep;
-		this.fechaCreacion = fechaCreacion;
-		this.horarios = horarios;
-		this.asistencias = asistencias;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
 		this.profesores = profesores;
+		this.dias = dias;
+		this.horarios = horarios;
 	}
 
 	public int getIdClase() {
@@ -90,28 +111,20 @@ public class Clase {
 		this.nombreDep = nombreDep;
 	}
 
-	public LocalDate getFechaCreacion() {
-		return fechaCreacion;
+	public LocalDate getFechaInicio() {
+		return fechaInicio;
 	}
 
-	public void setFechaCreacion(LocalDate fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
+	public void setFechaInicio(LocalDate fechaInicio) {
+		this.fechaInicio = fechaInicio;
 	}
 
-	public List<Horario> getHorarios() {
-		return horarios;
+	public LocalDate getFechaFin() {
+		return fechaFin;
 	}
 
-	public void setHorarios(List<Horario> horarios) {
-		this.horarios = horarios;
-	}
-
-	public List<Asistencia> getAsistencias() {
-		return asistencias;
-	}
-
-	public void setAsistencias(List<Asistencia> asistencias) {
-		this.asistencias = asistencias;
+	public void setFechaFin(LocalDate fechaFin) {
+		this.fechaFin = fechaFin;
 	}
 
 	public List<Profesor> getProfesores() {
@@ -122,14 +135,30 @@ public class Clase {
 		this.profesores = profesores;
 	}
 
+	public List<DiaDePractica> getDias() {
+		return dias;
+	}
+
+	public void setDias(List<DiaDePractica> dias) {
+		this.dias = dias;
+	}
+
+	public List<Horario> getHorarios() {
+		return horarios;
+	}
+
+	public void setHorarios(List<Horario> horarios) {
+		this.horarios = horarios;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((asistencias == null) ? 0 : asistencias.hashCode());
 		result = prime * result + ((deporte == null) ? 0 : deporte.hashCode());
-		result = prime * result + ((fechaCreacion == null) ? 0 : fechaCreacion.hashCode());
-		result = prime * result + ((horarios == null) ? 0 : horarios.hashCode());
+		result = prime * result + ((dias == null) ? 0 : dias.hashCode());
+		result = prime * result + ((fechaFin == null) ? 0 : fechaFin.hashCode());
+		result = prime * result + ((fechaInicio == null) ? 0 : fechaInicio.hashCode());
 		result = prime * result + idClase;
 		result = prime * result + ((nombreDep == null) ? 0 : nombreDep.hashCode());
 		result = prime * result + ((profesores == null) ? 0 : profesores.hashCode());
@@ -145,25 +174,25 @@ public class Clase {
 		if (getClass() != obj.getClass())
 			return false;
 		Clase other = (Clase) obj;
-		if (asistencias == null) {
-			if (other.asistencias != null)
-				return false;
-		} else if (!asistencias.equals(other.asistencias))
-			return false;
 		if (deporte == null) {
 			if (other.deporte != null)
 				return false;
 		} else if (!deporte.equals(other.deporte))
 			return false;
-		if (fechaCreacion == null) {
-			if (other.fechaCreacion != null)
+		if (dias == null) {
+			if (other.dias != null)
 				return false;
-		} else if (!fechaCreacion.equals(other.fechaCreacion))
+		} else if (!dias.equals(other.dias))
 			return false;
-		if (horarios == null) {
-			if (other.horarios != null)
+		if (fechaFin == null) {
+			if (other.fechaFin != null)
 				return false;
-		} else if (!horarios.equals(other.horarios))
+		} else if (!fechaFin.equals(other.fechaFin))
+			return false;
+		if (fechaInicio == null) {
+			if (other.fechaInicio != null)
+				return false;
+		} else if (!fechaInicio.equals(other.fechaInicio))
 			return false;
 		if (idClase != other.idClase)
 			return false;
@@ -180,5 +209,4 @@ public class Clase {
 		return true;
 	}
 
-	
 }

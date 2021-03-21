@@ -5,15 +5,21 @@
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina -->
+    <!--StyleSheets CSS-->
     <link
       rel="stylesheet"
-      type="text/css"
-      href="static/css/bootstrap.min.css"
-      th:href="@{/css/bootstrap.min.css}"
+      href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"
     />
-    <script src="/js/bootstrap.min.js"></script>
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
     <!--Iconos de FontAwesome-->
     <link
       rel="stylesheet"
@@ -23,11 +29,30 @@
       src="https://kit.fontawesome.com/76bcb4e810.js"
       crossorigin="anonymous"
     ></script>
-
-    <!-- SweetAlert -->
-
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="/funciones.js"></script>
+    <script src="/showSelector.js"></script>
+
+    <!--tablas-->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
   </head>
   <body>
     <!--Tabla que trae datos desde base de datos--
@@ -82,7 +107,7 @@
                 <a class="dropdown-item" href="/admin/configuracion"
                   ><i class="fas fa-cog"></i> Configuracion</a
                 >
-               
+
                 <li class="divider"></li>
                 <li>
                   <a class="dropdown-item" href="/logout"
@@ -108,21 +133,72 @@
             th:object="${clase}"
             method="POST"
           >
-            <div class="form-group">
-              <input type="hidden" th:field="*{idClase}" id="idclase" />
+            <div class="card">
+              <div class="card-body">
+                <input type="hidden" th:field="*{idClase}" />
+                <div class="row">
+                  <div class="form-group form-inline p-2">
+                    <label class="mr-2" for="nombre">Nombre de la Clase:</label>
+                    <input
+                      type="text"
+                      id="nombre"
+                      name="nombre"
+                      th:field="*{nombreDep}"
+                      class="form-control mr-4 col-lg-3"
+                    />
+                    <label class="mr-2" for="deporte">Deporte:</label>
+                    <input
+                      type="text"
+                      id="Deporte"
+                      name="deporte"
+                      th:field="*{deporte}"
+                      class="form-control mr-2 col-lg-3"
+                    />
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group form-inline p-2">
+                    <label for="fechaInicio">Fecha de inicio:</label>
+                    <input
+                      class="form-control m-3"
+                      id="fechaInicio"
+                      name="fechaInicio"
+                      th:field="*{fechaInicio}"
+                      type="date"
+                    />
+
+                    <label for="fechaFin">Fecha de Finalización:</label>
+                    <input
+                      class="form-control m-3"
+                      id="fechaFin"
+                      name="fechaFin"
+                      th:field="*{fechaFin}"
+                      type="date"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <label for="dias">Dias de la semana</label>
+                  <select
+                    required
+                    type="text"
+                    class="form-control selectpicker col-lg-4"
+                    multiple
+                    data-live-search="true"
+                    th:field="${clase.dias}"
+                  >
+                    <option
+                      th:each="dia, iter :${dias}"
+                      th:value="${dia.idDia}"
+                      th:text="${dia.diaDeLaSemana}"
+                    ></option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="form-group form-inline">
-              <label class="mr-2" for="nombre">Nombre de la Clase</label>
-              <input
-                th:field="*{nombreDep}"
-                type="text"
-                class="form-control mr-4 w-25"
-                required
-              />
-              <label class="mr-2" for="deporte">Deporte</label>
-              <input th:field="*{deporte}" type="text" class="form-control" required />
-            </div>
-            <button type="submit" class="btn btn-primary">Guardar</button>
           </form>
         </div>
       </div>

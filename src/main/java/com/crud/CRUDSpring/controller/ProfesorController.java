@@ -1,20 +1,13 @@
 package com.crud.CRUDSpring.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +26,6 @@ import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceHorario;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
 import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
-import com.crud.CRUDSpring.interfaces.interfaceClase;
 import com.crud.CRUDSpring.interfaces.interfaceProfesor;
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
@@ -79,7 +70,8 @@ public class ProfesorController {
 	@GetMapping("/profesor/clases")
 	public String clasesProfesor(@ModelAttribute Profesor profesor, Model model,
 			@RequestParam(value = "noHayHorarios", required = false) Optional<Boolean> noHayHorarios) {
-		Iterable<Clase> clases = profesor.getClases(); // ver para hacer la relacion de
+		List<Clase> clases = new ArrayList<Clase>();
+		clases = profesor.getClases(); // ver para hacer la relacion de
 		model.addAttribute("profesor", profesor);
 		model.addAttribute("clases", clases);
 		return "vistas_profesor/logedin_profesor_clase";
@@ -124,7 +116,34 @@ public class ProfesorController {
 
 		model.addAttribute("asistencias", asistencias);
 		model.addAttribute("asistencia", new Asistencia());
-		return "vistas_profesor/registrar_asistencia_consultar_horarios";
+		return "vistas_profesor/consultar_horarios";
+	}
+
+	private String maskDay(DayOfWeek dayOfWeek) {
+		switch (dayOfWeek) {
+		case MONDAY:
+			return "Lunes";
+
+		case TUESDAY:
+			return "Martes";
+
+		case WEDNESDAY:
+			return "Miercoles";
+
+		case THURSDAY:
+			return "Jueves";
+
+		case FRIDAY:
+			return "Viernes";
+
+		case SATURDAY:
+			return "Sabado";
+
+		case SUNDAY:
+			return "Domingo";
+		default:
+			return null;
+		}
 	}
 
 	@GetMapping("/profesor/save_asistencia")
@@ -149,58 +168,38 @@ public class ProfesorController {
 		int horaFin = Integer.parseInt(horarioFinString.substring(0, 2));
 		// Evalua, si ya hay una clase registrada en esta fecha para este horario,
 		// informo
-		List<String> diasDisponibles = new ArrayList<String>();
-		List<DiaDePractica> diasDePractica = horario.getDias();
-		for (DiaDePractica diaDePractica : diasDePractica) {
-			String dia = diaDePractica.getDiaDeLaSemana();
-			diasDisponibles.add(dia);
-			System.out.println(dia);
+		String currentDayAsString = maskDay(currentDay);
+		String diaAregistrar = horario.getDia().getDiaDeLaSemana();
+		System.out.println("el dia que se quiere registrar es: " + diaAregistrar);
+		boolean contieneDia = false;
+
+		for (DiaDePractica diaDePractica : clase.getDias()) {
+			if (diaDePractica.getDiaDeLaSemana().equalsIgnoreCase(currentDayAsString)) {
+				contieneDia = true;
+			}
 		}
 
-		String currentDayAsString = new String();
-		switch (currentDay) {
-			case MONDAY:
-				currentDayAsString = "Lunes";
-				break;
-			case TUESDAY:
-				currentDayAsString = "Martes";
-				break;
-			case WEDNESDAY:
-				currentDayAsString = "Miercoles";
-				break;
-			case THURSDAY:
-				currentDayAsString = "Jueves";
-				break;
-			case FRIDAY:
-				currentDayAsString = "Viernes";
-				break;
-			case SATURDAY:
-				currentDayAsString = "Sabado";
-				break;
-			case SUNDAY:
-				currentDayAsString = "Domingo";
-				break;
-			default:
-				break;
-		}
 		if (interfaceAsis.findByHorarioInAndFechaAsistenciaInAndProfesor(horario, localCurrentDate, profesor)
 				.isPresent()) {
 			System.out.println("ya hay una clase registrada");
 			return "alertas/alerta_repetida.html";
 		}
-		if (!diasDisponibles.contains(currentDayAsString)) {
+
+		if (!contieneDia) {
 			System.out.println("No puede fichar en este día");
 			return "alertas/alerta_dia.html";
+
 		} else if ((currentHour - horaFin) >= 3) {
 			System.out.println("No puede cargar la asistencia pasadas 3 Horas de finalizada la clase");
 			return "alertas/alerta_tarde.html";
+
 		} else if ((currentHour - horaFin) < 0) {
 			System.out.println("Solo puede cargas la asistencia una vez termine la clase");
 			return "alertas/alerta_temprano.html";
-		} else if (diasDisponibles.contains(currentDayAsString)) {
+		}
+		if (contieneDia && diaAregistrar.equals(currentDayAsString)) {
 			System.out.println("cargando la asistencia");
 			asistencia.setProfesor(profesor);
-			asistencia.setClase(clase);
 			asistencia.setHorario(horario);
 			asistencia.setFechaAsistencia(localCurrentDate);
 			asistencia.setEstadoAsistencia(true);

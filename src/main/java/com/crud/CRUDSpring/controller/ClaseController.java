@@ -17,11 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
+import com.crud.CRUDSpring.interfaceService.IfServiceDia;
 import com.crud.CRUDSpring.interfaceService.IfServiceHorario;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
 import com.crud.CRUDSpring.model.Clase;
+import com.crud.CRUDSpring.model.DiaDePractica;
 import com.crud.CRUDSpring.model.Horario;
-import com.crud.CRUDSpring.model.Persona;
 import com.crud.CRUDSpring.model.Profesor;
 
 @Controller
@@ -31,13 +32,15 @@ public class ClaseController {
 	private IfServiceClase service;
 
 	@Autowired
-	private IfServiceHorario serviceHorario;
+	private IfServiceDia serviceDia;
 
 	@GetMapping("/admin/lista_clases")
 	public String ListarClases(Model model) {
+
 		List<Clase> clases = service.listarClase();
 		model.addAttribute("clases", clases);
 		model.addAttribute("clase", new Clase());
+		model.addAttribute("dias", serviceDia.listarDiaDePractica());
 		return "lista_clases";
 	}
 
@@ -57,7 +60,10 @@ public class ClaseController {
 	@GetMapping("/admin/editar_clase/{id}")
 	public String editarClase(@PathVariable int id, Model model) { // Uso PathVariable para establecer id como parametro
 		Optional<Clase> clase = service.clasePorId(id);
+		List<DiaDePractica> dias = serviceDia.listarDiaDePractica();
 		model.addAttribute("clase", clase);
+		model.addAttribute("dias", dias);
+
 		return "form_clase";
 
 	}

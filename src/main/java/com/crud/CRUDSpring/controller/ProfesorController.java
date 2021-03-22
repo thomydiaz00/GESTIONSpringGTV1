@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.crud.CRUDSpring.interfaceService.IfServiceAsistencia;
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceHorario;
@@ -119,33 +117,6 @@ public class ProfesorController {
 		return "vistas_profesor/consultar_horarios";
 	}
 
-	private String maskDay(DayOfWeek dayOfWeek) {
-		switch (dayOfWeek) {
-		case MONDAY:
-			return "Lunes";
-
-		case TUESDAY:
-			return "Martes";
-
-		case WEDNESDAY:
-			return "Miercoles";
-
-		case THURSDAY:
-			return "Jueves";
-
-		case FRIDAY:
-			return "Viernes";
-
-		case SATURDAY:
-			return "Sabado";
-
-		case SUNDAY:
-			return "Domingo";
-		default:
-			return null;
-		}
-	}
-
 	@GetMapping("/profesor/save_asistencia")
 	public String saveAsistencia(@RequestParam(value = "idhorario") int idHorario,
 			@RequestParam(value = "idclase") int idClase, @RequestParam(value = "idprof") int idProf) {
@@ -168,7 +139,7 @@ public class ProfesorController {
 		int horaFin = Integer.parseInt(horarioFinString.substring(0, 2));
 		// Evalua, si ya hay una clase registrada en esta fecha para este horario,
 		// informo
-		String currentDayAsString = maskDay(currentDay);
+		String currentDayAsString = interfaceAsistencia.maskDay(currentDay);
 		String diaAregistrar = horario.getDia().getDiaDeLaSemana();
 		System.out.println("el dia que se quiere registrar es: " + diaAregistrar);
 		boolean contieneDia = false;

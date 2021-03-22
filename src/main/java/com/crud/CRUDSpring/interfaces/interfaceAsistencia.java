@@ -5,6 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,33 @@ public interface interfaceAsistencia extends CrudRepository<Asistencia, Integer>
 
         public Optional<Asistencia> findByHorarioInAndFechaAsistenciaInAndProfesor(Horario horario, LocalDate tras,
                         Profesor profesor);
+
+        public static String maskDay(DayOfWeek dayOfWeek) {
+                switch (dayOfWeek) {
+                case MONDAY:
+                        return "Lunes";
+
+                case TUESDAY:
+                        return "Martes";
+
+                case WEDNESDAY:
+                        return "Miercoles";
+
+                case THURSDAY:
+                        return "Jueves";
+
+                case FRIDAY:
+                        return "Viernes";
+
+                case SATURDAY:
+                        return "Sabado";
+
+                case SUNDAY:
+                        return "Domingo";
+                default:
+                        return null;
+                }
+        }
 
         // public List<Asistencia> findByHorarioInAndProfesor(Horario horario, Profesor
         // profesor);

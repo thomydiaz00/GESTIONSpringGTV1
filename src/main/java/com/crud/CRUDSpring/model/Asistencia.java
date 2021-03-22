@@ -41,6 +41,10 @@ public class Asistencia {
 	@JoinColumn(name = "idHorario")
 	private Horario horario;
 
+	@ManyToOne
+	@JoinColumn(name = "idClase")
+	private Clase clase;
+
 	@Column
 	private LocalDate fechaAsistencia;
 	@Column
@@ -53,6 +57,7 @@ public class Asistencia {
 		this.horario = horario;
 		this.fechaAsistencia = fechaAsistencia;
 		this.estadoAsistencia = estadoAsistencia;
+		this.clase = clase;
 	}
 
 	public int getIdAsistencia() {
@@ -93,6 +98,14 @@ public class Asistencia {
 
 	public void setEstadoAsistencia(boolean estadoAsistencia) {
 		this.estadoAsistencia = estadoAsistencia;
+	}
+
+	public Clase getClase() {
+		return clase;
+	}
+
+	public void setClase(Clase clase) {
+		this.clase = clase;
 	}
 
 	@Override

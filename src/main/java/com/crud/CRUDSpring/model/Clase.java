@@ -50,14 +50,9 @@ public class Clase {
 	// "clase")
 	// private List<Horario> horarios = new ArrayList<Horario>();
 
-	// @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy =
-	// "clase")
-	// private List<DiaDePractica> dias = new ArrayList<DiaDePractica>();
-
-	// @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "clase", orphanRemoval =
-	// true)
-	// private List<Asistencia> asistencias = new ArrayList<Asistencia>();
-	// // profesor_tiene_clase N:N
+	@OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "clase")
+	private List<Asistencia> asistencias = new ArrayList<Asistencia>();
+	// profesor_tiene_clase N:N
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "clases")
 	private List<Profesor> profesores = new ArrayList<Profesor>();
@@ -76,7 +71,7 @@ public class Clase {
 	}
 
 	public Clase(int idClase, String deporte, String nombreDep, LocalDate fechaInicio, LocalDate fechaFin,
-			List<Profesor> profesores, List<DiaDePractica> dias, List<Horario> horarios) {
+			List<Profesor> profesores, List<DiaDePractica> dias, List<Horario> horarios, List<Asistencia> asistencias) {
 		this.idClase = idClase;
 		this.deporte = deporte;
 		this.nombreDep = nombreDep;
@@ -85,6 +80,7 @@ public class Clase {
 		this.profesores = profesores;
 		this.dias = dias;
 		this.horarios = horarios;
+		this.asistencias = asistencias;
 	}
 
 	public int getIdClase() {
@@ -149,6 +145,14 @@ public class Clase {
 
 	public void setHorarios(List<Horario> horarios) {
 		this.horarios = horarios;
+	}
+
+	public List<Asistencia> getAsistencias() {
+		return asistencias;
+	}
+
+	public void setAsistencias(List<Asistencia> asistencias) {
+		this.asistencias = asistencias;
 	}
 
 	@Override

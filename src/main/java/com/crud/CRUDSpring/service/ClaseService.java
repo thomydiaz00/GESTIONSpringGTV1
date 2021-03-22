@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.crud.CRUDSpring.interfaceService.IfServiceAsistencia;
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
@@ -58,7 +59,7 @@ public class ClaseService implements IfServiceClase {
 		List<LocalDate> todasLasFechas = new ArrayList<LocalDate>();
 		Clase claseSinActualizar = clasePorId(clase.getIdClase()).get();
 		boolean diasActualizados = false;
-		if (claseSinActualizar.getDias() != clase.getDias()) {
+		if (!claseSinActualizar.getDias().toString().equals(clase.getDias().toString())) {
 			diasActualizados = true;
 		}
 		for (DiaDePractica diaDePractica : clase.getDias()) {
@@ -70,34 +71,44 @@ public class ClaseService implements IfServiceClase {
 		if (esNuevaClase) {
 			todasLasFechas = clase.getFechaInicio().datesUntil(clase.getFechaFin()).collect(Collectors.toList());
 		} else {
-			todasLasFechas = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())
-					.collect(Collectors.toList());
-			System.out.println("Agregando registros, iniciando desde " + claseSinActualizar.getFechaFin());
+			if (!diasActualizados) {
+				todasLasFechas = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())
+						.collect(Collectors.toList());
+				System.out.println("Agregando registros, iniciando desde " + claseSinActualizar.getFechaFin());
+			} else {
 
-			// } else {
-			// Tengo que crear registros para los nuevos dias registrados
-			// Agrego registros hasta la fecha para los dias nuevos, agrego a partir de la
-			// nueva fecha de
-			// fin para los viejos en el segundo loop
-			// List<LocalDate> allDates =
-			// clase.getFechaInicio().datesUntil(clase.getFechaFin())
-			// .collect(Collectors.toList());
-			// List<LocalDate> oldDaysDates =
-			// claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())
-			// .collect(Collectors.toList());
-			// for (LocalDate date : allDates) {
-			// String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
-			// if (!claseSinActualizar.getDias().contains(dayName)) {
-			// todasLasFechas.add(date);
-			// }
-			// }
-			// for (LocalDate date : oldDaysDates) {
-			// String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
-			// if (claseSinActualizar.getDias().contains(dayName)) {
-			// todasLasFechas.add(date);
-			// }
-			// }
+				List<LocalDate> allDates = clase.getFechaInicio().datesUntil(clase.getFechaFin())
+						.collect(Collectors.toList());
+				List<LocalDate> oldDaysDates = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())
+						.collect(Collectors.toList());
+
+				for (DiaDePractica dia : claseSinActualizar.getDias()) {
+					dias.remove(dia.getDiaDeLaSemana());
+				}
+				// El primer loop agrega los registros para los dias nuevos
+				for (LocalDate date : allDates) {
+					String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
+					if (dias.contains(dayName)) {
+						todasLasFechas.add(date);
+					}
+				}
+				for (LocalDate date : oldDaysDates) {
+					String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
+					if (claseSinActualizar.getDias().contains(dayName)) {
+						todasLasFechas.add(date);
+					}
+				}
+			}
 		}
+
+		// } else {
+		// // Tengo que crear registros para los nuevos dias registrados
+		// // Agrego registros hasta la fecha para los dias nuevos, agrego a partir de
+		// la
+		// // nueva fecha de
+		// //fin para los viejos en el segundo loop
+
+		// }
 
 		data.save(clase);
 
@@ -108,7 +119,9 @@ public class ClaseService implements IfServiceClase {
 
 		// Si la fecha está dentro del rango y contiene alguno de los dias, la agrego a
 		// una lista
-		for (LocalDate fecha : todasLasFechas) {
+		for (
+
+		LocalDate fecha : todasLasFechas) {
 			boolean condition = dias.contains(interfaceAsistencia.maskDay(fecha.getDayOfWeek()));
 			if (condition) {
 				filteredDates.add(fecha);

@@ -54,13 +54,19 @@ public class ClaseService implements IfServiceClase {
 
 	private void crearRegistrosAsistencia(Clase clase, boolean esNuevaClase) {
 		System.out.println("creando los reg");
+		List<LocalDate> oldDaysDates = new ArrayList();
+		List<LocalDate> allDates = new ArrayList();
 		List<String> dias = new ArrayList<String>();
 		List<LocalDate> filteredDates = new ArrayList<LocalDate>();
 		List<LocalDate> todasLasFechas = new ArrayList<LocalDate>();
 		Clase claseSinActualizar = clasePorId(clase.getIdClase()).get();
 		boolean diasActualizados = false;
+		boolean fechaFinActualizada = false;
 		if (!claseSinActualizar.getDias().toString().equals(clase.getDias().toString())) {
 			diasActualizados = true;
+		}
+		if (!claseSinActualizar.getFechaFin().equals(clase.getFechaFin())) {
+			fechaFinActualizada = true;
 		}
 		for (DiaDePractica diaDePractica : clase.getDias()) {
 			dias.add(diaDePractica.getDiaDeLaSemana());
@@ -76,28 +82,29 @@ public class ClaseService implements IfServiceClase {
 						.collect(Collectors.toList());
 				System.out.println("Agregando registros, iniciando desde " + claseSinActualizar.getFechaFin());
 			} else {
+				if (diasActualizados || fechaFinActualizada) {
+					allDates = clase.getFechaInicio().datesUntil(clase.getFechaFin()).collect(Collectors.toList());
+					oldDaysDates = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())
+							.collect(Collectors.toList());
 
-				List<LocalDate> allDates = clase.getFechaInicio().datesUntil(clase.getFechaFin())
-						.collect(Collectors.toList());
-				List<LocalDate> oldDaysDates = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())
-						.collect(Collectors.toList());
-
-				for (DiaDePractica dia : claseSinActualizar.getDias()) {
-					dias.remove(dia.getDiaDeLaSemana());
-				}
-				// El primer loop agrega los registros para los dias nuevos
-				for (LocalDate date : allDates) {
-					String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
-					if (dias.contains(dayName)) {
-						todasLasFechas.add(date);
+					for (DiaDePractica dia : claseSinActualizar.getDias()) {
+						dias.remove(dia.getDiaDeLaSemana());
+					}
+					// El primer loop agrega los registros para los dias nuevos
+					for (LocalDate date : allDates) {
+						String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
+						if (dias.contains(dayName)) {
+							todasLasFechas.add(date);
+						}
+					}
+					for (LocalDate date : oldDaysDates) {
+						String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
+						if (claseSinActualizar.getDias().contains(dayName)) {
+							todasLasFechas.add(date);
+						}
 					}
 				}
-				for (LocalDate date : oldDaysDates) {
-					String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
-					if (claseSinActualizar.getDias().contains(dayName)) {
-						todasLasFechas.add(date);
-					}
-				}
+
 			}
 		}
 

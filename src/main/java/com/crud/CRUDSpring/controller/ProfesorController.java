@@ -86,36 +86,40 @@ public class ProfesorController {
 		return "redirect:/profesor/consultar_horarios";
 	}
 
-	@GetMapping("/profesor/consultar_horarios")
-	public String registrarAsistencia(Model model, @ModelAttribute Profesor profesor, @ModelAttribute Clase clase) {
-		Date currentDate = new Date();
-		LocalDate tras = currentDate.toInstant().atZone(ZoneId.of("America/Argentina/Catamarca")).toLocalDate();
-		List<Horario> horarios = clase.getHorarios();
-		List<Asistencia> asistencias = new ArrayList<Asistencia>();
+	// @GetMapping("/profesor/consultar_horarios")
+	// public String registrarAsistencia(Model model, @ModelAttribute Profesor
+	// profesor, @ModelAttribute Clase clase) {
+	// Date currentDate = new Date();
+	// LocalDate tras =
+	// currentDate.toInstant().atZone(ZoneId.of("America/Argentina/Catamarca")).toLocalDate();
+	// List<Horario> horarios = clase.getHorarios();
+	// List<Asistencia> asistencias = new ArrayList<Asistencia>();
 
-		model.addAttribute("indexHorarios", horarios.size());
-		model.addAttribute("idClase", clase.getIdClase());
-		model.addAttribute("idProfesor", profesor.getIdProf());
-		model.addAttribute("horarios", horarios);
-		for (Horario horario : horarios) {
-			try {
-				Asistencia asis = interfaceAsis.findByHorarioInAndFechaAsistenciaInAndProfesor(horario, tras, profesor)
-						.get();
-				asistencias.add(asis);
-				System.out.println(asis.isEstadoAsistencia());
-			} catch (NoSuchElementException e) {
-				Asistencia asis = new Asistencia();
-				asis.setEstadoAsistencia(false);
-				asistencias.add(asis);
+	// model.addAttribute("indexHorarios", horarios.size());
+	// model.addAttribute("idClase", clase.getIdClase());
+	// model.addAttribute("idProfesor", profesor.getIdProf());
+	// model.addAttribute("horarios", horarios);
+	// for (Horario horario : horarios) {
+	// try {
+	// Asistencia asis =
+	// interfaceAsis.findByHorarioInAndFechaAsistenciaInAndProfesor(horario, tras,
+	// profesor)
+	// .get();
+	// asistencias.add(asis);
+	// System.out.println(asis.isEstadoAsistencia());
+	// } catch (NoSuchElementException e) {
+	// Asistencia asis = new Asistencia();
+	// asis.setEstadoAsistencia(false);
+	// asistencias.add(asis);
 
-			}
-		}
-		System.out.println(asistencias.size());
+	// }
+	// }
+	// System.out.println(asistencias.size());
 
-		model.addAttribute("asistencias", asistencias);
-		model.addAttribute("asistencia", new Asistencia());
-		return "vistas_profesor/consultar_horarios";
-	}
+	// model.addAttribute("asistencias", asistencias);
+	// model.addAttribute("asistencia", new Asistencia());
+	// return "vistas_profesor/consultar_horarios";
+	// }
 
 	@GetMapping("/profesor/save_asistencia")
 	public String saveAsistencia(@RequestParam(value = "idhorario") int idHorario,
@@ -150,11 +154,12 @@ public class ProfesorController {
 			}
 		}
 
-		if (interfaceAsis.findByHorarioInAndFechaAsistenciaInAndProfesor(horario, localCurrentDate, profesor)
-				.isPresent()) {
-			System.out.println("ya hay una clase registrada");
-			return "alertas/alerta_repetida.html";
-		}
+		// if (interfaceAsis.findByHorarioInAndFechaAsistenciaInAndProfesor(horario,
+		// localCurrentDate, profesor)
+		// .isPresent()) {
+		// System.out.println("ya hay una clase registrada");
+		// return "alertas/alerta_repetida.html";
+		// }
 
 		if (!contieneDia) {
 			System.out.println("No puede fichar en este día");
@@ -170,8 +175,9 @@ public class ProfesorController {
 		}
 		if (contieneDia && diaAregistrar.equals(currentDayAsString)) {
 			System.out.println("cargando la asistencia");
-			asistencia.setProfesor(profesor);
-			asistencia.setHorario(horario);
+			// reemplazar por registroDeAsistencias
+			// asistencia.setProfesor(profesor);
+			// asistencia.setHorario(horario);
 			asistencia.setFechaAsistencia(localCurrentDate);
 			asistencia.setEstadoAsistencia(true);
 			serviceAsistencia.guardarAsistencia(asistencia);

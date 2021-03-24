@@ -1,21 +1,18 @@
 package com.crud.CRUDSpring.model;
 
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /* 
@@ -34,16 +31,11 @@ public class Asistencia {
 	private int idAsistencia;
 
 	@ManyToOne
-	@JoinColumn(name = "idProf")
-	private Profesor profesor;
-
-	@ManyToOne
-	@JoinColumn(name = "idHorario")
-	private Horario horario;
-
-	@ManyToOne
 	@JoinColumn(name = "idClase")
 	private Clase clase;
+
+	@OneToMany(mappedBy = "asistencia", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<RegistroDeAsistencia> registroDeAsistencias = new ArrayList<RegistroDeAsistencia>();
 
 	@Column
 	private LocalDate fechaAsistencia;
@@ -53,8 +45,6 @@ public class Asistencia {
 	public Asistencia(int idAsistencia, Profesor profesor, Clase clase, Horario horario, LocalDate fechaAsistencia,
 			boolean estadoAsistencia) {
 		this.idAsistencia = idAsistencia;
-		this.profesor = profesor;
-		this.horario = horario;
 		this.fechaAsistencia = fechaAsistencia;
 		this.estadoAsistencia = estadoAsistencia;
 		this.clase = clase;
@@ -66,22 +56,6 @@ public class Asistencia {
 
 	public void setIdAsistencia(int idAsistencia) {
 		this.idAsistencia = idAsistencia;
-	}
-
-	public Profesor getProfesor() {
-		return profesor;
-	}
-
-	public void setProfesor(Profesor profesor) {
-		this.profesor = profesor;
-	}
-
-	public Horario getHorario() {
-		return horario;
-	}
-
-	public void setHorario(Horario horario) {
-		this.horario = horario;
 	}
 
 	public LocalDate getFechaAsistencia() {
@@ -114,9 +88,7 @@ public class Asistencia {
 		int result = 1;
 		result = prime * result + (estadoAsistencia ? 1231 : 1237);
 		result = prime * result + ((fechaAsistencia == null) ? 0 : fechaAsistencia.hashCode());
-		result = prime * result + ((horario == null) ? 0 : horario.hashCode());
 		result = prime * result + idAsistencia;
-		result = prime * result + ((profesor == null) ? 0 : profesor.hashCode());
 		return result;
 	}
 
@@ -136,17 +108,7 @@ public class Asistencia {
 				return false;
 		} else if (!fechaAsistencia.equals(other.fechaAsistencia))
 			return false;
-		if (horario == null) {
-			if (other.horario != null)
-				return false;
-		} else if (!horario.equals(other.horario))
-			return false;
 		if (idAsistencia != other.idAsistencia)
-			return false;
-		if (profesor == null) {
-			if (other.profesor != null)
-				return false;
-		} else if (!profesor.equals(other.profesor))
 			return false;
 		return true;
 	}

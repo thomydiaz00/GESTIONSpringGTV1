@@ -8,17 +8,12 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
-import com.crud.CRUDSpring.interfaceService.IfServiceAsistencia;
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaces.interfaceClase;
 import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
-
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
 import com.crud.CRUDSpring.model.DiaDePractica;
-import com.crud.CRUDSpring.model.Horario;
 
 @Service
 public class ClaseService implements IfServiceClase {
@@ -56,37 +51,21 @@ public class ClaseService implements IfServiceClase {
 		System.out.println("creando los reg");
 		List<String> dias = new ArrayList<String>();
 		List<LocalDate> filteredDates = new ArrayList<LocalDate>();
-		List<LocalDate> todasLasFechas = new ArrayList<LocalDate>();
 		Clase claseSinActualizar = clasePorId(clase.getIdClase()).get();
-		boolean diasActualizados = false;
 		boolean fechaFinActualizada = false;
 
-		int sizeOfActualDays = clase.getDias().size();
-		int sizeOfOldDays = claseSinActualizar.getDias().size();
-
-		if (sizeOfActualDays != sizeOfOldDays) {
-			diasActualizados = true;
-		}
 		if (!claseSinActualizar.getFechaFin().equals(clase.getFechaFin())) {
 			fechaFinActualizada = true;
 		}
 		for (DiaDePractica diaDePractica : clase.getDias()) {
 			dias.add(diaDePractica.getDiaDeLaSemana());
 		}
-		// Si es una nueva clase creo todos los registros, si es una clase que existía
-		// creo registros
-		// A partir de la fecha fin de la clase sin actualizarla todavía
 
 		filteredDates = definirTodasLasFechas(clase, claseSinActualizar, dias, esNuevaClase, fechaFinActualizada);
-
 		data.save(clase);
-		System.out.println("------------------------------");
-		System.out.println(todasLasFechas.toString());
-		System.out.println("------------------------------");
-		System.out.println(dias.toString());
 
-		// Si la fecha está dentro del rango y contiene alguno de los dias, la agrego a
-		// una lista
+		// Si la fecha coincide con los dias de practica asosciados a la clase los
+		// agrego a la base de datos
 		for (LocalDate fecha : filteredDates) {
 			Asistencia asistencia = new Asistencia();
 			asistencia.setFechaAsistencia(fecha);
@@ -96,6 +75,14 @@ public class ClaseService implements IfServiceClase {
 		}
 	}
 
+	/*
+	 * Esta funcion trae una lista con los registros a agregar en la b.d: Si es una
+	 * clase nueva o no se actualizó la fecha de finalizacion de clases devuelvo
+	 * todas las fechas de ini-fin. Si la clase ya existe devuelvo las fechas a
+	 * incorporar que no existen en la b.d desde la antigua fecha de fin hasta la
+	 * nueva fecha fin (esto evita que haya registros con la misma fecha para la
+	 * misma clase)
+	 */
 	private List<LocalDate> definirTodasLasFechas(Clase clase, Clase claseSinActualizar, List<String> dias,
 			boolean esNuevaClase, boolean fechaFinActualizada) {
 		List<LocalDate> todasLasFechas = new ArrayList<LocalDate>();
@@ -115,22 +102,18 @@ public class ClaseService implements IfServiceClase {
 					filteredDates.add(date);
 				}
 			}
-
 		}
+		System.out.println("------------Todas-las-fechas----------------");
+		System.out.println(dias.toString());
+		System.out.println(todasLasFechas.toString());
+		System.out.println("------------Fechas-a-agregar----------------");
+		System.out.println(filteredDates.toString());
+
 		return filteredDates;
 	}
 
 	@Override
 	public int borrarClase(int id) {
-		/*
-		 * List<Profesor> profesores = (List<Profesor>) serviceProfesor.findAll();
-		 * Optional<Clase> clase = data.findById(id); for (Iterator iterator =
-		 * profesores.iterator(); iterator.hasNext();) { Profesor profesor = (Profesor)
-		 * iterator.next(); if(profesor.getClases().contains(clase.get())) {
-		 * profesor.getClases().remove(clase.get());
-		 * System.out.println("La clase esta asignada, seguro de eliminar? " +
-		 * profesor.getNombreProf()); serviceProfesor.save(profesor); } }
-		 */
 		data.deleteById(id);
 		boolean isPresent = data.existsById(id);
 		if (isPresent) {

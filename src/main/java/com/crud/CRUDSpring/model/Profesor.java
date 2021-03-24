@@ -37,8 +37,9 @@ public class Profesor {
 	@Column
 	private String matriculaProf;
 
-	@OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "profesor", orphanRemoval = true)
-	private List<Asistencia> asistenciaProfesores = new ArrayList<Asistencia>();
+	@OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "profesor")
+	private List<RegistroDeAsistencia> asistenciaProfesores = new
+	ArrayList<RegistroDeAsistencia>();
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "profesor_tiene_clase", joinColumns = { @JoinColumn(name = "id_prof") }, inverseJoinColumns = {
@@ -49,7 +50,8 @@ public class Profesor {
 	}
 
 	public Profesor(int idProf, String nombreProf, String apellidoProf, int dniProf, Date fechaNacProf,
-			int telefonoProf, String matriculaProf, List<Asistencia> asistenciaProfesores, List<Clase> clases) {
+			int telefonoProf, String matriculaProf, List<RegistroDeAsistencia> asistenciaProfesores,
+			List<Clase> clases) {
 		this.idProf = idProf;
 		this.nombreProf = nombreProf;
 		this.apellidoProf = apellidoProf;
@@ -117,12 +119,13 @@ public class Profesor {
 		this.matriculaProf = matriculaProf;
 	}
 
-	public List<Asistencia> getAsistenciaProfesores() {
-		return asistenciaProfesores;
+	public List<RegistroDeAsistencia> getAsistenciaProfesores() {
+	return asistenciaProfesores;
 	}
 
-	public void setAsistenciaProfesores(List<Asistencia> asistenciaProfesores) {
-		this.asistenciaProfesores = asistenciaProfesores;
+	public void setAsistenciaProfesores(List<RegistroDeAsistencia>
+	asistenciaProfesores) {
+	this.asistenciaProfesores = asistenciaProfesores;
 	}
 
 	public List<Clase> getClases() {
@@ -144,7 +147,8 @@ public class Profesor {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((apellidoProf == null) ? 0 : apellidoProf.hashCode());
-		result = prime * result + ((asistenciaProfesores == null) ? 0 : asistenciaProfesores.hashCode());
+		result = prime * result + ((asistenciaProfesores == null) ? 0 :
+		asistenciaProfesores.hashCode());
 		result = prime * result + ((clases == null) ? 0 : clases.hashCode());
 		result = prime * result + dniProf;
 		result = prime * result + ((fechaNacProf == null) ? 0 : fechaNacProf.hashCode());
@@ -170,10 +174,10 @@ public class Profesor {
 		} else if (!apellidoProf.equals(other.apellidoProf))
 			return false;
 		if (asistenciaProfesores == null) {
-			if (other.asistenciaProfesores != null)
-				return false;
+		if (other.asistenciaProfesores != null)
+		return false;
 		} else if (!asistenciaProfesores.equals(other.asistenciaProfesores))
-			return false;
+		return false;
 		if (clases == null) {
 			if (other.clases != null)
 				return false;

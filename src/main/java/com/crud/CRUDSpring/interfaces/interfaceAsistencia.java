@@ -30,8 +30,6 @@ public interface interfaceAsistencia extends CrudRepository<Asistencia, Integer>
         // horario_dia hd INNER JOIN dia_de_practica d ON hd.id_dia = d.id_dia WHERE
         // d.dia_de_la_semana = :nombreDia");
 
-        public Optional<Asistencia> findByHorarioInAndFechaAsistenciaInAndProfesor(Horario horario, LocalDate tras,
-                        Profesor profesor);
 
         public Optional<Asistencia> findByFechaAsistenciaInAndClase(LocalDate date, Clase clase);
 

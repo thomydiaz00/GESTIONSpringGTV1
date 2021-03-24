@@ -47,8 +47,8 @@ public class Horario {
 	@JoinColumn(name = "idClase")
 	private Clase clase;
 
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "horario", orphanRemoval = true)
-	private List<Asistencia> asistencias = new ArrayList<Asistencia>();
+	@OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "horario")
+	private List<RegistroDeAsistencia> registrosDeAsistencias = new ArrayList<RegistroDeAsistencia>();
 
 	public Horario() {
 	}
@@ -60,13 +60,13 @@ public class Horario {
 	}
 
 	public Horario(int idHorario, String hora_inicio, String hora_fin, String lugar, DiaDePractica dia,
-			List<Asistencia> asistencias, Clase clase) {
+			List<RegistroDeAsistencia> registrosDeAsistencias, Clase clase) {
 		this.idHorario = idHorario;
 		this.hora_inicio = hora_inicio;
 		this.hora_fin = hora_fin;
 		this.lugar = lugar;
 		this.dia = dia;
-		this.asistencias = asistencias;
+		this.registrosDeAsistencias = registrosDeAsistencias;
 		this.clase = clase;
 	}
 
@@ -110,12 +110,12 @@ public class Horario {
 		this.dia = dia;
 	}
 
-	public List<Asistencia> getAsistencias() {
-		return asistencias;
+	public List<RegistroDeAsistencia> getRegistrosDeRegistroDeAsistencias() {
+		return registrosDeAsistencias;
 	}
 
-	public void setAsistencias(List<Asistencia> asistencias) {
-		this.asistencias = asistencias;
+	public void setRegistrosDeAsistencias(List<RegistroDeAsistencia> registrosDeAsistencias) {
+		this.registrosDeAsistencias = registrosDeAsistencias;
 	}
 
 	public Clase getClase() {
@@ -130,7 +130,7 @@ public class Horario {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((asistencias == null) ? 0 : asistencias.hashCode());
+		result = prime * result + ((registrosDeAsistencias == null) ? 0 : registrosDeAsistencias.hashCode());
 		result = prime * result + ((dia == null) ? 0 : dia.hashCode());
 		result = prime * result + ((hora_fin == null) ? 0 : hora_fin.hashCode());
 		result = prime * result + ((hora_inicio == null) ? 0 : hora_inicio.hashCode());
@@ -148,10 +148,10 @@ public class Horario {
 		if (getClass() != obj.getClass())
 			return false;
 		Horario other = (Horario) obj;
-		if (asistencias == null) {
-			if (other.asistencias != null)
+		if (registrosDeAsistencias == null) {
+			if (other.registrosDeAsistencias != null)
 				return false;
-		} else if (!asistencias.equals(other.asistencias))
+		} else if (!registrosDeAsistencias.equals(other.registrosDeAsistencias))
 			return false;
 		if (dia == null) {
 			if (other.dia != null)

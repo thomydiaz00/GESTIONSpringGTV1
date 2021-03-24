@@ -58,7 +58,7 @@ public class Clase {
 	private List<Profesor> profesores = new ArrayList<Profesor>();
 
 	@ManyToMany()
-	@JoinTable(name = "clase_has_dias", joinColumns = { @JoinColumn(name = "id_clase") }, inverseJoinColumns = {
+	@JoinTable(name = "clase_tiene_dias", joinColumns = { @JoinColumn(name = "id_clase") }, inverseJoinColumns = {
 			@JoinColumn(name = "id_dia") })
 	private List<DiaDePractica> dias = new ArrayList<DiaDePractica>();
 

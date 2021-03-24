@@ -34,16 +34,17 @@ public class DiaDePractica {
     @Column
     private String diaDeLaSemana;
 
-   
-
+    @OneToMany(mappedBy = "dia", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RegistroDeAsistencia> registroDeAsistencias = new ArrayList<RegistroDeAsistencia>();
+    
     @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "dia", orphanRemoval = true)
     private List<Horario> horarios = new ArrayList<Horario>();
 
     public DiaDePractica() {
     }
-    
+
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dias")
-	private List<Clase> clases = new ArrayList<Clase>();
+    private List<Clase> clases = new ArrayList<Clase>();
 
     @Override
     public String toString() {

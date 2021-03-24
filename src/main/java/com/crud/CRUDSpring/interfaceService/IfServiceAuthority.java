@@ -2,7 +2,6 @@ package com.crud.CRUDSpring.interfaceService;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import com.crud.CRUDSpring.entity.Authority;
 

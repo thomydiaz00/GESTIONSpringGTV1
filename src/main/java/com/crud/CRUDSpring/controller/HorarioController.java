@@ -1,31 +1,18 @@
 package com.crud.CRUDSpring.controller;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceDia;
 import com.crud.CRUDSpring.interfaceService.IfServiceHorario;
-import com.crud.CRUDSpring.interfaces.interfaceClase;
-import com.crud.CRUDSpring.interfaces.interfaceHorario;
 import com.crud.CRUDSpring.model.Clase;
-import com.crud.CRUDSpring.model.DiaDePractica;
 import com.crud.CRUDSpring.model.Horario;
-import com.crud.CRUDSpring.model.Profesor;
 
 @Controller
 public class HorarioController {

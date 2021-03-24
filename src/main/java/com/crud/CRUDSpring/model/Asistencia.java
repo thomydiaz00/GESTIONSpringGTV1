@@ -34,8 +34,10 @@ public class Asistencia {
 	@JoinColumn(name = "idClase")
 	private Clase clase;
 
-	@OneToMany(mappedBy = "asistencia", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<RegistroDeAsistencia> registroDeAsistencias = new ArrayList<RegistroDeAsistencia>();
+	// @OneToMany(mappedBy = "asistencia", cascade = CascadeType.ALL, orphanRemoval
+	// = true)
+	// private List<RegistroDeAsistencia> registroDeAsistencias = new
+	// ArrayList<RegistroDeAsistencia>();
 
 	@Column
 	private LocalDate fechaAsistencia;

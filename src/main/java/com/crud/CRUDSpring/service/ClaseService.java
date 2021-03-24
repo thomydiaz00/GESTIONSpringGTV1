@@ -14,6 +14,7 @@ import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
 import com.crud.CRUDSpring.model.DiaDePractica;
+import com.crud.CRUDSpring.model.Horario;
 
 @Service
 public class ClaseService implements IfServiceClase {
@@ -25,6 +26,9 @@ public class ClaseService implements IfServiceClase {
 	interfaceAsistencia interfaceAsis;
 	@Autowired
 	AsistenciaService serviceAsistencia;
+
+	@Autowired
+	HorarioService serviceHorario;
 
 	@Override
 	public List<Clase> listarClase() {
@@ -42,12 +46,13 @@ public class ClaseService implements IfServiceClase {
 				res = 1;
 			}
 		}
-		crearRegistrosAsistencia(c, esNuevaClase);
-
+		crearFechasAsistencia(c, esNuevaClase);
+		//Si se actualiza la 
+		
 		return res;
 	}
 
-	private void crearRegistrosAsistencia(Clase clase, boolean esNuevaClase) {
+	private void crearFechasAsistencia(Clase clase, boolean esNuevaClase) {
 		System.out.println("creando los reg");
 		List<String> dias = new ArrayList<String>();
 		List<LocalDate> filteredDates = new ArrayList<LocalDate>();
@@ -78,8 +83,8 @@ public class ClaseService implements IfServiceClase {
 	/*
 	 * Esta funcion trae una lista con los registros a agregar en la b.d: Si es una
 	 * clase nueva o no se actualizó la fecha de finalizacion de clases devuelvo
-	 * todas las fechas de ini-fin. Si la clase ya existe devuelvo las fechas a
-	 * incorporar que no existen en la b.d desde la antigua fecha de fin hasta la
+	 * todas las fechas de inicio-fin. Si la clase ya existe devuelvo las fechas a
+	 * incorporar que no existan en la b.d desde la antigua fecha de fin hasta la
 	 * nueva fecha fin (esto evita que haya registros con la misma fecha para la
 	 * misma clase)
 	 */
@@ -93,6 +98,12 @@ public class ClaseService implements IfServiceClase {
 		} else {
 			todasLasFechas = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())
 					.collect(Collectors.toList());
+			//Si la fecha de fin se actualiza tambien deben actualizarse los registros de asistencias
+			if ( !clase.getHorarios().isEmpty()) {
+				for(Horario horario : clase.getHorarios()){
+					serviceHorario.crearRegistrosDeAsistencia(clase, horario);
+				}
+			}
 		}
 		for (LocalDate date : todasLasFechas) {
 			System.out.println("esta clase no es nueva");

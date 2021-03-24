@@ -1,17 +1,11 @@
 package com.crud.CRUDSpring.service;
-
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.crud.CRUDSpring.interfaceService.IfServiceDia;
-import com.crud.CRUDSpring.interfaces.interfaceClase;
 import com.crud.CRUDSpring.interfaces.interfaceDia;
-import com.crud.CRUDSpring.interfaces.interfaceProfesor;
 import com.crud.CRUDSpring.model.DiaDePractica;
-import com.crud.CRUDSpring.model.Profesor;
 
 @Service
 public class DiaService implements IfServiceDia {

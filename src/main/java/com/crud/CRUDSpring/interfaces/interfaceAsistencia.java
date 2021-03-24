@@ -1,20 +1,15 @@
 package com.crud.CRUDSpring.interfaces;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
-import com.crud.CRUDSpring.model.Horario;
-import com.crud.CRUDSpring.model.Profesor;
 
 @Repository
 public interface interfaceAsistencia extends CrudRepository<Asistencia, Integer> {
@@ -30,8 +25,9 @@ public interface interfaceAsistencia extends CrudRepository<Asistencia, Integer>
         // horario_dia hd INNER JOIN dia_de_practica d ON hd.id_dia = d.id_dia WHERE
         // d.dia_de_la_semana = :nombreDia");
 
-
         public Optional<Asistencia> findByFechaAsistenciaInAndClase(LocalDate date, Clase clase);
+
+        public List<Asistencia> findByClase(Clase clase);
 
         public static String maskDay(DayOfWeek dayOfWeek) {
                 switch (dayOfWeek) {

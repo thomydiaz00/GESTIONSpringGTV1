@@ -1,13 +1,10 @@
 package com.crud.CRUDSpring.controller;
 
-import java.time.DayOfWeek;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
 import com.crud.CRUDSpring.interfaceService.IfServiceUser;
-import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
 import com.crud.CRUDSpring.model.Clase;
 import com.crud.CRUDSpring.model.Profesor;
 import com.crud.CRUDSpring.repository.ProfesorRepository;
@@ -38,8 +34,6 @@ public class AdminController {
 	private IfServiceClase servClase;
 	@Autowired
 	private IfServiceUser servUser;
-	@Autowired
-	private interfaceAsistencia interfaceAsis;
 
 	@GetMapping("/admin/lista_profesores")
 	public String ListarProfesores(Model model) {
@@ -80,10 +74,8 @@ public class AdminController {
 		Optional<Profesor> profesor = service.profesorPorId(idProf);
 		List<Clase> profClases = profesor.get().getClases();
 		List<Clase> todasLasClases = servClase.listarClase();
-		for (Iterator iterator = profClases.iterator(); iterator.hasNext();) {
-			Clase clase = (Clase) iterator.next();
+		for (Clase clase : profClases) {
 			todasLasClases.remove(clase);
-
 		}
 		Profesor clasesParaAsignar = new Profesor();
 
@@ -103,8 +95,7 @@ public class AdminController {
 	@PostMapping("/admin/actualizar_clases")
 	public String actualizarClases(HttpServletRequest request, Profesor clasesParaAsignar, Model model) {
 		Profesor p = service.profesorPorId(clasesParaAsignar.getIdProf()).get();
-		for (Iterator iterator = clasesParaAsignar.getClases().iterator(); iterator.hasNext();) {
-			Clase clase = (Clase) iterator.next();
+		for (Clase clase : clasesParaAsignar.getClases()) {
 			p.getClases().add(clase);
 		}
 		service.guardarProfesor(p);
@@ -171,35 +162,6 @@ public class AdminController {
 		}
 		return "redirect:/login?logout"; // You can redirect wherever you want, but generally it's a good practice to
 											// show login screen again.
-	}
-
-	private String maskDay(DayOfWeek currentDay) {
-		switch (currentDay) {
-		case MONDAY:
-			return "Lunes";
-
-		case TUESDAY:
-			return "Martes";
-
-		case WEDNESDAY:
-			return "Miercoles";
-
-		case THURSDAY:
-			return "Jueves";
-
-		case FRIDAY:
-			return "Viernes";
-
-		case SATURDAY:
-			return "Sabado";
-
-		case SUNDAY:
-			return "Domingo";
-
-		default:
-			return null;
-		}
-
 	}
 
 	// @GetMapping("admin/consultar_asistencia/{idProf}/{idClase}")

@@ -2,14 +2,11 @@ package com.crud.CRUDSpring.util;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
-
 import com.crud.CRUDSpring.model.Profesor;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;

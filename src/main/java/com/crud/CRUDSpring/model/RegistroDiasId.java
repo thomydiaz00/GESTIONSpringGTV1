@@ -4,43 +4,61 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Embeddable
 public class RegistroDiasId implements Serializable {
- 
+
     /**
      *
      */
     private static final long serialVersionUID = 1L;
-    @Column(name = "idAsistencia")
-    private int asistencia;
-    @Column(name = "idDia")
-    private int dia;
-    
-    public int getAsistencia() {
-        return asistencia;
-    }
-    public void setAsistencia(int asistencia) {
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idDia", nullable = false, insertable = false, updatable = false)
+    private DiaDePractica dia;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idAsistencia", nullable = false, insertable = false, updatable = false)
+    private Asistencia asistencia;
+
+    public RegistroDiasId(DiaDePractica dia, Asistencia asistencia) {
+        this.dia = dia;
         this.asistencia = asistencia;
     }
-    public int getDia() {
+    
+    public DiaDePractica getDia() {
         return dia;
     }
-    public void setDia(int dia) {
+
+    public void setDia(DiaDePractica dia) {
         this.dia = dia;
     }
-    public RegistroDiasId(int asistencia, int dia) {
+
+    public Asistencia getAsistencia() {
+        return asistencia;
+    }
+
+    public void setAsistencia(Asistencia asistencia) {
         this.asistencia = asistencia;
-        this.dia = dia;
     }
+
+    @Override
+    public String toString() {
+        return "RegistroDiasId [asistencia=" + asistencia + ", dia=" + dia + "]";
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + asistencia;
-        result = prime * result + dia;
+        result = prime * result + ((asistencia == null) ? 0 : asistencia.hashCode());
+        result = prime * result + ((dia == null) ? 0 : dia.hashCode());
         return result;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -50,16 +68,23 @@ public class RegistroDiasId implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         RegistroDiasId other = (RegistroDiasId) obj;
-        if (asistencia != other.asistencia)
+        if (asistencia == null) {
+            if (other.asistencia != null)
+                return false;
+        } else if (!asistencia.equals(other.asistencia))
             return false;
-        if (dia != other.dia)
+        if (dia == null) {
+            if (other.dia != null)
+                return false;
+        } else if (!dia.equals(other.dia))
             return false;
         return true;
     }
-    @Override
-    public String toString() {
-        return "RegistroDiasId [asistencia=" + asistencia + ", dia=" + dia + "]";
+
+    public RegistroDiasId() {
     }
+
     
+
 
 }

@@ -1,28 +1,17 @@
 package com.crud.CRUDSpring.model;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.joda.time.Hours;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "horario")
@@ -47,8 +36,9 @@ public class Horario {
 	@JoinColumn(name = "idClase")
 	private Clase clase;
 
-	@OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "horario")
-	private List<RegistroDeAsistencia> registrosDeAsistencias = new ArrayList<RegistroDeAsistencia>();
+	// @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "horario")
+	// private List<RegistroDeAsistencia> registrosDeAsistencias = new
+	// ArrayList<RegistroDeAsistencia>();
 
 	public Horario() {
 	}
@@ -66,7 +56,7 @@ public class Horario {
 		this.hora_fin = hora_fin;
 		this.lugar = lugar;
 		this.dia = dia;
-		this.registrosDeAsistencias = registrosDeAsistencias;
+		// this.registrosDeAsistencias = registrosDeAsistencias;
 		this.clase = clase;
 	}
 
@@ -110,13 +100,14 @@ public class Horario {
 		this.dia = dia;
 	}
 
-	public List<RegistroDeAsistencia> getRegistrosDeRegistroDeAsistencias() {
-		return registrosDeAsistencias;
-	}
+	// public List<RegistroDeAsistencia> getRegistrosDeRegistroDeAsistencias() {
+	// return registrosDeAsistencias;
+	// }
 
-	public void setRegistrosDeAsistencias(List<RegistroDeAsistencia> registrosDeAsistencias) {
-		this.registrosDeAsistencias = registrosDeAsistencias;
-	}
+	// public void setRegistrosDeAsistencias(List<RegistroDeAsistencia>
+	// registrosDeAsistencias) {
+	// this.registrosDeAsistencias = registrosDeAsistencias;
+	// }
 
 	public Clase getClase() {
 		return clase;
@@ -130,7 +121,8 @@ public class Horario {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((registrosDeAsistencias == null) ? 0 : registrosDeAsistencias.hashCode());
+		// result = prime * result + ((registrosDeAsistencias == null) ? 0 :
+		// registrosDeAsistencias.hashCode());
 		result = prime * result + ((dia == null) ? 0 : dia.hashCode());
 		result = prime * result + ((hora_fin == null) ? 0 : hora_fin.hashCode());
 		result = prime * result + ((hora_inicio == null) ? 0 : hora_inicio.hashCode());
@@ -148,11 +140,11 @@ public class Horario {
 		if (getClass() != obj.getClass())
 			return false;
 		Horario other = (Horario) obj;
-		if (registrosDeAsistencias == null) {
-			if (other.registrosDeAsistencias != null)
-				return false;
-		} else if (!registrosDeAsistencias.equals(other.registrosDeAsistencias))
-			return false;
+		// if (registrosDeAsistencias == null) {
+		// if (other.registrosDeAsistencias != null)
+		// return false;
+		// } else if (!registrosDeAsistencias.equals(other.registrosDeAsistencias))
+		// return false;
 		if (dia == null) {
 			if (other.dia != null)
 				return false;

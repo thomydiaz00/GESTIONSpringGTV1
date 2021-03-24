@@ -1,7 +1,6 @@
 package com.crud.CRUDSpring.interfaceService;
 
 import com.crud.CRUDSpring.model.Asistencia;
-import com.crud.CRUDSpring.model.Clase;
 import java.util.List;
 import java.util.Optional;
 

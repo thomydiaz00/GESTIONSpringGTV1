@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.crud.CRUDSpring.model.Asistencia;
+import com.crud.CRUDSpring.model.Clase;
 import com.crud.CRUDSpring.model.Horario;
 import com.crud.CRUDSpring.model.Profesor;
 
@@ -31,6 +32,8 @@ public interface interfaceAsistencia extends CrudRepository<Asistencia, Integer>
 
         public Optional<Asistencia> findByHorarioInAndFechaAsistenciaInAndProfesor(Horario horario, LocalDate tras,
                         Profesor profesor);
+
+        public Optional<Asistencia> findByFechaAsistenciaInAndClase(LocalDate date, Clase clase);
 
         public static String maskDay(DayOfWeek dayOfWeek) {
                 switch (dayOfWeek) {

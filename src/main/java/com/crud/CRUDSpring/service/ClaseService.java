@@ -54,15 +54,17 @@ public class ClaseService implements IfServiceClase {
 
 	private void crearRegistrosAsistencia(Clase clase, boolean esNuevaClase) {
 		System.out.println("creando los reg");
-		List<LocalDate> oldDaysDates = new ArrayList();
-		List<LocalDate> allDates = new ArrayList();
 		List<String> dias = new ArrayList<String>();
 		List<LocalDate> filteredDates = new ArrayList<LocalDate>();
 		List<LocalDate> todasLasFechas = new ArrayList<LocalDate>();
 		Clase claseSinActualizar = clasePorId(clase.getIdClase()).get();
 		boolean diasActualizados = false;
 		boolean fechaFinActualizada = false;
-		if (!claseSinActualizar.getDias().toString().equals(clase.getDias().toString())) {
+
+		int sizeOfActualDays = clase.getDias().size();
+		int sizeOfOldDays = claseSinActualizar.getDias().size();
+
+		if (sizeOfActualDays != sizeOfOldDays) {
 			diasActualizados = true;
 		}
 		if (!claseSinActualizar.getFechaFin().equals(clase.getFechaFin())) {
@@ -74,51 +76,10 @@ public class ClaseService implements IfServiceClase {
 		// Si es una nueva clase creo todos los registros, si es una clase que existía
 		// creo registros
 		// A partir de la fecha fin de la clase sin actualizarla todavía
-		if (esNuevaClase) {
-			todasLasFechas = clase.getFechaInicio().datesUntil(clase.getFechaFin()).collect(Collectors.toList());
-		} else {
-			if (!diasActualizados) {
-				todasLasFechas = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())
-						.collect(Collectors.toList());
-				System.out.println("Agregando registros, iniciando desde " + claseSinActualizar.getFechaFin());
-			} else {
-				if (diasActualizados || fechaFinActualizada) {
-					allDates = clase.getFechaInicio().datesUntil(clase.getFechaFin()).collect(Collectors.toList());
-					oldDaysDates = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())
-							.collect(Collectors.toList());
 
-					for (DiaDePractica dia : claseSinActualizar.getDias()) {
-						dias.remove(dia.getDiaDeLaSemana());
-					}
-					// El primer loop agrega los registros para los dias nuevos
-					for (LocalDate date : allDates) {
-						String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
-						if (dias.contains(dayName)) {
-							todasLasFechas.add(date);
-						}
-					}
-					for (LocalDate date : oldDaysDates) {
-						String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
-						if (claseSinActualizar.getDias().contains(dayName)) {
-							todasLasFechas.add(date);
-						}
-					}
-				}
-
-			}
-		}
-
-		// } else {
-		// // Tengo que crear registros para los nuevos dias registrados
-		// // Agrego registros hasta la fecha para los dias nuevos, agrego a partir de
-		// la
-		// // nueva fecha de
-		// //fin para los viejos en el segundo loop
-
-		// }
+		filteredDates = definirTodasLasFechas(clase, claseSinActualizar, dias, esNuevaClase, fechaFinActualizada);
 
 		data.save(clase);
-
 		System.out.println("------------------------------");
 		System.out.println(todasLasFechas.toString());
 		System.out.println("------------------------------");
@@ -126,34 +87,37 @@ public class ClaseService implements IfServiceClase {
 
 		// Si la fecha está dentro del rango y contiene alguno de los dias, la agrego a
 		// una lista
-		for (
-
-		LocalDate fecha : todasLasFechas) {
-			boolean condition = dias.contains(interfaceAsistencia.maskDay(fecha.getDayOfWeek()));
-			if (condition) {
-				filteredDates.add(fecha);
-				Asistencia asistencia = new Asistencia();
-				asistencia.setFechaAsistencia(fecha);
-				asistencia.setClase(clase);
-				serviceAsistencia.guardarAsistencia(asistencia);
-				System.out.println(fecha + " -" + fecha.getDayOfWeek().toString());
-			}
+		for (LocalDate fecha : filteredDates) {
+			Asistencia asistencia = new Asistencia();
+			asistencia.setFechaAsistencia(fecha);
+			asistencia.setClase(clase);
+			serviceAsistencia.guardarAsistencia(asistencia);
+			System.out.println(fecha + " -" + fecha.getDayOfWeek().toString());
 		}
+	}
 
-		// generando
-		// for (LocalDate date : filteredDates) {
-		// Asistencia asistencia = new Asistencia();
-		// asistencia.setFechaAsistencia(date);
-		// System.out.println(date.getDayOfWeek().name());
-		// System.out.println(date);
+	private List<LocalDate> definirTodasLasFechas(Clase clase, Clase claseSinActualizar, List<String> dias,
+			boolean esNuevaClase, boolean fechaFinActualizada) {
+		List<LocalDate> todasLasFechas = new ArrayList<LocalDate>();
+		List<LocalDate> filteredDates = new ArrayList<LocalDate>();
 
-		// serviceAsistencia.guardarAsistencia(asistencia);
+		if (esNuevaClase || !fechaFinActualizada) {
+			todasLasFechas = clase.getFechaInicio().datesUntil(clase.getFechaFin()).collect(Collectors.toList());
+		} else {
+			todasLasFechas = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())
+					.collect(Collectors.toList());
+		}
+		for (LocalDate date : todasLasFechas) {
+			System.out.println("esta clase no es nueva");
+			if (!interfaceAsis.findByFechaAsistenciaInAndClase(date, clase).isPresent()) {
+				String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
+				if (dias.contains(dayName)) {
+					filteredDates.add(date);
+				}
+			}
 
-		// }
-		// System.out.println("------------------------------");
-
-		// System.out.println(filteredDates.toString());
-
+		}
+		return filteredDates;
 	}
 
 	@Override

@@ -115,4 +115,10 @@ public class Asistencia {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Asistencia [clase=" + clase + ", estadoAsistencia=" + estadoAsistencia + ", fechaAsistencia="
+				+ fechaAsistencia + ", idAsistencia=" + idAsistencia + "]";
+	}
+
 }

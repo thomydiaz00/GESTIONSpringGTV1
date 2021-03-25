@@ -51,13 +51,13 @@ public class HorarioService implements IfServiceHorario {
 		boolean esNuevoHorario = data.findById(horario.getIdHorario()).isPresent();
 		if (!esNuevoHorario) {
 			h = crearRegistrosDeAsistencia(horario.getClase(), horario);
-		}else{
+		} else {
 			h = data.save(horario);
 		}
 		if (!h.equals(null)) {
 			estado = 1;
 		}
-		
+
 		return estado;
 	}
 
@@ -68,8 +68,9 @@ public class HorarioService implements IfServiceHorario {
 	}
 
 	public Horario crearRegistrosDeAsistencia(Clase clase, Horario horario) {
+		System.out.println("entering cond, agregar registros");
 		List<Asistencia> asistencias = interfaceAsis.findByClase(clase);
-		List<DiaDePractica> dias = clase.getDias();
+		System.out.println("Deben actualizarse estos registeros: " + asistencias.size());
 		Horario h = data.save(horario);
 
 		for (Asistencia asistencia : asistencias) {
@@ -84,7 +85,6 @@ public class HorarioService implements IfServiceHorario {
 				registroDeAsistencia.setFechaDeFichado(asistencia.getFechaAsistencia());
 				registroDeAsistencia.setHorario(horario);
 				registroDeAsistencia.setEstado(false);
-				System.out.println(registroDeAsistencia.toString());
 				serviceRegistroAsistencias.guardarRegistroDeAsistencia(registroDeAsistencia);
 			}
 

@@ -47,13 +47,12 @@ public class ClaseService implements IfServiceClase {
 			}
 		}
 		crearFechasAsistencia(c, esNuevaClase);
-		//Si se actualiza la 
-		
+		// Si se actualiza la
+
 		return res;
 	}
 
 	private void crearFechasAsistencia(Clase clase, boolean esNuevaClase) {
-		System.out.println("creando los reg");
 		List<String> dias = new ArrayList<String>();
 		List<LocalDate> filteredDates = new ArrayList<LocalDate>();
 		Clase claseSinActualizar = clasePorId(clase.getIdClase()).get();
@@ -67,7 +66,6 @@ public class ClaseService implements IfServiceClase {
 		}
 
 		filteredDates = definirTodasLasFechas(clase, claseSinActualizar, dias, esNuevaClase, fechaFinActualizada);
-		data.save(clase);
 
 		// Si la fecha coincide con los dias de practica asosciados a la clase los
 		// agrego a la base de datos
@@ -76,7 +74,12 @@ public class ClaseService implements IfServiceClase {
 			asistencia.setFechaAsistencia(fecha);
 			asistencia.setClase(clase);
 			serviceAsistencia.guardarAsistencia(asistencia);
+			clase.getAsistencias().add(asistencia);
 			System.out.println(fecha + " -" + fecha.getDayOfWeek().toString());
+		}
+		data.save(clase);
+		for (Horario horario : clase.getHorarios()) {
+			serviceHorario.crearRegistrosDeAsistencia(clase, horario);
 		}
 	}
 
@@ -98,12 +101,7 @@ public class ClaseService implements IfServiceClase {
 		} else {
 			todasLasFechas = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())
 					.collect(Collectors.toList());
-			//Si la fecha de fin se actualiza tambien deben actualizarse los registros de asistencias
-			if ( !clase.getHorarios().isEmpty()) {
-				for(Horario horario : clase.getHorarios()){
-					serviceHorario.crearRegistrosDeAsistencia(clase, horario);
-				}
-			}
+
 		}
 		for (LocalDate date : todasLasFechas) {
 			System.out.println("esta clase no es nueva");
@@ -114,9 +112,6 @@ public class ClaseService implements IfServiceClase {
 				}
 			}
 		}
-		System.out.println("------------Todas-las-fechas----------------");
-		System.out.println(dias.toString());
-		System.out.println(todasLasFechas.toString());
 		System.out.println("------------Fechas-a-agregar----------------");
 		System.out.println(filteredDates.toString());
 

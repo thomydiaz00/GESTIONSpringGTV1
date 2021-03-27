@@ -165,11 +165,13 @@ public class RegistroDeAsistenciasController {
 			}
 			if (registro.isPresent()) {
 				RegistroDeAsistencia reg = registro.get();
+				if (reg.isEstado()) {
+					return "alertas/alerta_repetida.html";
+				}
 				System.out.println("encontrado");
 				reg.setFechaDeCreacion(localCurrentDate);
 				reg.setEstado(true);
 				System.out.println("Assitencia cargada");
-
 				serviceRegistroDeAsistencia.guardarRegistroDeAsistencia(reg);
 
 			}

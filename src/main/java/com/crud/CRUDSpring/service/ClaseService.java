@@ -84,19 +84,19 @@ public class ClaseService implements IfServiceClase {
 	}
 
 	/*
-	 * Esta funcion trae una lista con los registros a agregar en la b.d: Si es una
-	 * clase nueva o no se actualizó la fecha de finalizacion de clases devuelvo
-	 * todas las fechas de inicio-fin. Si la clase ya existe devuelvo las fechas a
-	 * incorporar que no existan en la b.d desde la antigua fecha de fin hasta la
-	 * nueva fecha fin (esto evita que haya registros con la misma fecha para la
-	 * misma clase)
+	 * Esta funcion trae una lista con los registros a agregar Si es una clase nueva
+	 * o no se actualizó la fecha de finalizacion de clases devuelvo todas las
+	 * fechas de inicio-fin. Si la clase ya existe devuelvo las fechas a incorporar
+	 * que no existan desde la antigua fecha de fin hasta la nueva fecha fin (esto
+	 * evita que haya registros con la misma fecha para la misma clase). Si se
+	 * actualiza el día de la clase también creo registros para ese dia
 	 */
 	private List<LocalDate> definirTodasLasFechas(Clase clase, Clase claseSinActualizar, List<String> dias,
 			boolean esNuevaClase, boolean fechaFinActualizada) {
 		List<LocalDate> todasLasFechas = new ArrayList<LocalDate>();
 		List<LocalDate> filteredDates = new ArrayList<LocalDate>();
 
-		if (esNuevaClase || !fechaFinActualizada) {
+		if (esNuevaClase || !fechaFinActualizada || (clase.getDias() != claseSinActualizar.getDias())) {
 			todasLasFechas = clase.getFechaInicio().datesUntil(clase.getFechaFin()).collect(Collectors.toList());
 		} else {
 			todasLasFechas = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())

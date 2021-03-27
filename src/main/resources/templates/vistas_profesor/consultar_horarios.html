@@ -136,11 +136,11 @@
               <td class="col-2">Hora de inicio</td>
               <td class="col-2">Hora de finalización</td>
               <td class="col-2">Seleccionar</td>
-              <td class="col-1">Estado</td>
+              <!-- <td class="col-1">Estado</td> -->
             </tr>
           </thead>
           <tbody>
-            <tr th:each=" horario: ${horarios}" th:rach>
+            <tr th:each=" horario: ${clase.horarios}" th:rach>
               <td>
                 <span th:each=" dia, iterStat  : ${horario.dia} ">
                   <span
@@ -156,12 +156,12 @@
                   th:id="'selectButton-' +${horario.idHorario}"
                   type="button"
                   class="btn btn-success"
-                  th:attr="onclick = |eval('${horario.idHorario}','${idProfesor}' , '${idClase}')|"
+                  th:attr="onclick = |eval('${horario.idHorario}','${profesor.idProf}' , '${clase.idClase}')|"
                 >
                   Seleccionar
                 </button>
               </td>
-              <td
+              <!-- <td
                 th:if="${asistencias[__horarioStat.index__].estadoAsistencia} == true"
                 data-toggle="tooltip"
                 data-placement="top"
@@ -176,7 +176,7 @@
                 title="Pendiente"
               >
                 <i class="far fa-check-circle fa-3x"></i>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>

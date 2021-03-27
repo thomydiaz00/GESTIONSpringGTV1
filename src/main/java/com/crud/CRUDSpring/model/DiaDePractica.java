@@ -24,7 +24,8 @@ public class DiaDePractica {
     private String diaDeLaSemana;
 
     // @OneToMany(mappedBy = "dia", cascade = CascadeType.ALL, orphanRemoval = true)
-    // private List<RegistroDeAsistencia> registroDeAsistencias = new ArrayList<RegistroDeAsistencia>();
+    // private List<RegistroDeAsistencia> registroDeAsistencias = new
+    // ArrayList<RegistroDeAsistencia>();
 
     @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "dia", orphanRemoval = true)
     private List<Horario> horarios = new ArrayList<Horario>();
@@ -35,20 +36,18 @@ public class DiaDePractica {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dias")
     private List<Clase> clases = new ArrayList<Clase>();
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dias")
-    private List<RegistroDeAsistencia> registrosDeAsistencia = new ArrayList<RegistroDeAsistencia>();
-
     @Override
     public String toString() {
         return "DiaDePractica [diaDeLaSemana=" + diaDeLaSemana + ", idDia=" + idDia + "]";
     }
 
-    public DiaDePractica(int idDia, String diaDeLaSemana, List<Clase> clases, List<Horario> horarios, List<RegistroDeAsistencia> registroDeAsistencias) {
+    public DiaDePractica(int idDia, String diaDeLaSemana, List<Clase> clases, List<Horario> horarios,
+            List<RegistroDeAsistencia> registroDeAsistencias) {
         this.idDia = idDia;
         this.diaDeLaSemana = diaDeLaSemana;
         this.clases = clases;
         this.horarios = horarios;
-        this.registrosDeAsistencia = registroDeAsistencias;
+
     }
 
     public int getIdDia() {
@@ -83,14 +82,6 @@ public class DiaDePractica {
         this.horarios = horarios;
     }
 
-    public List<RegistroDeAsistencia> getRegistrosDeAsistencia() {
-        return registrosDeAsistencia;
-    }
-
-    public void setRegistrosDeAsistencia(List<RegistroDeAsistencia> registrosDeAsistencia) {
-        this.registrosDeAsistencia = registrosDeAsistencia;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -99,7 +90,6 @@ public class DiaDePractica {
         result = prime * result + ((diaDeLaSemana == null) ? 0 : diaDeLaSemana.hashCode());
         result = prime * result + ((horarios == null) ? 0 : horarios.hashCode());
         result = prime * result + idDia;
-        result = prime * result + ((registrosDeAsistencia == null) ? 0 : registrosDeAsistencia.hashCode());
         return result;
     }
 
@@ -128,11 +118,6 @@ public class DiaDePractica {
         } else if (!horarios.equals(other.horarios))
             return false;
         if (idDia != other.idDia)
-            return false;
-        if (registrosDeAsistencia == null) {
-            if (other.registrosDeAsistencia != null)
-                return false;
-        } else if (!registrosDeAsistencia.equals(other.registrosDeAsistencia))
             return false;
         return true;
     }

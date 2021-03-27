@@ -46,7 +46,7 @@ public class Horario {
 	@Override
 	public String toString() {
 		return "Horario [  hora_fin=" + hora_fin + ", hora_inicio=" + hora_inicio + ", idHorario=" + idHorario
-				+ ", lugar=" + lugar + "]";
+				+ ", lugar=" + lugar + ", dia=" + dia.getDiaDeLaSemana() + "]";
 	}
 
 	public Horario(int idHorario, String hora_inicio, String hora_fin, String lugar, DiaDePractica dia,

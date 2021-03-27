@@ -33,11 +33,6 @@ public class RegistroDeAsistencia {
     // @JoinColumn(name = "idProf")
     // private Profesor profesor;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "registro_tiene_dias", joinColumns = { @JoinColumn(name = "id_asistencia"),
-            @JoinColumn(name = "id_horario"), @JoinColumn(name = "id_prof") }, inverseJoinColumns = { @JoinColumn(name = "id_dia") })
-    private List<DiaDePractica> dias = new ArrayList<DiaDePractica>();
-
     @Column
     private LocalDate fechaDeCreacion;
     // = new
@@ -48,10 +43,9 @@ public class RegistroDeAsistencia {
     @Column
     boolean estado;
 
-    public RegistroDeAsistencia(RegistroDiasId idRegistro, Asistencia asistencia, List<DiaDePractica> dias,
-            Profesor profesor, LocalDate fechaDeCreacion, LocalDate fechaDeFichado, boolean estado) {
+    public RegistroDeAsistencia(RegistroDiasId idRegistro, Asistencia asistencia, Profesor profesor,
+            LocalDate fechaDeCreacion, LocalDate fechaDeFichado, boolean estado) {
         this.idRegistro = idRegistro;
-        this.dias = dias;
         // this.profesor = profesor;
         this.fechaDeCreacion = fechaDeCreacion;
         this.fechaDeFichado = fechaDeFichado;
@@ -106,25 +100,16 @@ public class RegistroDeAsistencia {
         this.fechaDeFichado = fechaDeFichado;
     }
 
-    public List<DiaDePractica> getDias() {
-        return dias;
-    }
-
-    public void setDias(List<DiaDePractica> dias) {
-        this.dias = dias;
-    }
-
     @Override
     public String toString() {
         return "estado=" + estado + ", fechaDeCreacion=" + fechaDeCreacion + ", fechaDeFichado=" + fechaDeFichado
-                + ", dias=" + dias.size() + ", idRegistro=" + idRegistro + "]";
+                + ", idRegistro=" + idRegistro + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((dias == null) ? 0 : dias.hashCode());
         result = prime * result + (estado ? 1231 : 1237);
         result = prime * result + ((fechaDeCreacion == null) ? 0 : fechaDeCreacion.hashCode());
         result = prime * result + ((fechaDeFichado == null) ? 0 : fechaDeFichado.hashCode());
@@ -142,11 +127,6 @@ public class RegistroDeAsistencia {
         if (getClass() != obj.getClass())
             return false;
         RegistroDeAsistencia other = (RegistroDeAsistencia) obj;
-        if (dias == null) {
-            if (other.dias != null)
-                return false;
-        } else if (!dias.equals(other.dias))
-            return false;
         if (estado != other.estado)
             return false;
         if (fechaDeCreacion == null) {
@@ -164,11 +144,6 @@ public class RegistroDeAsistencia {
                 return false;
         } else if (!idRegistro.equals(other.idRegistro))
             return false;
-        // if (profesor == null) {
-        // if (other.profesor != null)
-        // return false;
-        // } else if (!profesor.equals(other.profesor))
-        // return false;
         return true;
     }
 

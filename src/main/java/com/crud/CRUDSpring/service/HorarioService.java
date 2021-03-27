@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceHorario;
 import com.crud.CRUDSpring.interfaceService.IfServiceRegistroDeAsistencia;
 import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
@@ -31,6 +32,8 @@ public class HorarioService implements IfServiceHorario {
 	interfaceAsistencia interfaceAsis;
 	@Autowired
 	interfaceRegistroDeAsistencia interfaceRegistroAsis;
+	@Autowired
+	IfServiceClase serviceClase;
 	@Autowired
 	IfServiceRegistroDeAsistencia serviceRegistroAsistencias;
 
@@ -71,7 +74,7 @@ public class HorarioService implements IfServiceHorario {
 	public Horario crearRegistrosDeAsistencia(Clase clase, Horario horario) {
 		List<Asistencia> asistencias = interfaceAsis.findByClase(clase);
 		Horario h = data.save(horario);
-		
+
 		for (Profesor profesor : clase.getProfesores()) {
 			for (Asistencia asistencia : asistencias) {
 				DayOfWeek dayName = asistencia.getFechaAsistencia().getDayOfWeek();
@@ -83,14 +86,11 @@ public class HorarioService implements IfServiceHorario {
 					RegistroDeAsistencia registroDeAsistencia = new RegistroDeAsistencia();
 					registroDeAsistencia.setIdRegistro(id);
 					registroDeAsistencia.setFechaDeFichado(asistencia.getFechaAsistencia());
-					registroDeAsistencia.setDias(clase.getDias());
 					registroDeAsistencia.setEstado(false);
 					serviceRegistroAsistencias.guardarRegistroDeAsistencia(registroDeAsistencia);
 				}
 			}
 		}
-		if (clase.getProfesores().isEmpty())
-			System.out.println("La lista de profs esta vacia");
 		return h;
 
 	}

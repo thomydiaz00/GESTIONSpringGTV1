@@ -17,6 +17,7 @@ import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
 import com.crud.CRUDSpring.model.DiaDePractica;
 import com.crud.CRUDSpring.model.Horario;
+import com.crud.CRUDSpring.model.Profesor;
 import com.crud.CRUDSpring.model.RegistroDeAsistencia;
 import com.crud.CRUDSpring.model.RegistroDiasId;
 
@@ -68,27 +69,28 @@ public class HorarioService implements IfServiceHorario {
 	}
 
 	public Horario crearRegistrosDeAsistencia(Clase clase, Horario horario) {
-		System.out.println("entering cond, agregar registros");
 		List<Asistencia> asistencias = interfaceAsis.findByClase(clase);
-		System.out.println("Deben actualizarse estos registeros: " + asistencias.size());
 		Horario h = data.save(horario);
+		
+		for (Profesor profesor : clase.getProfesores()) {
+			for (Asistencia asistencia : asistencias) {
+				DayOfWeek dayName = asistencia.getFechaAsistencia().getDayOfWeek();
+				String diaHorario = horario.getDia().getDiaDeLaSemana();
+				RegistroDiasId id = new RegistroDiasId(horario, asistencia, profesor);
 
-		for (Asistencia asistencia : asistencias) {
-			DayOfWeek dayName = asistencia.getFechaAsistencia().getDayOfWeek();
-			String diaHorario = horario.getDia().getDiaDeLaSemana();
-			RegistroDiasId id = new RegistroDiasId(horario.getDia(), asistencia);
-
-			if ((interfaceAsistencia.maskDay(dayName).equals(diaHorario)
-					&& !interfaceRegistroAsis.findByIdRegistro(id).isPresent())) {
-				RegistroDeAsistencia registroDeAsistencia = new RegistroDeAsistencia();
-				registroDeAsistencia.setIdRegistro(id);
-				registroDeAsistencia.setFechaDeFichado(asistencia.getFechaAsistencia());
-				registroDeAsistencia.setHorario(horario);
-				registroDeAsistencia.setEstado(false);
-				serviceRegistroAsistencias.guardarRegistroDeAsistencia(registroDeAsistencia);
+				if ((interfaceAsistencia.maskDay(dayName).equals(diaHorario)
+						&& !interfaceRegistroAsis.findByIdRegistro(id).isPresent())) {
+					RegistroDeAsistencia registroDeAsistencia = new RegistroDeAsistencia();
+					registroDeAsistencia.setIdRegistro(id);
+					registroDeAsistencia.setFechaDeFichado(asistencia.getFechaAsistencia());
+					registroDeAsistencia.setDias(clase.getDias());
+					registroDeAsistencia.setEstado(false);
+					serviceRegistroAsistencias.guardarRegistroDeAsistencia(registroDeAsistencia);
+				}
 			}
-
 		}
+		if (clase.getProfesores().isEmpty())
+			System.out.println("La lista de profs esta vacia");
 		return h;
 
 	}

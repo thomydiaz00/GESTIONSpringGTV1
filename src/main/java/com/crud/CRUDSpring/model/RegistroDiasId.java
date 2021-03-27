@@ -17,24 +17,32 @@ public class RegistroDiasId implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idDia", nullable = false, insertable = false, updatable = false)
-    private DiaDePractica dia;
+    @JoinColumn(name = "idHorario", nullable = false, insertable = false, updatable = false)
+    private Horario horario;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idAsistencia", nullable = false, insertable = false, updatable = false)
     private Asistencia asistencia;
 
-    public RegistroDiasId(DiaDePractica dia, Asistencia asistencia) {
-        this.dia = dia;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idProfesor", nullable = false, insertable = false, updatable = false)
+    private Profesor profesor;
+
+    public RegistroDiasId(Horario horario, Asistencia asistencia, Profesor profesor) {
+        this.horario = horario;
         this.asistencia = asistencia;
-    }
-    
-    public DiaDePractica getDia() {
-        return dia;
+        this.profesor = profesor;
     }
 
-    public void setDia(DiaDePractica dia) {
-        this.dia = dia;
+    public RegistroDiasId() {
+    }
+
+    public Horario getHorario() {
+        return horario;
+    }
+
+    public void setHorario(Horario horario) {
+        this.horario = horario;
     }
 
     public Asistencia getAsistencia() {
@@ -45,46 +53,17 @@ public class RegistroDiasId implements Serializable {
         this.asistencia = asistencia;
     }
 
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+
     @Override
     public String toString() {
-        return "RegistroDiasId [asistencia=" + asistencia + ", dia=" + dia + "]";
+        return "RegistroDiasId [asistencia=" + asistencia + ", horario=" + horario + ", profesor=" + profesor + "]";
     }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((asistencia == null) ? 0 : asistencia.hashCode());
-        result = prime * result + ((dia == null) ? 0 : dia.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        RegistroDiasId other = (RegistroDiasId) obj;
-        if (asistencia == null) {
-            if (other.asistencia != null)
-                return false;
-        } else if (!asistencia.equals(other.asistencia))
-            return false;
-        if (dia == null) {
-            if (other.dia != null)
-                return false;
-        } else if (!dia.equals(other.dia))
-            return false;
-        return true;
-    }
-
-    public RegistroDiasId() {
-    }
-
-    
-
 
 }

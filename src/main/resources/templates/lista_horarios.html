@@ -10,14 +10,10 @@
     <script src="https://kit.fontawesome.com/76bcb4e810.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="/funciones.js"></script>
-
-
-    
-     <!-- SweetAlert -->
-    
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="/funciones.js"></script>
-    
+
+   
   </head>
 <body>
   <!--logos-->
@@ -64,12 +60,13 @@
 <div class="container-fluid">
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
-      <h1 class="display-4" th:text= " 'Horarios para la clase ' + ${nombreClase} "></h1>
+      <h1 class="display-4" th:text= " 'Horarios para la clase ' + ${clase.nombreDep} "></h1>
     </div>
   </div>
 </div>
   <!--Barra de busqueda--> 	  	
   <div class="container">
+    <div class="alert alert-warning" th:if="${#lists.isEmpty(clase.profesores)}"><p>Debe asignarse por lo menos un profesor para crear horarios</p></div>
     <div class="d-flex flex-row justify-content-center">
         <div class="row">
           <div class="p-2">
@@ -85,9 +82,13 @@
             </div>
           </div>
           <div class="p-2">
-            <a class="btn btn-primary" th:href="@{/admin/agregar_horario/}+${idclase}">
-              Agregar Horario <i class="fas fa-plus-square fa-lg"></i>
-            </a>
+            <button
+            th:onclick="window.location.href= [[@{/admin/agregar_horario/}+ ${idclase}]]"
+             class = "btn" th:classappend="${#lists.isEmpty(clase.profesores)} ? btn-secondary: btn-primary" 
+             th:disabled="${#lists.isEmpty(clase.profesores)} ? true : false">
+              Agregar Horario 
+              <i class="fas fa-plus-square fa-lg"></i>
+            </button>
           </div>
         </div>
     </div>

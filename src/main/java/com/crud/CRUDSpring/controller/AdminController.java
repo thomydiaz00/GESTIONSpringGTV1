@@ -1,10 +1,15 @@
 package com.crud.CRUDSpring.controller;
 
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,11 +21,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.crud.CRUDSpring.interfaceService.IfServiceAsistencia;
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
 import com.crud.CRUDSpring.interfaceService.IfServiceUser;
+import com.crud.CRUDSpring.interfaces.interfaceRegistroDeAsistencia;
+import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
+import com.crud.CRUDSpring.model.Horario;
 import com.crud.CRUDSpring.model.Profesor;
+import com.crud.CRUDSpring.model.RegistroDeAsistencia;
+import com.crud.CRUDSpring.model.RegistroDiasId;
 import com.crud.CRUDSpring.repository.ProfesorRepository;
 
 @Controller
@@ -29,15 +42,19 @@ public class AdminController {
 	@Autowired
 	private ProfesorRepository query;
 	@Autowired
-	private IfServiceProfesor service;
+	private IfServiceProfesor serviceProfesor;
 	@Autowired
 	private IfServiceClase servClase;
 	@Autowired
 	private IfServiceUser servUser;
+	@Autowired
+	interfaceRegistroDeAsistencia registroDeAsistencia;
+	@Autowired
+	IfServiceAsistencia serviceAsistencia;
 
 	@GetMapping("/admin/lista_profesores")
 	public String ListarProfesores(Model model) {
-		List<Profesor> profesores = service.listarProfesores();
+		List<Profesor> profesores = serviceProfesor.listarProfesores();
 		List<Clase> clases = servClase.listarClase();
 		model.addAttribute("profesor", new Profesor());
 		model.addAttribute("clases", clases);
@@ -71,7 +88,7 @@ public class AdminController {
 	@GetMapping("/admin/lista_profesores_clases/{idProf}")
 	public String lista_profesores_completa(@PathVariable int idProf, Model model) {
 		// Muestra la lista con clases disponibles para agregar
-		Optional<Profesor> profesor = service.profesorPorId(idProf);
+		Optional<Profesor> profesor = serviceProfesor.profesorPorId(idProf);
 		List<Clase> profClases = profesor.get().getClases();
 		List<Clase> todasLasClases = servClase.listarClase();
 		for (Clase clase : profClases) {
@@ -94,11 +111,11 @@ public class AdminController {
 	 */
 	@PostMapping("/admin/actualizar_clases")
 	public String actualizarClases(HttpServletRequest request, Profesor clasesParaAsignar, Model model) {
-		Profesor p = service.profesorPorId(clasesParaAsignar.getIdProf()).get();
+		Profesor p = serviceProfesor.profesorPorId(clasesParaAsignar.getIdProf()).get();
 		for (Clase clase : clasesParaAsignar.getClases()) {
 			p.getClases().add(clase);
 		}
-		service.guardarProfesor(p);
+		serviceProfesor.guardarProfesor(p);
 		// Se redirige a la pagina anterior
 		return "redirect:" + request.getHeader("Referer");
 
@@ -106,7 +123,7 @@ public class AdminController {
 
 	@PostMapping("/admin/save")
 	public String save(@Valid Profesor p, Model model) {
-		service.guardarProfesor(p);
+		serviceProfesor.guardarProfesor(p);
 		return "redirect:/admin/lista_profesores";
 	}
 
@@ -118,7 +135,7 @@ public class AdminController {
 
 	@GetMapping("/admin/editar_profesor/{id}")
 	public String editar(@PathVariable int id, Model model) { // Uso PathVariable para establecer id como parametro
-		Optional<Profesor> profesor = service.profesorPorId(id);
+		Optional<Profesor> profesor = serviceProfesor.profesorPorId(id);
 		List<Clase> clases = servClase.listarClase();
 		model.addAttribute("profesor", profesor);
 		model.addAttribute("clases", clases);
@@ -129,7 +146,7 @@ public class AdminController {
 	@GetMapping("admin/delete_profesor/{idProf}")
 	public String eliminar(@PathVariable int idProf, Model model) {
 
-		service.borrarProfesor(idProf);
+		serviceProfesor.borrarProfesor(idProf);
 		return "redirect:/admin/lista_profesores";
 	}
 
@@ -146,10 +163,10 @@ public class AdminController {
 	 */
 	@GetMapping("admin/borrar_clase_profesor/{idProf}/{idClase}")
 	public String eliminarClase(@PathVariable int idProf, @PathVariable int idClase, Model model) {
-		Profesor profesor = service.profesorPorId(idProf).get();
+		Profesor profesor = serviceProfesor.profesorPorId(idProf).get();
 		Clase clase = servClase.clasePorId(idClase).get();
 		profesor.getClases().remove(clase);
-		service.guardarProfesor(profesor);
+		serviceProfesor.guardarProfesor(profesor);
 		return "redirect:/admin/lista_profesores_clases/{idProf}";
 
 	}
@@ -164,10 +181,41 @@ public class AdminController {
 											// show login screen again.
 	}
 
-	// @GetMapping("admin/consultar_asistencia/{idProf}/{idClase}")
-	// public String consultarAsistencia(Model model, @PathVariable int idProf,
-	// @PathVariable int idClase,
-	// RedirectAttributes ra) {
+	@GetMapping("admin/consultar_asistencia/{idProf}/{idClase}")
+	public String consultarAsistencia(Model model, @PathVariable int idProf, @PathVariable int idClase,
+			RedirectAttributes ra) {
+		java.time.LocalDate currentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
+				.toLocalDate();
+		Clase clase = servClase.clasePorId(idClase).get();
+		Optional<Profesor> profesor = serviceProfesor.profesorPorId(idProf);
+		List<RegistroDeAsistencia> registros = new ArrayList<RegistroDeAsistencia>();
+		List<Asistencia> asistencias = new ArrayList<Asistencia>();
+		for (Horario horario : clase.getHorarios()) {
+			for (Asistencia asistencia : clase.getAsistencias()) {
+				RegistroDiasId id = new RegistroDiasId(horario, asistencia, profesor.get());
+				Optional<RegistroDeAsistencia> registro = registroDeAsistencia.findByIdRegistro(id);
+
+				if (registro.isPresent()) {
+					RegistroDeAsistencia reg = registro.get();
+					if (reg.isEstado()) {
+						registros.add(reg);
+					}
+					// Si todos los registros que corresponden al dia fueron fichados por el
+					// profesor,
+					// la asistencia para ese día está tomada, sino quedará en falta
+					if (registros.size() == registroDeAsistencia.countByFechaDeFichado(reg.getFechaDeFichado())) {
+						asistencia.setEstadoAsistencia(true);
+						serviceAsistencia.guardarAsistencia(asistencia);
+					}
+				}
+				if (asistencia.isEstadoAsistencia()) {
+					asistencias.add(asistencia);
+				}
+			}
+		}
+		System.out.println("---------------" + "\n" + "las asistencias completas son:  \n" + asistencias.size());
+		return "index";
+	}
 
 	// Clase clase = servClase.clasePorId(idClase).get();
 	// Profesor profesor = service.profesorPorId(idProf).get();

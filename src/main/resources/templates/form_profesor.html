@@ -85,7 +85,7 @@
                 <a class="dropdown-item" href="/admin/configuracion"
                   ><i class="fas fa-cog"></i> Configuracion</a
                 >
-                
+
                 <li class="divider"></li>
                 <li>
                   <a class="dropdown-item" href="/logout"
@@ -159,20 +159,6 @@
                 type="text"
                 class="form-control mr-4 w-25"
               />
-              <label class="mr-2">Clases a cargo:</label>
-              <select
-                type="text"
-                class="form-control selectpicker mr-2 w-25"
-                multiple
-                data-live-search="true"
-                th:field="${profesor.clases}"
-              >
-                <option
-                  th:each="clase :${clases}"
-                  th:value="${clase.idClase}"
-                  th:text="${clase.nombreDep}"
-                ></option>
-              </select>
             </div>
 
             <button type="submit" class="btn btn-primary">Guardar</button>

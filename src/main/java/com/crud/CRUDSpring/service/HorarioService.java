@@ -77,6 +77,7 @@ public class HorarioService implements IfServiceHorario {
 
 		for (Profesor profesor : clase.getProfesores()) {
 			for (Asistencia asistencia : asistencias) {
+				System.out.println(profesor.getApellidoProf());
 				DayOfWeek dayName = asistencia.getFechaAsistencia().getDayOfWeek();
 				String diaHorario = horario.getDia().getDiaDeLaSemana();
 				RegistroDiasId id = new RegistroDiasId(horario, asistencia, profesor);

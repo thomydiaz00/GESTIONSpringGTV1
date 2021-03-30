@@ -194,24 +194,15 @@ public class AdminController {
 			for (Asistencia asistencia : clase.getAsistencias()) {
 				RegistroDiasId id = new RegistroDiasId(horario, asistencia, profesor.get());
 				Optional<RegistroDeAsistencia> registro = registroDeAsistencia.findByIdRegistro(id);
-
-				if (registro.isPresent()) {
-					RegistroDeAsistencia reg = registro.get();
-					if (reg.isEstado()) {
-						registros.add(reg);
-					}
-					// Si todos los registros que corresponden al dia fueron fichados por el
-					// profesor,
-					// la asistencia para ese día está tomada, sino quedará en falta
-					if (registros.size() == registroDeAsistencia.countByFechaDeFichado(reg.getFechaDeFichado())) {
-						asistencia.setEstadoAsistencia(true);
-						serviceAsistencia.guardarAsistencia(asistencia);
-					}
+				RegistroDeAsistencia reg = registro.get();
+				if(reg.isEstado()){
+					System.out.println("------------------------------");
+					System.out.println(registro);
+					System.out.println("------------------------------");
 				}
-				if (asistencia.isEstadoAsistencia()) {
-					asistencias.add(asistencia);
-				}
+				
 			}
+			//
 		}
 		System.out.println("---------------" + "\n" + "las asistencias completas son:  \n" + asistencias.size());
 		return "index";

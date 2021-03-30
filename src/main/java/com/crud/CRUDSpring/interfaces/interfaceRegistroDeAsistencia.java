@@ -18,6 +18,6 @@ public interface interfaceRegistroDeAsistencia extends CrudRepository<RegistroDe
 
     public Optional<RegistroDeAsistencia> findByIdRegistro(RegistroDiasId id);
 
-    public int countByFechaDeFichado(LocalDate date);
+    public int countByFechaDeFichadoAndIdRegistroProfesor(LocalDate date, Profesor profesor);
 
 }

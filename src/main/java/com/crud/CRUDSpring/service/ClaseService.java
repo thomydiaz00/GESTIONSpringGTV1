@@ -15,6 +15,7 @@ import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
 import com.crud.CRUDSpring.model.DiaDePractica;
 import com.crud.CRUDSpring.model.Horario;
+import com.crud.CRUDSpring.model.Profesor;
 
 @Service
 public class ClaseService implements IfServiceClase {
@@ -46,6 +47,7 @@ public class ClaseService implements IfServiceClase {
 				res = 1;
 			}
 		}
+		System.out.println("asistencias actuales: " + c.getAsistencias().size());
 		crearFechasAsistencia(c, esNuevaClase);
 		// Si se actualiza la
 
@@ -54,6 +56,7 @@ public class ClaseService implements IfServiceClase {
 
 	private void crearFechasAsistencia(Clase clase, boolean esNuevaClase) {
 		List<String> dias = new ArrayList<String>();
+		List<Asistencia> asistencias = clase.getAsistencias();
 		List<LocalDate> filteredDates = new ArrayList<LocalDate>();
 		Clase claseSinActualizar = clasePorId(clase.getIdClase()).get();
 		boolean fechaFinActualizada = false;
@@ -69,15 +72,30 @@ public class ClaseService implements IfServiceClase {
 
 		// Si la fecha coincide con los dias de practica asosciados a la clase los
 		// agrego a la base de datos
-		for (LocalDate fecha : filteredDates) {
-			Asistencia asistencia = new Asistencia();
-			asistencia.setFechaAsistencia(fecha);
-			asistencia.setClase(clase);
-			serviceAsistencia.guardarAsistencia(asistencia);
-			clase.getAsistencias().add(asistencia);
-			System.out.println(fecha + " -" + fecha.getDayOfWeek().toString());
+		for (Profesor profesor : clase.getProfesores()) {
+			for (LocalDate fecha : filteredDates) {
+				System.out.println("-------------------------------");
+				Asistencia asistencia = new Asistencia();
+				asistencia.setClase(clase);
+				asistencia.setProfesor(profesor);
+				asistencia.setFechaAsistencia(fecha);
+				asistencias.add(asistencia);
+				System.out.println(fecha + " -" + fecha.getDayOfWeek().toString());
+				System.out.println(
+						"#Nro de asistencias : " + clase.getAsistencias().size() + " || " + asistencias.size());
+
+			}
 		}
+		for (Asistencia asistencia : asistencias) {
+			if (!interfaceAsis.findByFechaAsistenciaInAndProfesorInAndClase(asistencia.getFechaAsistencia(),
+					asistencia.getProfesor(), asistencia.getClase()).isPresent()) {
+				serviceAsistencia.guardarAsistencia(asistencia);
+			}
+
+		}
+		clase.setAsistencias(asistencias);
 		data.save(clase);
+
 		for (Horario horario : clase.getHorarios()) {
 			serviceHorario.crearRegistrosDeAsistencia(clase, horario);
 		}
@@ -97,6 +115,7 @@ public class ClaseService implements IfServiceClase {
 		List<LocalDate> filteredDates = new ArrayList<LocalDate>();
 
 		if (esNuevaClase || !fechaFinActualizada || (clase.getDias() != claseSinActualizar.getDias())) {
+			System.out.println("nueva clase");
 			todasLasFechas = clase.getFechaInicio().datesUntil(clase.getFechaFin()).collect(Collectors.toList());
 		} else {
 			todasLasFechas = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())
@@ -104,11 +123,13 @@ public class ClaseService implements IfServiceClase {
 
 		}
 		for (LocalDate date : todasLasFechas) {
-			System.out.println("esta clase no es nueva");
-			if (!interfaceAsis.findByFechaAsistenciaInAndClase(date, clase).isPresent()) {
-				String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
-				if (dias.contains(dayName)) {
-					filteredDates.add(date);
+			for (Profesor profesor : clase.getProfesores()) {
+				System.out.println("esta clase no es nueva");
+				if (!interfaceAsis.findByFechaAsistenciaInAndProfesorInAndClase(date, profesor, clase).isPresent()) {
+					String dayName = interfaceAsistencia.maskDay(date.getDayOfWeek());
+					if (dias.contains(dayName) && !filteredDates.contains(date)) {
+						filteredDates.add(date);
+					}
 				}
 			}
 		}

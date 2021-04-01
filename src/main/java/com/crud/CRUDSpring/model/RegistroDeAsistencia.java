@@ -10,13 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -29,25 +22,14 @@ public class RegistroDeAsistencia {
     @EmbeddedId
     private RegistroDiasId idRegistro;
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "idProf")
-    // private Profesor profesor;
-
     @Column
-    private LocalDate fechaDeCreacion;
-    // = new
-    // Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca")).toLocalDate();
-
-    @Column
-    private LocalDate fechaDeFichado;
+    LocalDate fechaDeFichado;
     @Column
     boolean estado;
 
     public RegistroDeAsistencia(RegistroDiasId idRegistro, Asistencia asistencia, Profesor profesor,
             LocalDate fechaDeCreacion, LocalDate fechaDeFichado, boolean estado) {
         this.idRegistro = idRegistro;
-        // this.profesor = profesor;
-        this.fechaDeCreacion = fechaDeCreacion;
         this.fechaDeFichado = fechaDeFichado;
         this.estado = estado;
     }
@@ -60,36 +42,12 @@ public class RegistroDeAsistencia {
         this.idRegistro = idRegistro;
     }
 
-    public LocalDate getfechaDeCreacion() {
-        return fechaDeCreacion;
-    }
-
-    public void setfechaDeCreacion(LocalDate fechaDeCreacion) {
-        this.fechaDeCreacion = fechaDeCreacion;
-    }
-
     public boolean isEstado() {
         return estado;
     }
 
     public void setEstado(boolean estado) {
         this.estado = estado;
-    }
-
-    // public Profesor getProfesor() {
-    // return profesor;
-    // }
-
-    // public void setProfesor(Profesor profesor) {
-    // this.profesor = profesor;
-    // }
-
-    public LocalDate getFechaDeCreacion() {
-        return fechaDeCreacion;
-    }
-
-    public void setFechaDeCreacion(LocalDate fechaDeCreacion) {
-        this.fechaDeCreacion = fechaDeCreacion;
     }
 
     public LocalDate getFechaDeFichado() {
@@ -102,8 +60,7 @@ public class RegistroDeAsistencia {
 
     @Override
     public String toString() {
-        return "estado=" + estado + ", fechaDeCreacion=" + fechaDeCreacion + ", fechaDeFichado=" + fechaDeFichado
-                + ", idRegistro=" + idRegistro + "]";
+        return "estado=" + estado + ", idRegistro=" + idRegistro + ",fechaDeFichado: " + fechaDeFichado + "]";
     }
 
     @Override
@@ -111,10 +68,8 @@ public class RegistroDeAsistencia {
         final int prime = 31;
         int result = 1;
         result = prime * result + (estado ? 1231 : 1237);
-        result = prime * result + ((fechaDeCreacion == null) ? 0 : fechaDeCreacion.hashCode());
         result = prime * result + ((fechaDeFichado == null) ? 0 : fechaDeFichado.hashCode());
         result = prime * result + ((idRegistro == null) ? 0 : idRegistro.hashCode());
-        // result = prime * result + ((profesor == null) ? 0 : profesor.hashCode());
         return result;
     }
 
@@ -128,11 +83,6 @@ public class RegistroDeAsistencia {
             return false;
         RegistroDeAsistencia other = (RegistroDeAsistencia) obj;
         if (estado != other.estado)
-            return false;
-        if (fechaDeCreacion == null) {
-            if (other.fechaDeCreacion != null)
-                return false;
-        } else if (!fechaDeCreacion.equals(other.fechaDeCreacion))
             return false;
         if (fechaDeFichado == null) {
             if (other.fechaDeFichado != null)

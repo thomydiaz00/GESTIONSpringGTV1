@@ -41,6 +41,9 @@ public class Profesor {
 	// private List<RegistroDeAsistencia> asistenciaProfesores = new
 	// ArrayList<RegistroDeAsistencia>();
 
+	@OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "profesor")
+	private List<Asistencia> asistencias = new ArrayList<Asistencia>();
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "profesor_tiene_clase", joinColumns = { @JoinColumn(name = "id_prof") }, inverseJoinColumns = {
 			@JoinColumn(name = "id_clase") })
@@ -50,8 +53,7 @@ public class Profesor {
 	}
 
 	public Profesor(int idProf, String nombreProf, String apellidoProf, int dniProf, Date fechaNacProf,
-			int telefonoProf, String matriculaProf, List<RegistroDeAsistencia> asistenciaProfesores,
-			List<Clase> clases) {
+			int telefonoProf, String matriculaProf, List<Asistencia> asistencias, List<Clase> clases) {
 		this.idProf = idProf;
 		this.nombreProf = nombreProf;
 		this.apellidoProf = apellidoProf;
@@ -59,7 +61,7 @@ public class Profesor {
 		this.fechaNacProf = fechaNacProf;
 		this.telefonoProf = telefonoProf;
 		this.matriculaProf = matriculaProf;
-		// this.asistenciaProfesores = asistenciaProfesores;
+		this.asistencias = asistencias;
 		this.clases = clases;
 	}
 
@@ -119,14 +121,13 @@ public class Profesor {
 		this.matriculaProf = matriculaProf;
 	}
 
-	// public List<RegistroDeAsistencia> getAsistenciaProfesores() {
-	// return asistenciaProfesores;
-	// }
+	public List<Asistencia> getAsistenciass() {
+		return asistencias;
+	}
 
-	// public void setAsistenciaProfesores(List<RegistroDeAsistencia>
-	// asistenciaProfesores) {
-	// this.asistenciaProfesores = asistenciaProfesores;
-	// }
+	public void setAsistencias(List<Asistencia> asistencias) {
+		this.asistencias = asistencias;
+	}
 
 	public List<Clase> getClases() {
 		return clases;
@@ -147,8 +148,7 @@ public class Profesor {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((apellidoProf == null) ? 0 : apellidoProf.hashCode());
-		// result = prime * result + ((asistenciaProfesores == null) ? 0 :
-		// asistenciaProfesores.hashCode());
+		result = prime * result + ((asistencias == null) ? 0 : asistencias.hashCode());
 		result = prime * result + ((clases == null) ? 0 : clases.hashCode());
 		result = prime * result + dniProf;
 		result = prime * result + ((fechaNacProf == null) ? 0 : fechaNacProf.hashCode());
@@ -173,11 +173,11 @@ public class Profesor {
 				return false;
 		} else if (!apellidoProf.equals(other.apellidoProf))
 			return false;
-		// if (asistenciaProfesores == null) {
-		// if (other.asistenciaProfesores != null)
-		// return false;
-		// } else if (!asistenciaProfesores.equals(other.asistenciaProfesores))
-		// return false;
+		if (asistencias == null) {
+			if (other.asistencias != null)
+				return false;
+		} else if (!asistencias.equals(other.asistencias))
+			return false;
 		if (clases == null) {
 			if (other.clases != null)
 				return false;

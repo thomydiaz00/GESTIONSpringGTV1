@@ -72,10 +72,10 @@ public class HorarioService implements IfServiceHorario {
 	}
 
 	public Horario crearRegistrosDeAsistencia(Clase clase, Horario horario) {
-		List<Asistencia> asistencias = interfaceAsis.findByClase(clase);
 		Horario h = data.save(horario);
 
 		for (Profesor profesor : clase.getProfesores()) {
+			List<Asistencia> asistencias = interfaceAsis.findByClaseAndProfesor(clase, profesor);
 			for (Asistencia asistencia : asistencias) {
 				System.out.println(profesor.getApellidoProf());
 				DayOfWeek dayName = asistencia.getFechaAsistencia().getDayOfWeek();

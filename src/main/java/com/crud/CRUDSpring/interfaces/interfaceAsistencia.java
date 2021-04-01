@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
+import com.crud.CRUDSpring.model.Profesor;
 
 @Repository
 public interface interfaceAsistencia extends CrudRepository<Asistencia, Integer> {
@@ -25,9 +26,11 @@ public interface interfaceAsistencia extends CrudRepository<Asistencia, Integer>
         // horario_dia hd INNER JOIN dia_de_practica d ON hd.id_dia = d.id_dia WHERE
         // d.dia_de_la_semana = :nombreDia");
 
-        public Optional<Asistencia> findByFechaAsistenciaInAndClase(LocalDate date, Clase clase);
+        public Optional<Asistencia> findByFechaAsistenciaInAndProfesorInAndClase(LocalDate date, Profesor profesor,
+                        Clase clase);
 
         public List<Asistencia> findByClase(Clase clase);
+        public List<Asistencia> findByClaseAndProfesor(Clase clase, Profesor profesor);
 
         public static String maskDay(DayOfWeek dayOfWeek) {
                 switch (dayOfWeek) {

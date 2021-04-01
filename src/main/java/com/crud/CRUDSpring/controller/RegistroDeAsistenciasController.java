@@ -124,8 +124,8 @@ public class RegistroDeAsistenciasController {
 		int horaFin = Integer.parseInt(horario.getHora_fin().substring(0, 2));
 
 		try {
-			System.out.println("current ld is:" + localCurrentDate);
-			Asistencia asistencia = interfaceAsis.findByFechaAsistenciaInAndClase(localCurrentDate, clase).get();
+			Asistencia asistencia = interfaceAsis
+					.findByFechaAsistenciaInAndProfesorInAndClase(localCurrentDate, profesor, clase).get();
 		} catch (NoSuchElementException e) {
 			System.out.println("No se encontró la fecha de asistencia para la clase, " + e.getMessage());
 			return "vistas_profesor/login_profesor";
@@ -169,7 +169,6 @@ public class RegistroDeAsistenciasController {
 					return "alertas/alerta_repetida.html";
 				}
 				System.out.println("encontrado");
-				reg.setFechaDeCreacion(localCurrentDate);
 				reg.setEstado(true);
 				System.out.println("Assitencia cargada");
 				serviceRegistroDeAsistencia.guardarRegistroDeAsistencia(reg);

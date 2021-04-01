@@ -50,7 +50,7 @@ public class Clase {
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "clases")
 	private List<Profesor> profesores = new ArrayList<Profesor>();
 
-	@ManyToMany()
+	@ManyToMany(cascade = { CascadeType.PERSIST })
 	@JoinTable(name = "clase_tiene_dias", joinColumns = { @JoinColumn(name = "id_clase") }, inverseJoinColumns = {
 			@JoinColumn(name = "id_dia") })
 	private List<DiaDePractica> dias = new ArrayList<DiaDePractica>();

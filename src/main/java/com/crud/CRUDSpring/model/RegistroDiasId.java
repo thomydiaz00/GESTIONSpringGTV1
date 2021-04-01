@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 @Embeddable
@@ -21,11 +22,11 @@ public class RegistroDiasId implements Serializable {
     private Horario horario;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idAsistencia", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "idAsistencia")
     private Asistencia asistencia;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idProfesor", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "idProf")
     private Profesor profesor;
 
     public RegistroDiasId(Horario horario, Asistencia asistencia, Profesor profesor) {
@@ -59,6 +60,43 @@ public class RegistroDiasId implements Serializable {
 
     public void setProfesor(Profesor profesor) {
         this.profesor = profesor;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((asistencia == null) ? 0 : asistencia.hashCode());
+        result = prime * result + ((horario == null) ? 0 : horario.hashCode());
+        result = prime * result + ((profesor == null) ? 0 : profesor.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        RegistroDiasId other = (RegistroDiasId) obj;
+        if (asistencia == null) {
+            if (other.asistencia != null)
+                return false;
+        } else if (!asistencia.equals(other.asistencia))
+            return false;
+        if (horario == null) {
+            if (other.horario != null)
+                return false;
+        } else if (!horario.equals(other.horario))
+            return false;
+        if (profesor == null) {
+            if (other.profesor != null)
+                return false;
+        } else if (!profesor.equals(other.profesor))
+            return false;
+        return true;
     }
 
     @Override

@@ -190,17 +190,18 @@ public class AdminController {
 		Optional<Profesor> profesor = serviceProfesor.profesorPorId(idProf);
 		List<RegistroDeAsistencia> registros = new ArrayList<RegistroDeAsistencia>();
 		List<Asistencia> asistencias = new ArrayList<Asistencia>();
+
 		for (Horario horario : clase.getHorarios()) {
 			for (Asistencia asistencia : clase.getAsistencias()) {
 				RegistroDiasId id = new RegistroDiasId(horario, asistencia, profesor.get());
 				Optional<RegistroDeAsistencia> registro = registroDeAsistencia.findByIdRegistro(id);
 				RegistroDeAsistencia reg = registro.get();
-				if(reg.isEstado()){
+				if (reg.isEstado()) {
 					System.out.println("------------------------------");
 					System.out.println(registro);
 					System.out.println("------------------------------");
 				}
-				
+
 			}
 			//
 		}

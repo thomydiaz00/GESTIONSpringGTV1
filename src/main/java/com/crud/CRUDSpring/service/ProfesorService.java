@@ -17,7 +17,7 @@ public class ProfesorService implements IfServiceProfesor {
 	@Autowired
 	private interfaceProfesor data;
 	@Autowired
-	private interfaceClase serviceClase;
+	private ClaseService serviceClase;
 	@Autowired
 	private HorarioService serviceHorario;
 
@@ -35,10 +35,14 @@ public class ProfesorService implements IfServiceProfesor {
 	@Override
 	public int guardarProfesor(Profesor p) {
 		int res = 0;
-		for (Clase clase : p.getClases()) {
-			for (Horario horario : clase.getHorarios()) {
-				serviceHorario.crearRegistrosDeAsistencia(clase, horario);
+		if (data.existsById(p.getIdProf())) {
+			data.save(p);
+			for (Clase clase : p.getClases()) {
+				if (!clase.getAsistencias().equals(null)) {
+					serviceClase.crearFechasAsistencia(clase, true);
+				}
 			}
+
 		}
 		Profesor profesor = data.save(p);
 		if (!profesor.equals(null)) {

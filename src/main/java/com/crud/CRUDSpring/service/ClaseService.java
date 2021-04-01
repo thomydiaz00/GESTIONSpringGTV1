@@ -54,13 +54,16 @@ public class ClaseService implements IfServiceClase {
 		return res;
 	}
 
-	private void crearFechasAsistencia(Clase clase, boolean esNuevaClase) {
+	public void crearFechasAsistencia(Clase clase, boolean esNuevaClase) {
 		List<String> dias = new ArrayList<String>();
 		List<Asistencia> asistencias = clase.getAsistencias();
 		List<LocalDate> filteredDates = new ArrayList<LocalDate>();
 		Clase claseSinActualizar = clasePorId(clase.getIdClase()).get();
 		boolean fechaFinActualizada = false;
-
+		boolean profesorActualizado = false;
+		if (!claseSinActualizar.getProfesores().equals(clase.getProfesores())) {
+			profesorActualizado = true;
+		}
 		if (!claseSinActualizar.getFechaFin().equals(clase.getFechaFin())) {
 			fechaFinActualizada = true;
 		}
@@ -68,7 +71,8 @@ public class ClaseService implements IfServiceClase {
 			dias.add(diaDePractica.getDiaDeLaSemana());
 		}
 
-		filteredDates = definirTodasLasFechas(clase, claseSinActualizar, dias, esNuevaClase, fechaFinActualizada);
+		filteredDates = definirTodasLasFechas(clase, claseSinActualizar, dias, esNuevaClase, fechaFinActualizada,
+				profesorActualizado);
 
 		// Si la fecha coincide con los dias de practica asosciados a la clase los
 		// agrego a la base de datos
@@ -110,12 +114,12 @@ public class ClaseService implements IfServiceClase {
 	 * actualiza el día de la clase también creo registros para ese dia
 	 */
 	private List<LocalDate> definirTodasLasFechas(Clase clase, Clase claseSinActualizar, List<String> dias,
-			boolean esNuevaClase, boolean fechaFinActualizada) {
+			boolean esNuevaClase, boolean fechaFinActualizada, boolean profesorActualizado) {
 		List<LocalDate> todasLasFechas = new ArrayList<LocalDate>();
 		List<LocalDate> filteredDates = new ArrayList<LocalDate>();
 
 		if (esNuevaClase || !fechaFinActualizada || (clase.getDias() != claseSinActualizar.getDias())) {
-			System.out.println("nueva clase");
+			System.out.println("actualizando desde el principio");
 			todasLasFechas = clase.getFechaInicio().datesUntil(clase.getFechaFin()).collect(Collectors.toList());
 		} else {
 			todasLasFechas = claseSinActualizar.getFechaFin().datesUntil(clase.getFechaFin())

@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
+import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
 import com.crud.CRUDSpring.interfaces.interfaceClase;
 import com.crud.CRUDSpring.interfaces.interfaceProfesor;
 import com.crud.CRUDSpring.model.Clase;
@@ -20,6 +21,8 @@ public class ProfesorService implements IfServiceProfesor {
 	private ClaseService serviceClase;
 	@Autowired
 	private HorarioService serviceHorario;
+	@Autowired
+	private interfaceAsistencia interfaceAsis;
 
 	@Override
 	public List<Profesor> listarProfesores() {
@@ -35,16 +38,12 @@ public class ProfesorService implements IfServiceProfesor {
 	@Override
 	public int guardarProfesor(Profesor p) {
 		int res = 0;
-		if (data.existsById(p.getIdProf())) {
-			data.save(p);
-			for (Clase clase : p.getClases()) {
-				if (!clase.getAsistencias().equals(null)) {
-					serviceClase.crearFechasAsistencia(clase, true);
-				}
-			}
 
-		}
 		Profesor profesor = data.save(p);
+		Optional<Profesor> nuevoProfesor = Optional.of(profesor);
+		for (Clase clase : p.getClases()) {
+			serviceClase.crearFechasAsistencia(clase, true, true, nuevoProfesor);
+		}
 		if (!profesor.equals(null)) {
 			res = 1;
 		}

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
+import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
 import com.crud.CRUDSpring.interfaces.interfaceClase;
 import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
 import com.crud.CRUDSpring.model.Asistencia;
@@ -27,7 +28,6 @@ public class ClaseService implements IfServiceClase {
 	interfaceAsistencia interfaceAsis;
 	@Autowired
 	AsistenciaService serviceAsistencia;
-
 	@Autowired
 	HorarioService serviceHorario;
 
@@ -40,6 +40,8 @@ public class ClaseService implements IfServiceClase {
 	public int guardarClase(Clase c) {
 		int res = 0;
 		boolean esNuevaClase = false;
+		boolean esNuevoProfesor = false;
+		Optional<Profesor> profesor = Optional.empty();
 		if (!data.existsById(c.getIdClase())) {
 			esNuevaClase = true;
 			Clase clase = data.save(c);
@@ -48,13 +50,14 @@ public class ClaseService implements IfServiceClase {
 			}
 		}
 		System.out.println("asistencias actuales: " + c.getAsistencias().size());
-		crearFechasAsistencia(c, esNuevaClase);
+		crearFechasAsistencia(c, esNuevaClase, esNuevoProfesor, profesor);
 		// Si se actualiza la
 
 		return res;
 	}
 
-	public void crearFechasAsistencia(Clase clase, boolean esNuevaClase) {
+	public void crearFechasAsistencia(Clase clase, boolean esNuevaClase, boolean esNuevoProfesor,
+			Optional<Profesor> nuevoProfesor) {
 		List<String> dias = new ArrayList<String>();
 		List<Asistencia> asistencias = clase.getAsistencias();
 		List<LocalDate> filteredDates = new ArrayList<LocalDate>();
@@ -76,19 +79,30 @@ public class ClaseService implements IfServiceClase {
 
 		// Si la fecha coincide con los dias de practica asosciados a la clase los
 		// agrego a la base de datos
-		for (Profesor profesor : clase.getProfesores()) {
+		if (!esNuevoProfesor) {
+			for (Profesor profesor : clase.getProfesores()) {
+				for (LocalDate fecha : filteredDates) {
+					System.out.println("-------------------------------");
+					Asistencia asistencia = new Asistencia();
+					asistencia.setClase(clase);
+					asistencia.setProfesor(profesor);
+					asistencia.setFechaAsistencia(fecha);
+					asistencias.add(asistencia);
+					System.out.println(fecha + " -" + fecha.getDayOfWeek().toString());
+					System.out.println(
+							"#Nro de asistencias : " + clase.getAsistencias().size() + " || " + asistencias.size());
+
+				}
+			}
+		} else {
 			for (LocalDate fecha : filteredDates) {
-				System.out.println("-------------------------------");
 				Asistencia asistencia = new Asistencia();
 				asistencia.setClase(clase);
-				asistencia.setProfesor(profesor);
+				asistencia.setProfesor(nuevoProfesor.get());
 				asistencia.setFechaAsistencia(fecha);
 				asistencias.add(asistencia);
-				System.out.println(fecha + " -" + fecha.getDayOfWeek().toString());
-				System.out.println(
-						"#Nro de asistencias : " + clase.getAsistencias().size() + " || " + asistencias.size());
-
 			}
+
 		}
 		for (Asistencia asistencia : asistencias) {
 			if (!interfaceAsis.findByFechaAsistenciaInAndProfesorInAndClase(asistencia.getFechaAsistencia(),
@@ -158,6 +172,12 @@ public class ClaseService implements IfServiceClase {
 	@Override
 	public Optional<Clase> clasePorId(int id) {
 		return data.findById(id);
+	}
+
+	public void crearFechasAsistenciaProfesor(Clase clase) {
+	}
+
+	public void crearRegistrosProfesor(Profesor profesor, Clase clase) {
 	}
 
 }

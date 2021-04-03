@@ -31,6 +31,7 @@ public interface interfaceAsistencia extends CrudRepository<Asistencia, Integer>
 
         public List<Asistencia> findByClase(Clase clase);
         public List<Asistencia> findByClaseAndProfesor(Clase clase, Profesor profesor);
+        public int countByClaseAndProfesor(Clase clase, Profesor profesor);
 
         public static String maskDay(DayOfWeek dayOfWeek) {
                 switch (dayOfWeek) {

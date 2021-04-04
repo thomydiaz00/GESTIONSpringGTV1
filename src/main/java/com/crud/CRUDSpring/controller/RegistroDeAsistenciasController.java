@@ -158,10 +158,17 @@ public class RegistroDeAsistenciasController {
 
 		if (diaAregistrar.equals(currentDayAsString)) {
 			Optional<RegistroDeAsistencia> registro = Optional.empty();
+			Asistencia asistencia = interfaceAsis
+					.findByFechaAsistenciaInAndProfesorInAndClase(localCurrentDate, profesor, clase).get();
+			RegistroDiasId id = new RegistroDiasId(horario, asistencia, profesor);
 
-			for (Asistencia asistencia : clase.getAsistencias()) {
-				RegistroDiasId id = new RegistroDiasId(horario, asistencia, profesor);
-				registro = registroDeAsistencia.findByIdRegistro(id);
+			for (RegistroDeAsistencia reg : asistencia.getRegistrosDeAsistencia()) {
+				if (reg.getIdRegistro().equals(id)) {
+					System.out.println("--------------");
+					System.out.println(reg.toString());
+
+				}
+
 			}
 			if (registro.isPresent()) {
 				RegistroDeAsistencia reg = registro.get();

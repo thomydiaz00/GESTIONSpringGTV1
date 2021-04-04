@@ -42,6 +42,8 @@ public class Asistencia {
 	@JoinColumn(name = "idClase")
 	private Clase clase;
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "idRegistro.asistencia")
+	private List<RegistroDeAsistencia> registrosDeAsistencia;
 	// @ManyToOne(fetch = FetchType.LAZY)
 	// @JoinColumns({ @JoinColumn(name = "idProfesor"), @JoinColumn(name =
 	// "idClase") })
@@ -52,12 +54,13 @@ public class Asistencia {
 	private boolean estadoAsistencia;
 
 	public Asistencia(int idAsistencia, Profesor profesor, Clase clase, LocalDate fechaAsistencia,
-			boolean estadoAsistencia) {
+			boolean estadoAsistencia, List<RegistroDeAsistencia> registrosDeAsistencias) {
 		this.profesor = profesor;
 		this.clase = clase;
 		this.fechaAsistencia = fechaAsistencia;
 		this.estadoAsistencia = estadoAsistencia;
 		this.idAsistencia = idAsistencia;
+		this.registrosDeAsistencia = registrosDeAsistencias;
 	}
 
 	public Profesor getProfesor() {
@@ -100,10 +103,19 @@ public class Asistencia {
 		this.estadoAsistencia = estadoAsistencia;
 	}
 
+	public List<RegistroDeAsistencia> getRegistrosDeAsistencia() {
+		return registrosDeAsistencia;
+	}
+
+	public void setRegistrosDeAsistencia(List<RegistroDeAsistencia> registrosDeAsistencia) {
+		this.registrosDeAsistencia = registrosDeAsistencia;
+	}
+
 	@Override
 	public String toString() {
-		return "Asistencia [idAsistencia = " + idAsistencia + ", clase=" + clase + ", estadoAsistencia="
-				+ estadoAsistencia + ", fechaAsistencia=" + fechaAsistencia + ", profesor=" + profesor + "]";
+		return "Asistencia [clase=" + clase + ", estadoAsistencia=" + estadoAsistencia + ", fechaAsistencia="
+				+ fechaAsistencia + ", idAsistencia=" + idAsistencia + ", profesor=" + profesor
+				+ ", registrosDeAsistencia=" + registrosDeAsistencia.size() + "]";
 	}
 
 	@Override
@@ -115,6 +127,7 @@ public class Asistencia {
 		result = prime * result + ((fechaAsistencia == null) ? 0 : fechaAsistencia.hashCode());
 		result = prime * result + idAsistencia;
 		result = prime * result + ((profesor == null) ? 0 : profesor.hashCode());
+		result = prime * result + ((registrosDeAsistencia == null) ? 0 : registrosDeAsistencia.hashCode());
 		return result;
 	}
 
@@ -145,6 +158,11 @@ public class Asistencia {
 			if (other.profesor != null)
 				return false;
 		} else if (!profesor.equals(other.profesor))
+			return false;
+		if (registrosDeAsistencia == null) {
+			if (other.registrosDeAsistencia != null)
+				return false;
+		} else if (!registrosDeAsistencia.equals(other.registrosDeAsistencia))
 			return false;
 		return true;
 	}

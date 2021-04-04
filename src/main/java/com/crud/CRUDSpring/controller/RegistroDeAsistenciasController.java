@@ -48,7 +48,7 @@ public class RegistroDeAsistenciasController {
 	@Autowired
 	interfaceAsistencia interfaceAsis;
 	@Autowired
-	interfaceRegistroDeAsistencia registroDeAsistencia;
+	interfaceRegistroDeAsistencia interfaceRegistroDeAsistencia;
 	@Autowired
 	IfServiceRegistroDeAsistencia serviceRegistroDeAsistencia;
 	@Autowired
@@ -122,6 +122,7 @@ public class RegistroDeAsistenciasController {
 		Horario horario = serviceHorario.HorarioPorId(idHorario).get();
 		// get Hora Fin
 		int horaFin = Integer.parseInt(horario.getHora_fin().substring(0, 2));
+		boolean asistenciaCargada = false;
 
 		try {
 			Asistencia asistencia = interfaceAsis
@@ -157,30 +158,39 @@ public class RegistroDeAsistenciasController {
 		}
 
 		if (diaAregistrar.equals(currentDayAsString)) {
-			Optional<RegistroDeAsistencia> registro = Optional.empty();
 			Asistencia asistencia = interfaceAsis
 					.findByFechaAsistenciaInAndProfesorInAndClase(localCurrentDate, profesor, clase).get();
 			RegistroDiasId id = new RegistroDiasId(horario, asistencia, profesor);
+			Optional<RegistroDeAsistencia> registro = interfaceRegistroDeAsistencia.findByIdRegistro(id);
+			int cantidadDeRegistros = 0;
 
-			for (RegistroDeAsistencia reg : asistencia.getRegistrosDeAsistencia()) {
-				if (reg.getIdRegistro().equals(id)) {
-					System.out.println("--------------");
-					System.out.println(reg.toString());
-
-				}
-
-			}
 			if (registro.isPresent()) {
 				RegistroDeAsistencia reg = registro.get();
 				if (reg.isEstado()) {
+					System.out.println("asistencia ya fue cargada anteriormente");
 					return "alertas/alerta_repetida.html";
 				}
-				System.out.println("encontrado");
-				reg.setEstado(true);
-				System.out.println("Assitencia cargada");
-				serviceRegistroDeAsistencia.guardarRegistroDeAsistencia(reg);
-
 			}
+			for (RegistroDeAsistencia reg : asistencia.getRegistrosDeAsistencia()) {
+				if (reg.getIdRegistro().equals(id)) {
+					System.out.println("--------------");
+					reg.setEstado(true);
+					asistenciaCargada = true;
+					serviceRegistroDeAsistencia.guardarRegistroDeAsistencia(reg);
+					System.out.println(reg.getIdRegistro().getAsistencia().getFechaAsistencia() + ":  cargada");
+					// Registro guardado
+				}
+				if (reg.isEstado()) {
+					cantidadDeRegistros++;
+				}
+			}
+			if (cantidadDeRegistros == asistencia.getRegistrosDeAsistencia().size()) {
+				System.out.println("--------------");
+				System.out.println("todos los horarios cargados para este dia");
+				asistencia.setEstadoAsistencia(true);
+				serviceAsistencia.guardarAsistencia(asistencia);
+			}
+
 			return "alertas/alerta_success.html";
 		} else {
 

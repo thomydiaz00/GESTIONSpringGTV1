@@ -3,11 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <title>Calendar</title>
-
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"
@@ -34,16 +48,63 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="/funciones.js"></script>
     <script src="/showSelector.js"></script>
-    <script src="/showSelector.js"></script>
 
     <!--tablas-->
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.js"
-      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-      crossorigin="anonymous"
-    ></script>
+
+    <!-- <script th:inline="javascript">
+      function eval(idHorario, idProf, idClase) {
+        $.ajax({
+          url:
+            "/profesor/save_asistencia?" +
+            "idhorario=" +
+            idHorario +
+            "&idclase=" +
+            idClase +
+            "&idprof=" +
+            idProf,
+          dataType: "html",
+          success: function (response) {
+            $("#alertcontainer").html(response);
+          },
+          error: function (data) {
+            console.log("Error:", data);
+          },
+        });
+      }
+    </script> -->
   </head>
   <body>
+    <div class="modal" tabindex="-1" role="dialog" id="modal" name="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Modal body text goes here.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Save changes</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container">
       <div class="card">
         <h3 class="card-header" id="monthAndYear"></h3>
@@ -142,6 +203,7 @@
 
       const fechasCompletas = /*[[${fechasCompletas}]]*/ "defaultanyvalue";
       const faltas = /*[[${faltas}]]*/ "defaultanyvalue";
+      const clase = /*[[${clase}]]*/ "defaultanyvalue";
 
       let selectMonth = document.getElementById("month");
       let months = [
@@ -187,6 +249,26 @@
           default:
             break;
         }
+      }
+      function celdaAsistencia(myDate, idClase) {
+        console.log(myDate);
+        alert("asistencia clickeada");
+        //$("#modal").modal("show");
+        $.ajax({
+          url: "/admin/consulta_horarios",
+          data: { date: myDate, clase: idClase },
+          dataType: "html",
+          success: function (response) {
+            console.log("success");
+          },
+          error: function (data) {
+            console.log("Error:", data);
+          },
+        });
+      }
+
+      function celdaFalta() {
+        alert("click en celda de falta");
       }
 
       function showCalendar(month, year) {
@@ -234,6 +316,10 @@
                     month === myDate.getMonth()
                   ) {
                     cell.classList.add("bg-success");
+                    cell.addEventListener(
+                      "click",
+                      celdaAsistencia.bind(null, fecha, clase)
+                    );
                   } // co
                 });
                 faltas.forEach((fechaIncompleta) => {
@@ -246,6 +332,7 @@
                     month === fechaInc.getMonth()
                   ) {
                     cell.classList.add("bg-danger");
+                    cell.setAttribute("onclick", "celdaFalta(myDate)");
                   } // co
                 });
 

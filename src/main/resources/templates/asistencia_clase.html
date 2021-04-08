@@ -48,137 +48,159 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="/funciones.js"></script>
     <script src="/showSelector.js"></script>
-
-    <!--tablas-->
-
-    <!-- <script th:inline="javascript">
-      function eval(idHorario, idProf, idClase) {
-        $.ajax({
-          url:
-            "/profesor/save_asistencia?" +
-            "idhorario=" +
-            idHorario +
-            "&idclase=" +
-            idClase +
-            "&idprof=" +
-            idProf,
-          dataType: "html",
-          success: function (response) {
-            $("#alertcontainer").html(response);
-          },
-          error: function (data) {
-            console.log("Error:", data);
-          },
+    <script th:inline="javascript">
+      /*[+
+        $(function() {
+          $("#horario").load('/admin/consulta_horarios');
         });
-      }
-    </script> -->
+      
+      +]*/
+    </script>
   </head>
   <body>
-    <div class="modal" tabindex="-1" role="dialog" id="modal" name="modal">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Modal body text goes here.</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Save changes</button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
-          </div>
+    <!--Logos-->
+    <div class="d-flex">
+      <div class="p-2 mr-auto">
+          <img src="static/img/deportes.png" th:src="@{/img/deportes.png}" alt="Inicio" width="120" height="120" />
+      </div>
+      <div class="p-2">
+        <img src="static/img/escudo.png" width="100" height="100"  th:src="@{/img/escudo.png}" alt="deportes" />
+      </div>
+    </div>
+  
+    <!--Navbar header-->
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded-bottom">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/admin/lista_profesores"> <h3>Administracion de profesores</h3> <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/lista_clases"><h5>Administrar Clases</h5></a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ml-md-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text ="${#authentication.getPrincipal().getUsername()}">
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="/admin/configuracion"><i class="fas fa-cog"></i> Configuracion</a>
+                <li class="divider"></li>
+                <li><a class="dropdown-item" href="/logout"><i class="fas fa-power-off"></i> Cerrar Sesión</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="jumbotron jumbotron">
+        <div class="container">
+          <h1 class="display-5" th:text=" 'Asistencias de la clase ' + ${clase.nombreDep}"></h1>
         </div>
       </div>
     </div>
+    
+  
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-9">
+          <div class="container">
+            <div class="card">
+              <h3 class="card-header" id="monthAndYear"></h3>
+              <div class="form-inline pt-2">
+                <button
+                  class="btn btn-outline-primary col-sm-6"
+                  id="previous"
+                  onclick="previous()"
+                >
+                  Anterior
+                </button>
+                <button
+                  class="btn btn-outline-primary col-sm-6"
+                  id="next"
+                  onclick="next()"
+                >
+                  Siguiente
+                </button>
+              </div>
+              <div class="container pt-2">
+                <table
+                  class="table table-bordered table-responsive-sm"
+                  id="calendar"
+                >
+                  <tr>
+                    <th class="col-1">Domingo</th>
+                    <th class="col-1">Lunes</th>
+                    <th class="col-1">Martes</th>
+                    <th class="col-1">Miércoles</th>
+                    <th class="col-1">Jueves</th>
+                    <th class="col-1">Viernes</th>
+                    <th class="col-1">Sabado</th>
+                  </tr>
+                  <tbody id="calendar-body"></tbody>
+                </table>
+              </div>
 
-    <div class="container">
-      <div class="card">
-        <h3 class="card-header" id="monthAndYear"></h3>
-        <div class="form-inline pt-2">
-          <button
-            class="btn btn-outline-primary col-sm-6"
-            id="previous"
-            onclick="previous()"
-          >
-            Anterior
-          </button>
-          <button
-            class="btn btn-outline-primary col-sm-6"
-            id="next"
-            onclick="next()"
-          >
-            Siguiente
-          </button>
+              <div class="d-flex">
+                <label class="lead mr-2 ml-2 col-1" for="month">Ir a: </label>
+                <select
+                  class="form-control col-5 mr-2"
+                  name="month"
+                  id="month"
+                  onchange="jump()"
+                >
+                  <option value="0">Enero</option>
+                  <option value="1">Febrero</option>
+                  <option value="2">Marzo</option>
+                  <option value="3">Abril</option>
+                  <option value="4">Mayo</option>
+                  <option value="5">Junio</option>
+                  <option value="6">Julio</option>
+                  <option value="7">Agosto</option>
+                  <option value="8">Septiembre</option>
+                  <option value="9">Octubre</option>
+                  <option value="10">Noviembre</option>
+                  <option value="11">Diciembre</option>
+                </select>
+                <label for="year"></label>
+                <select
+                  class="form-control col-5"
+                  name="year"
+                  id="year"
+                  onchange="jump()"
+                >
+                  <option value="2020">2020</option>
+                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+                  <option value="2024">2024</option>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+                  <option value="2027">2027</option>
+                  <option value="2028">2028</option>
+                  <option value="2029">2029</option>
+                  <option value="2030">2030</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="container pt-2">
-          <table class="table table-bordered table-responsive-sm" id="calendar">
-            <tr>
-              <th class="col-1">Domingo</th>
-              <th class="col-1">Lunes</th>
-              <th class="col-1">Martes</th>
-              <th class="col-1">Miércoles</th>
-              <th class="col-1">Jueves</th>
-              <th class="col-1">Viernes</th>
-              <th class="col-1">Sabado</th>
-            </tr>
-            <tbody id="calendar-body"></tbody>
+        <div class="col-3">
+          <table class="table rable-responsive table-striped table-hover">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Dia</th>
+                <th scope="col">Hora inicio</th>
+                <th scope="col">Hora fin</th>
+              </tr>
+            </thead>
+            <tbody id="results">
+              <tr><p>Hacer click sobre una celda para consultar horarios en ese día</p></tr>
+            </tbody>
           </table>
-        </div>
-
-        <div class="d-flex">
-          <label class="lead mr-2 ml-2 col-1" for="month">Ir a: </label>
-          <select
-            class="form-control col-5 mr-2"
-            name="month"
-            id="month"
-            onchange="jump()"
-          >
-            <option value="0">Enero</option>
-            <option value="1">Febrero</option>
-            <option value="2">Marzo</option>
-            <option value="3">Abril</option>
-            <option value="4">Mayo</option>
-            <option value="5">Junio</option>
-            <option value="6">Julio</option>
-            <option value="7">Agosto</option>
-            <option value="8">Septiembre</option>
-            <option value="9">Octubre</option>
-            <option value="10">Noviembre</option>
-            <option value="11">Diciembre</option>
-          </select>
-          <label for="year"></label>
-          <select
-            class="form-control col-5"
-            name="year"
-            id="year"
-            onchange="jump()"
-          >
-            <option value="2020">2020</option>
-            <option value="2021">2021</option>
-            <option value="2022">2022</option>
-            <option value="2023">2023</option>
-            <option value="2024">2024</option>
-            <option value="2025">2025</option>
-            <option value="2026">2026</option>
-            <option value="2027">2027</option>
-            <option value="2028">2028</option>
-            <option value="2029">2029</option>
-            <option value="2030">2030</option>
-          </select>
         </div>
       </div>
     </div>
@@ -203,7 +225,8 @@
 
       const fechasCompletas = /*[[${fechasCompletas}]]*/ "defaultanyvalue";
       const faltas = /*[[${faltas}]]*/ "defaultanyvalue";
-      const clase = /*[[${clase}]]*/ "defaultanyvalue";
+      const clase = /*[[${clase.idClase}]]*/ "defaultanyvalue";
+      const profesor = /*[[${profesor}]]*/ "defaultanyvalue";
 
       let selectMonth = document.getElementById("month");
       let months = [
@@ -250,25 +273,21 @@
             break;
         }
       }
-      function celdaAsistencia(myDate, idClase) {
-        console.log(myDate);
+      function celdaAsistencia(fechaIncompleta, idClase, profesor) {
+        console.log(fechaIncompleta);
         alert("asistencia clickeada");
         //$("#modal").modal("show");
         $.ajax({
           url: "/admin/consulta_horarios",
-          data: { date: myDate, clase: idClase },
-          dataType: "html",
+          data: { date: fechaIncompleta, clase: idClase, profesor: profesor },
           success: function (response) {
-            console.log("success");
+            console.log(response);
+            $("#results").html(response);
           },
           error: function (data) {
             console.log("Error:", data);
           },
         });
-      }
-
-      function celdaFalta() {
-        alert("click en celda de falta");
       }
 
       function showCalendar(month, year) {
@@ -318,7 +337,7 @@
                     cell.classList.add("bg-success");
                     cell.addEventListener(
                       "click",
-                      celdaAsistencia.bind(null, fecha, clase)
+                      celdaAsistencia.bind(null, fecha, clase, profesor)
                     );
                   } // co
                 });
@@ -332,7 +351,15 @@
                     month === fechaInc.getMonth()
                   ) {
                     cell.classList.add("bg-danger");
-                    cell.setAttribute("onclick", "celdaFalta(myDate)");
+                    cell.addEventListener(
+                      "click",
+                      celdaAsistencia.bind(
+                        null,
+                        fechaIncompleta,
+                        clase,
+                        profesor
+                      )
+                    );
                   } // co
                 });
 
@@ -353,5 +380,13 @@
         /*]]>*/
       }
     </script>
-  </body>
+    <!-- resultados -->
+    
+    <div th:fragment="horariosList" th:unless="${#lists.isEmpty(horarios)}">
+      <tr scope="row" th:each="horario : ${horarios}">
+        <td th:text="${horario.dia.diaDeLaSemana}"></td>
+        <td th:text="${horario.hora_inicio}"></td>
+        <td th:text="${horario.hora_fin}"></td>
+      </tr>
+    </div>
 </html>

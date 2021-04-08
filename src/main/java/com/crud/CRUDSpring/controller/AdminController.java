@@ -3,15 +3,20 @@ package com.crud.CRUDSpring.controller;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Stream;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.metadata.TomcatDataSourcePoolMetadata;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -39,6 +44,9 @@ import com.crud.CRUDSpring.model.Profesor;
 import com.crud.CRUDSpring.model.RegistroDeAsistencia;
 import com.crud.CRUDSpring.model.RegistroDiasId;
 import com.crud.CRUDSpring.repository.ProfesorRepository;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 
 @Controller
 public class AdminController {
@@ -205,7 +213,6 @@ public class AdminController {
 
 		for (Asistencia asistencia : interfaceAsis.findByClaseAndProfesorAndEstadoAsistencia(clase, profesor, true)) {
 			String nombreDia = interfaceAsistencia.maskDay(asistencia.getFechaAsistencia().getDayOfWeek());
-			System.out.println("agregndo fecha completa para el dia: " + nombreDia);
 			if (dias.contains(nombreDia)) {
 				fechasCompletas.add(asistencia.getFechaAsistencia());
 			}
@@ -227,18 +234,41 @@ public class AdminController {
 
 		model.addAttribute("fechasCompletas", fechasCompletas);
 		model.addAttribute("faltas", faltas);
-		model.addAttribute("clase", idClase);
+		model.addAttribute("clase", clase);
+		model.addAttribute("profesor", idProf);
 		return "asistencia_clase";
 
 	}
 
 	@GetMapping("admin/consulta_horarios")
 	public String consultaHorarios(@RequestParam(value = "date") String date,
-			@RequestParam(value = "clase") String clase) {
-		System.out.println("recieved: " + date);
-		System.out.println("recieved: " + clase);
+			@RequestParam(value = "clase") int idClase, @RequestParam(value = "profesor") int idProfesor, Model model) {
 
-		return "index";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate localDate = LocalDate.parse(date, formatter);
+		System.out.println("My localdate: " + localDate);
+		System.out.println("Profesor : " + idProfesor);
+
+		Optional<Profesor> profesor = serviceProfesor.profesorPorId(idProfesor);
+		Optional<Clase> clase = servClase.clasePorId(idClase);
+		Optional<Asistencia> asistencia = Optional.empty();
+		List<Horario> horarios = new ArrayList<Horario>();
+
+		if (clase.isPresent() && profesor.isPresent()) {
+			asistencia = interfaceAsis.findByFechaAsistenciaInAndProfesorInAndClase(localDate, profesor.get(),
+					clase.get());
+		}
+		if (asistencia.isPresent()) {
+			for (Horario horario : clase.get().getHorarios()) {
+				if (horario.getDia().getDiaDeLaSemana().equals(interfaceAsistencia.maskDay(localDate.getDayOfWeek()))) {
+					System.out.println("Horario para el dia: " + horario.getDia().getDiaDeLaSemana());
+					horarios.add(horario);
+				}
+			}
+		}
+
+		model.addAttribute("horarios", horarios);
+		return "asistencia_clase :: horariosList";
 
 	}
 

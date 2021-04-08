@@ -18,7 +18,7 @@ public class RegistroDiasId implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idHorario", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "idHorario")
     private Horario horario;
 
     @ManyToOne(fetch = FetchType.EAGER)

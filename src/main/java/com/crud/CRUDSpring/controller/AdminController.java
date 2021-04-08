@@ -132,8 +132,12 @@ public class AdminController {
 
 	@PostMapping("/admin/save")
 	public String save(@Valid Profesor p, Model model, RedirectAttributes ra) {
-		if (interfaceProf.findByDniProf(p.getDniProf()).isPresent()) {
-			ra.addFlashAttribute("mensaje", "El dni ya está registrado en el sistema");
+		Optional<Profesor> profesor = interfaceProf.findByDniProf(p.getDniProf());
+		if (profesor.isPresent()) {
+			if (p.getIdProf() != profesor.get().getIdProf() && p.getDniProf() == profesor.get().getDniProf()) {
+				ra.addFlashAttribute("mensaje",
+						"No pudo registrarse el profesor, el DNI asignado ya está registrado en el sistema");
+			}
 		} else {
 			serviceProfesor.guardarProfesor(p);
 		}

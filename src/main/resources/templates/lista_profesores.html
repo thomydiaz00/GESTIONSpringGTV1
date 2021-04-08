@@ -53,6 +53,24 @@
     ></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script>
+      function eval(e) {
+        e.preventDefault;
+        return false;
+      }
+      // //$("#modal").modal("show");
+      // $.ajax({
+      //   url: "/admin/consulta_horarios",
+      //   data: { date: fechaIncompleta, clase: idClase, profesor: profesor },
+      //   success: function (response) {
+      //     console.log(response);
+      //     $("#results").html(response);
+      //   },
+      //   error: function (data) {
+      //     console.log("Error:", data);
+      //   },
+      // });
+    </script>
   </head>
   <body>
     <!--logos-->
@@ -178,6 +196,12 @@
           </div>
         </div>
       </div>
+      <div
+        th:if="${mensaje != null}"
+        th:text="${mensaje}"
+        class="alert alert-danger"
+        role="alert"
+      ></div>
     </div>
 
     <div
@@ -186,7 +210,12 @@
       style="display: none"
       th:object="${clases}"
     >
-      <form th:action="@{/admin/save}" th:object="${profesor}" method="POST">
+      <form
+        th:action="@{/admin/save}"
+        th:object="${profesor}"
+        id="form"
+        method="POST"
+      >
         <div class="card">
           <div class="card-body">
             <div class="form-group">
@@ -210,6 +239,7 @@
               <label class="mr-2" for="dni" required>DNI:</label>
               <input
                 th:field="*{dniProf}"
+                id="dni"
                 type="number"
                 class="form-control col-lg-2"
                 required
@@ -241,7 +271,13 @@
               />
             </div>
 
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              onsubmit="return false"
+            >
+              Guardar
+            </button>
           </div>
         </div>
       </form>

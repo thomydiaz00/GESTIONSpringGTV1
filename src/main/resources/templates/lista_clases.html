@@ -264,8 +264,9 @@
       >
         <thead>
           <tr>
-            <th class="col-sm-2">Nombre</th>
+            <th class="col-sm-1">Nombre</th>
             <th class="col-sm-1">Deporte</th>
+            <th scope="col">Profesores</th>
             <th class="col-sm-1">Acciones</th>
           </tr>
         </thead>
@@ -274,6 +275,13 @@
           <tr th:each="clase:${clases}">
             <th th:text="${clase.nombreDep}"></th>
             <td th:text="${clase.deporte}"></td>
+            <td>
+              <span th:each=" profesor, iterStat  : ${clase.profesores} ">
+                <span
+                  th:text="!${iterStat.last} ? ${profesor.nombreProf} + ' ' + ${profesor.apellidoProf} + ', ' : ${profesor.nombreProf} + ' ' + ${profesor.apellidoProf}  "
+                ></span>
+              </span>
+            </td>
             <td>
               <div class="d-flex align-items-stretch">
                 <div class="p-2">

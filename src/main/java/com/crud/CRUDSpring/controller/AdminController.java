@@ -35,24 +35,19 @@ import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
 import com.crud.CRUDSpring.interfaceService.IfServiceUser;
 import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
+import com.crud.CRUDSpring.interfaces.interfaceProfesor;
 import com.crud.CRUDSpring.interfaces.interfaceRegistroDeAsistencia;
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
 import com.crud.CRUDSpring.model.DiaDePractica;
 import com.crud.CRUDSpring.model.Horario;
 import com.crud.CRUDSpring.model.Profesor;
-import com.crud.CRUDSpring.model.RegistroDeAsistencia;
-import com.crud.CRUDSpring.model.RegistroDiasId;
-import com.crud.CRUDSpring.repository.ProfesorRepository;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 
 @Controller
 public class AdminController {
 
 	@Autowired
-	private ProfesorRepository query;
+	private interfaceProfesor interfaceProf;
 	@Autowired
 	private IfServiceProfesor serviceProfesor;
 	@Autowired
@@ -136,15 +131,13 @@ public class AdminController {
 	}
 
 	@PostMapping("/admin/save")
-	public String save(@Valid Profesor p, Model model) {
-		serviceProfesor.guardarProfesor(p);
+	public String save(@Valid Profesor p, Model model, RedirectAttributes ra) {
+		if (interfaceProf.findByDniProf(p.getDniProf()).isPresent()) {
+			ra.addFlashAttribute("mensaje", "El dni ya está registrado en el sistema");
+		} else {
+			serviceProfesor.guardarProfesor(p);
+		}
 		return "redirect:/admin/lista_profesores";
-	}
-
-	@GetMapping("/admin/prueba")
-	public String prueba(Model model) {
-		model.addAttribute("cantidad", query.count());
-		return "user";
 	}
 
 	@GetMapping("/admin/editar_profesor/{id}")

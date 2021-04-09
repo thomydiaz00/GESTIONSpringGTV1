@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 
-public class ClasePdfExporter {
+public class HorariosPdfExporter {
 	private List<Clase> listClases;
 
 	private void writeTableHeader(PdfPTable table) {
@@ -104,7 +104,7 @@ public class ClasePdfExporter {
 		Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		font.setSize(18);
 		font.setColor(Color.BLUE);
-		Image deportesBaradero = Image.getInstance("src/main/resources/static/img/deportesPDF.jpg");
+		Image deportesBaradero = Image.getInstance("src/main/resources/static/img/pdfheader.jpg");
 		deportesBaradero.setWidthPercentage(50);
 		deportesBaradero.setAlignment(Paragraph.ALIGN_CENTER);
 
@@ -130,52 +130,8 @@ public class ClasePdfExporter {
 
 	}
 
-	public ClasePdfExporter(List<Clase> listClases) {
+	public HorariosPdfExporter(List<Clase> listClases) {
 		this.listClases = listClases;
 	}
 
 }
-// private List<Clase> listadoClases;
-
-// public ClasePdfExporter(List<Clase> listadoClases) {
-// super();
-// this.listadoClases = listadoClases;
-// }
-
-// // metodo para escribir los nombres de las columnas de las tablas
-
-// /*
-// * Metodo para escribir datos en la tabla, itera por cada profesor Y agrega la
-// * Si hay profesores, imprime una fila con los datos, sino imprime "----"
-// */
-// private void writeTableData(PdfPTable tablaClases) {
-
-// tablaClases.addCell(tablaProfesor);
-
-// // hay que ver esto porque viene de otra clase
-// // tablaClases.addCell(clase.getAsistencias());
-// // hay que ver esto porque viene de otra clase
-// // tablaClases.addCell(clase.getProfesores());
-// });
-
-// }
-
-// public void export(HttpServletResponse response) throws DocumentException,
-// IOException {
-// Document document = new Document(PageSize.A4);
-// PdfWriter.getInstance(document, response.getOutputStream());
-// document.open();
-// PdfPTable tablaClases = new PdfPTable(3);
-// tablaClases.setWidths(new float[] { 1, 1, 2 });
-
-// writeTableHeader(tablaClases, "Nombre de la Clase");
-// writeTableHeader(tablaClases, "Deporte");
-// writeTableHeader(tablaClases, "Profesores a cargo");
-
-// writeTableData(tablaClases);
-
-// // document.add(tablaProfesores);
-// // document.addTitle("ss");
-// document.add(tablaClases);
-// document.close();
-// }

@@ -104,7 +104,10 @@ public class ClasePdfExporter {
 		Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		font.setSize(18);
 		font.setColor(Color.BLUE);
-		Image deportesBaradero = Image.getInstance("src/main/resources/static/img/deportes.png");
+		Image deportesBaradero = Image.getInstance("src/main/resources/static/img/pdfheader.jpg");
+		deportesBaradero.setWidthPercentage(50);
+		deportesBaradero.setAlignment(Paragraph.ALIGN_CENTER);
+
 		document.add(deportesBaradero);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
 		String date = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca")).toLocalDate().format(formatter);

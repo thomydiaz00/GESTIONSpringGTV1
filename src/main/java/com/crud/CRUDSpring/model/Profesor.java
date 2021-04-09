@@ -143,6 +143,10 @@ public class Profesor {
 				+ ", idProf=" + idProf + " matriculaProf=" + matriculaProf + "]";
 	}
 
+	public String pdfToString() {
+		return nombreProf + " " + apellidoProf;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

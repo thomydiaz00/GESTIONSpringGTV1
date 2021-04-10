@@ -387,6 +387,9 @@
         selectMonth.value = month;
         anio.value = year;
         mes.value = month + 1;
+        $('#pdfButton').html(
+          '<a class= "btn btn-secondary" href="' + link + (month + 1) + `/` +(year)+'"><i class="fas fa-file-pdf " </i>'
+        );
         // creating all cells
         let date = 1;
         for (let i = 0; i < 6; i++) {

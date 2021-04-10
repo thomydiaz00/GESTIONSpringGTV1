@@ -49,13 +49,35 @@
     <script src="/funciones.js"></script>
     <script src="/showSelector.js"></script>
     <script th:inline="javascript">
-      /*[+
-        $(function() {
-          $("#horario").load('/admin/consulta_horarios');
-        });
+      const link =/*[[ @{/admin/lista_asistencias/export/} +${profesor}+ '/'+${clase.idClase} +'/']]*/ "defaultanyvalue";
+
+      getYears = (id)=>{
+        let min = 2019;
+        let max = new Date().getFullYear() + 10;
+        select = document.getElementById(id);
       
-      +]*/
+        for (var i = min; i<=max; i++){
+        var opt = document.createElement('option');
+        opt.value = i;
+        opt.innerHTML = i;
+        select.appendChild(opt);
+        }
+      }
+      handleChange = ()=>{
+        let anio = document.getElementById("anio");
+        let mes = document.getElementById("mes");
+        let anioValue = parseInt(anio.value);
+        let mesValue= parseInt(mes.value);
+
+        console.log("current year: " , anioValue);
+        console.log("current month: " , mesValue);
+        $('#pdfButton').html(
+          '<a href="' + link + (mesValue) +'">...</a>'
+        );
+      }
+      
     </script>
+    
   </head>
   <body>
     <!--Logos-->
@@ -172,17 +194,10 @@
                   id="year"
                   onchange="jump()"
                 >
-                  <option value="2020">2020</option>
-                  <option value="2021">2021</option>
-                  <option value="2022">2022</option>
-                  <option value="2023">2023</option>
-                  <option value="2024">2024</option>
-                  <option value="2025">2025</option>
-                  <option value="2026">2026</option>
-                  <option value="2027">2027</option>
-                  <option value="2028">2028</option>
-                  <option value="2029">2029</option>
-                  <option value="2030">2030</option>
+                <script>
+                  getYears("year");
+                </script>
+                  
                 </select>
               </div>
             </div>
@@ -201,7 +216,49 @@
               <tr><p>Hacer click sobre una celda para consultar horarios en ese día</p></tr>
             </tbody>
           </table>
-          <button class="btn btn-info" onclick="enviar()"><i class="fas fa-file-pdf fa-lg p-2"></i>Asistencia mensual</button>
+          <div class="card">
+            <div class="card-header">Generar reporte de Asistencia</div>
+            <div class="card-body">
+              <div class="d-flex">
+                <select
+                  class="form-control col-5 mr-2"
+                  name="mes"
+                  id="mes"
+                  onchange="handleChange()"
+                >
+                  <option value="1">Enero</option>
+                  <option value="2">Febrero</option>
+                  <option value="3">Marzo</option>
+                  <option value="4">Abril</option>
+                  <option value="5">Mayo</option>
+                  <option value="6">Junio</option>
+                  <option value="7">Julio</option>
+                  <option value="8">Agosto</option>
+                  <option value="9">Septiembre</option>
+                  <option value="10">Octubre</option>
+                  <option value="11">Noviembre</option>
+                  <option value="12">Diciembre</option>
+                </select>
+                <label for="year"></label>
+                <select
+                  class="form-control col-5"
+                  name="anio"
+                  id="anio"
+                  onchange="handleChange()"
+                >
+                <script>
+                  getYears("anio");
+                </script>
+                </select>
+                <div id="pdfButton">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+
         </div>
     
       </div>
@@ -215,6 +272,8 @@
       let currentMonth = today.getMonth();
       let currentYear = today.getFullYear();
       let selectYear = document.getElementById("year");
+      let anio = document.getElementById("anio");
+      let mes = document.getElementById("mes");
       const days = [
         "Lunes",
         "Martes",
@@ -224,27 +283,31 @@
         "Sabado",
         "Domingo",
       ];
-      function enviar(){
-        $.ajax({
-          url: "/admin/lista_asistencias/export",
-          data: { mes: currentMonth + 1, profesor: profesor, clase: clase },
-          success: function (response) {
-            console.log("enviando el mes: ", currentMonth + 1);
-            console.log("enviando el profesor: ", profesor);
-            console.log("enviando la clase: ", clase);
-
-          },
-          error: function (data) {
-            console.log("Error:", data);
-          },
-        });
-      }
+      // function enviar(){
+      //   $.ajax({
+      //     url: "/admin/lista_asistencias/export",
+      //     data: { mes: currentMonth + 1, profesor: profesor, clase: clase },
+      //     success: function (response) {
+      //       window.open("data:application/pdf," + response);         
+      //      },
+      //     error: function (data) {
+      //       console.log("Error:", data);
+      //     },
+      //   });
+      // }
+      
 
       const fechasCompletas = /*[[${fechasCompletas}]]*/ "defaultanyvalue";
       const faltas = /*[[${faltas}]]*/ "defaultanyvalue";
       const clase = /*[[${clase.idClase}]]*/ "defaultanyvalue";
       const profesor = /*[[${profesor}]]*/ "defaultanyvalue";
 
+     
+      // $( document ).ready(function() {
+      //   $('#pdfButton').html(
+      //     '<a href="' + link + (currentMonth + 1) +'">...</a>'
+      //   );
+      // });
       let selectMonth = document.getElementById("month");
       let months = [
         "Enero",
@@ -308,6 +371,7 @@
       }
 
       function showCalendar(month, year) {
+       
         let firstDay = new Date(year, month).getDay();
         console.log("el primer dia del mes es: ", firstDay);
 
@@ -321,6 +385,8 @@
         monthAndYear.innerHTML = months[month] + " " + year;
         selectYear.value = year;
         selectMonth.value = month;
+        anio.value = year;
+        mes.value = month + 1;
         // creating all cells
         let date = 1;
         for (let i = 0; i < 6; i++) {

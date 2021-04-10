@@ -14,6 +14,7 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
@@ -22,6 +23,7 @@ import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
 import com.crud.CRUDSpring.model.Profesor;
+import com.crud.CRUDSpring.util.AsistenciaPdfExporter;
 import com.crud.CRUDSpring.util.ClasePdfExporter;
 import com.crud.CRUDSpring.util.HorariosPdfExporter;
 import com.crud.CRUDSpring.util.ProfesorPdfExporter;
@@ -90,11 +92,11 @@ public class PdfExportController {
 
 	}
 
-	@GetMapping("admin/lista_asistencias/export")
-	public void exportarAsistencias(HttpServletResponse response, @PathParam(value = "mes") int mes, @PathParam(value = "profesor") int profesor, @PathParam(value = "clase") int clase ) throws DocumentException, IOException {
+	@GetMapping("admin/lista_asistencias/export/{profesor}/{clase}/{mes}")
+	public void exportarAsistencias(HttpServletResponse response, @PathVariable(value = "mes") int mes, @PathVariable(value = "profesor") int profesor, @PathVariable(value = "clase") int clase ) throws DocumentException, IOException {
 		System.out.println("el mes actual es:" + mes);
 		System.out.println("el id profesor es:" + profesor);
-		System.out.println("el id profesor es:" + clase);
+		System.out.println("el id clase es:" + clase);
 		Optional<Clase> c = serviceClase.clasePorId(clase);
 		Optional<Profesor> p = serviceProfesor.profesorPorId(profesor);
 		List<Asistencia> asistenciasCompletas = new ArrayList<Asistencia>();
@@ -122,8 +124,7 @@ public class PdfExportController {
 		String headerValue = "attachement;filename=Asistencias.pdf";
 
 		response.setHeader(headerKey, headerValue);
-		List<Clase> listadoClase = serviceClase.listarClase();
-		HorariosPdfExporter exporter = new HorariosPdfExporter(listadoClase);
+		AsistenciaPdfExporter exporter = new AsistenciaPdfExporter(p.get(), c.get(), asistencias, asistenciasCompletas, faltas);
 		exporter.export(response);
 		
 

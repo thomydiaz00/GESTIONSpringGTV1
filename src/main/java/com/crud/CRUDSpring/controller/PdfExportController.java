@@ -92,25 +92,31 @@ public class PdfExportController {
 
 	}
 
-	@GetMapping("admin/lista_asistencias/export/{profesor}/{clase}/{mes}")
-	public void exportarAsistencias(HttpServletResponse response, @PathVariable(value = "mes") int mes, @PathVariable(value = "profesor") int profesor, @PathVariable(value = "clase") int clase ) throws DocumentException, IOException {
-		System.out.println("el mes actual es:" + mes);
-		System.out.println("el id profesor es:" + profesor);
-		System.out.println("el id clase es:" + clase);
+	@GetMapping("admin/lista_asistencias/export/{profesor}/{clase}/{mes}/{anio}")
+	public void exportarAsistencias(HttpServletResponse response, @PathVariable(value = "profesor") int profesor, @PathVariable(value = "clase") int clase, @PathVariable(value = "mes") int mes, @PathVariable(value = "anio") int anio  ) throws DocumentException, IOException {
+		
 		Optional<Clase> c = serviceClase.clasePorId(clase);
 		Optional<Profesor> p = serviceProfesor.profesorPorId(profesor);
 		List<Asistencia> asistenciasCompletas = new ArrayList<Asistencia>();
 		List<Asistencia> faltas = new ArrayList<Asistencia>();
+		List<Asistencia> asistenciasPorMes = new ArrayList<Asistencia>();
+
 
 		List<Asistencia> asistencias = interfaceAsis.findByClaseAndProfesor(c.get(), p.get());
 		LocalDate localCurrentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
 				.toLocalDate();
-		
-		for(Asistencia asistencia: asistencias){	
+
+		for(Asistencia asistencia : asistencias){
+			LocalDate fechaDeAsistencia = asistencia.getFechaAsistencia();
+			if(fechaDeAsistencia.getMonthValue() == mes){
+				asistenciasPorMes.add(asistencia);
+			}
+		}
+
+		for(Asistencia asistencia: asistenciasPorMes){	
 			LocalDate fechaDeAsistencia = asistencia.getFechaAsistencia();
 			int res = fechaDeAsistencia.compareTo(localCurrentDate);
-			
-			if(fechaDeAsistencia.getMonthValue() == mes && res <= 0){
+			if((res < 0) && (fechaDeAsistencia.getYear() == anio)){
 				if(asistencia.isEstadoAsistencia()){
 					asistenciasCompletas.add(asistencia);
 				}else{
@@ -118,13 +124,15 @@ public class PdfExportController {
 				}
 			}
 		}
+		System.out.println( "cantidad de asistencias: " +asistenciasCompletas.size());
+		System.out.println("cantidad de faltas: " +faltas.size());
 
 		response.setContentType("application/pdf");
 		String headerKey = "Content-Disposition";
 		String headerValue = "attachement;filename=Asistencias.pdf";
 
 		response.setHeader(headerKey, headerValue);
-		AsistenciaPdfExporter exporter = new AsistenciaPdfExporter(p.get(), c.get(), asistencias, asistenciasCompletas, faltas);
+		AsistenciaPdfExporter exporter = new AsistenciaPdfExporter(p.get(), c.get(), asistenciasPorMes, asistenciasCompletas, faltas);
 		exporter.export(response);
 		
 

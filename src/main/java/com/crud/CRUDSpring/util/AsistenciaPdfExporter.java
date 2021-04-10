@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
 import com.crud.CRUDSpring.model.Profesor;
+import com.crud.CRUDSpring.model.RegistroDeAsistencia;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
@@ -33,6 +36,15 @@ public class AsistenciaPdfExporter {
     private List<Asistencia> todasLasFechas;
     Profesor profesor;
     
+	Comparator ascendingOrder = new Comparator(){
+		
+		@Override
+		public int compare(Object a, Object b) {
+			if(((Asistencia) a).getFechaAsistencia().isBefore(((Asistencia) b).getFechaAsistencia())) return -1;
+			else return 1;
+		}
+
+	};
     
 	private void writeTableHeader(PdfPTable table) {
 		PdfPCell cell = new PdfPCell();
@@ -47,22 +59,52 @@ public class AsistenciaPdfExporter {
 
 		cell.setPhrase(new Phrase("Estado", titulo));
 		table.addCell(cell);
+
+		cell.setPhrase(new Phrase("Registros", titulo));
+		table.addCell(cell);
 	}
 
 	private void writeTableData(PdfPTable table) {
+		Font ausente = FontFactory.getFont(FontFactory.HELVETICA);
+		ausente.setColor(Color.RED);
+		Collections.sort(todasLasFechas, ascendingOrder);
 		for (Asistencia asistencia : todasLasFechas) {
 			table.addCell(asistencia.getFechaAsistencia().toString());
-			agregarAsistencia(table, asistencia);
+			agregarAsistencia(table, asistencia, ausente);
+			agregarRegistros(table, asistencia, ausente);
 			
 		}
 	}
 
-	public void agregarAsistencia(PdfPTable table, Asistencia asistencia) {
+	public void agregarRegistros(PdfPTable table, Asistencia asistencia, Font ausente) {
+		PdfPTable registros = new PdfPTable(2);  
+		writeTableColumnHeader(registros, "estado del reg");
+		writeTableColumnHeader(registros, "lugar");
+
+		for(RegistroDeAsistencia registro : asistencia.getRegistrosDeAsistencia()){
+			
+			registros.addCell(String.valueOf(registro.isEstado()));
+			registros.addCell(registro.getIdRegistro().getHorario().getLugar());
+			System.out.println(registro.isEstado());
+			
+		}
+		table.addCell(registros);
+		
+		
+	}
+
+	public void agregarAsistencia(PdfPTable table, Asistencia asistencia, Font ausente) {
 		if(asistencias.contains(asistencia)){
             table.addCell("Presente");
+        }else if(faltas.contains(asistencia)){
+			PdfPCell celda = new PdfPCell();
+			Phrase phrase = new Phrase("Ausente", ausente);
+            celda.setPhrase(phrase);
+			table.addCell(celda);
         }else{
-            table.addCell("ausente");
-        }
+			table.addCell("-------------");
+
+		}
 	}
 
 	private void writeTableColumnHeader(PdfPTable tablaClases, String nombreColumna) {
@@ -75,6 +117,22 @@ public class AsistenciaPdfExporter {
 		Phrase frase = new Phrase(nombreColumna, font);
 		celda.setPhrase(frase);
 		tablaClases.addCell(celda);
+
+	}
+	private void observaciones(Document document){
+		Font titulo = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+		titulo.setSize(12);
+		titulo.setColor(Color.BLACK);
+		Paragraph p = new Paragraph("Observaciones: ", titulo);
+		Paragraph prof= new Paragraph("Profesor: ", titulo);
+		prof.add(profesor.getNombreProf() + " " + profesor.getApellidoProf() + ", DNI: " + profesor.getDniProf());
+		if(faltas.isEmpty()){
+			p.add(" No se registraron faltas para este profesor en este mes");
+		}else{
+			p.add(" Hubo un total de " + faltas.size() + " faltas en este mes");
+		}
+		document.add(prof);
+		document.add(p);
 
 	}
 
@@ -93,18 +151,19 @@ public class AsistenciaPdfExporter {
 		document.add(deportesBaradero);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
 		String date = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca")).toLocalDate().format(formatter);
-		Paragraph p = new Paragraph("Lista de Clases - " + date.toString(), font);
+		Paragraph p = new Paragraph("Lista de Asistencias - " + clase.getNombreDep() + " - Hasta " + date.toString(), font);
 		p.setAlignment(Paragraph.ALIGN_CENTER);
 
 		document.add(p);
 
-		PdfPTable table = new PdfPTable(2);
+		PdfPTable table = new PdfPTable(3);
 		table.setWidthPercentage(100f);
-		table.setWidths(new float[] { 2.0f, 2.0f });
+		table.setWidths(new float[] { 1.5f, 1.0f, 6.0f });
 		table.setSpacingBefore(10);
 
 		writeTableHeader(table);
 		writeTableData(table);
+		observaciones(document);
 
 		document.add(table);
 

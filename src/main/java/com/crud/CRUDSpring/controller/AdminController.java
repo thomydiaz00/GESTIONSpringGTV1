@@ -219,7 +219,7 @@ public class AdminController {
 			int res = falta.getFechaAsistencia().compareTo(currentDate);
 			String nombreDia = interfaceAsistencia.maskDay(falta.getFechaAsistencia().getDayOfWeek());
 
-			if (res <= 0 && !falta.getRegistrosDeAsistencia().equals(null)) {
+			if (res <= 0 && !falta.getRegistrosDeAsistencia().isEmpty() && dias.contains(nombreDia)) {
 				if (dias.contains(nombreDia)) {
 					faltas.add(falta.getFechaAsistencia());
 				}

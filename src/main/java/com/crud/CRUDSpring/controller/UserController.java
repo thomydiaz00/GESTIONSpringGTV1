@@ -28,45 +28,42 @@ public class UserController {
 	UserDetailsServiceImpl userDetails;
 
 	// Obtiene el usuario que está logeado y lo devuelve al Model
-	@GetMapping("/admin/configuracion")
+
+	@GetMapping("/admin/configuracion/ajustes")
 	public String config(Model model, Authentication authentication) {
-		User User = (User) userInterface.findByUsername(authentication.getName());
-		model.addAttribute("user", User);
+		Optional<User> user = userInterface.findByUsername(authentication.getName());
+		System.out.println("current user : " + user.get().getUsername());
+		if(user.isPresent()){
+			model.addAttribute("user", user.get());
+		}
 		return "admin_config";
-
+		
 	}
-
-	@GetMapping({ "/admin/configuracion/agregar_usuario" })
-	public String agregarUsuario(Model model,
-			@RequestParam(value = "usernameRepeated", required = false) Optional<String> usernameRepeated) {
+	@GetMapping({ "/admin/configuracion" })
+	public String agregarUsuario(Model model) {
 		model.addAttribute("user", new User());
 		model.addAttribute("users", userService.listarUser());
 		model.addAttribute("roles", authority.listarAuthorities());
-		if (usernameRepeated.isPresent()) {
-			model.addAttribute("usernameRepeated", true);
-			System.out.println("hay dup");
-			return "agregar_usuario";
+		return "agregar_usuario";
 
-		} else {
-			model.addAttribute("usernameRepeated", false);
-			System.out.println("no hay dup");
-			return "agregar_usuario";
-		}
+		
 
 	}
-
 	@PostMapping("/admin/configuracion/guardar_usuario")
 	public String guardarUsuario(@Valid User user, RedirectAttributes redirectAttributes) {
 		// User usernameUnique = userInterface.findByUsername(user.getUsername());
 		String usname = user.getUsername();
-		if (userInterface.findByUsername(usname) == null) {
+		Optional<User> usuarioExistente = userInterface.findByUsername(usname);
+		if (usuarioExistente.isPresent()) {
+			System.out.println("usuario reperitdo");
+			if(user.getUsername().equals(usuarioExistente.get().getUsername()) && user.getId() != usuarioExistente.get().getId()){
+				redirectAttributes.addFlashAttribute("usuarioRepetido", "Ya existe un usuario con el nombre \""+usname+"\"");
+			}
+		}else{
 			userService.guardarUser(user);
-			return "admin_config";
-		} else {
-			redirectAttributes.addAttribute("usernameRepeated", true);
-			return "redirect:../configuracion/agregar_usuario";
-
 		}
+		return "redirect:/admin/configuracion";
+
 	}
 
 }

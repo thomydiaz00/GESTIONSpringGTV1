@@ -68,12 +68,11 @@
                 <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs" id="lista" role="tablist">
                     <li class="nav-item">
-                    <a class="nav-link"  href="/admin/configuracion"  aria-selected="false">Ajustes del usuario</a>
+                        <a class="nav-link active"  href="#"  aria-selected="true">Administradores del sistema</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link active"  href="#"  aria-selected="true">Administradores del sistema</a>
+                        <a class="nav-link"  href="/admin/configuracion/ajustes"  aria-selected="false">Este usuario</a>
                     </li>
-                    
                 </ul>
                 </div>
                 <div class="card-body">
@@ -82,7 +81,7 @@
                             <thead class="thead-light">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Username</th>
+                                <th scope="col">Nombre de usuario</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -93,18 +92,18 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="btn btn-lg btn-primary" onclick="mostrar('formUsuario')">Agregar Usuario</div>
                 </div>
             </div>
         </div>
         
-        <div class="col-6" id="formUsuario" th:style="${usernameRepeated == true ? 'display:block' : 'display:none'}">
+        <div class="col-6" id="formUsuario" >
             <div class="container">
             <div class="card">
                 <div class="card-body">
-
-                    <div class="alert alert-danger" role="alert" th:if="${usernameRepeated} == true"> 
-                        El Nombre de usuario ya existe, ingresar un nombre valido                       
+                    <div class="card-header">
+                        <h5>Agregar un usuario del sistema</h5>
+                    </div>
+                    <div th:if="${usuarioRepetido != null}" th:text="${usuarioRepetido}" class="alert alert-danger" role="alert"> 
                     </div>
                     <div>
                         <form  th:action="@{/admin/configuracion/guardar_usuario}" th:object=${user} method="POST" >

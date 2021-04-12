@@ -42,6 +42,7 @@ import com.crud.CRUDSpring.model.Clase;
 import com.crud.CRUDSpring.model.DiaDePractica;
 import com.crud.CRUDSpring.model.Horario;
 import com.crud.CRUDSpring.model.Profesor;
+import com.crud.CRUDSpring.model.RegistroDeAsistencia;
 
 @Controller
 public class AdminController {
@@ -249,22 +250,22 @@ public class AdminController {
 		Optional<Profesor> profesor = serviceProfesor.profesorPorId(idProfesor);
 		Optional<Clase> clase = servClase.clasePorId(idClase);
 		Optional<Asistencia> asistencia = Optional.empty();
-		List<Horario> horarios = new ArrayList<Horario>();
+		List<RegistroDeAsistencia> registros = new ArrayList<RegistroDeAsistencia>();
 
 		if (clase.isPresent() && profesor.isPresent()) {
 			asistencia = interfaceAsis.findByFechaAsistenciaInAndProfesorInAndClase(localDate, profesor.get(),
 					clase.get());
 		}
 		if (asistencia.isPresent()) {
-			for (Horario horario : clase.get().getHorarios()) {
-				if (horario.getDia().getDiaDeLaSemana().equals(interfaceAsistencia.maskDay(localDate.getDayOfWeek()))) {
-					System.out.println("Horario para el dia: " + horario.getDia().getDiaDeLaSemana());
-					horarios.add(horario);
+			for (RegistroDeAsistencia registro : asistencia.get().getRegistrosDeAsistencia()) {
+				if (registro.getIdRegistro().getHorario().getDia().getDiaDeLaSemana().equals(interfaceAsistencia.maskDay(localDate.getDayOfWeek()))) {
+					System.out.println("true dat");
+					registros.add(registro);
 				}
 			}
 		}
 
-		model.addAttribute("horarios", horarios);
+		model.addAttribute("horarios", registros);
 		return "asistencia_clase :: horariosList";
 
 	}

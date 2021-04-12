@@ -128,7 +128,7 @@
   
     <div class="container-fluid">
       <div class="row">
-        <div class="col-9">
+        <div class="col-8">
           <div class="container">
             <div class="card">
               <h3 class="card-header" id="monthAndYear"></h3>
@@ -203,17 +203,19 @@
             </div>
           </div>
         </div>
-        <div class="col-3">
+        <div class="col-4">
           <table class="table rable-responsive table-striped table-hover">
             <thead class="thead-light">
               <tr>
                 <th scope="col">Dia</th>
                 <th scope="col">Hora inicio</th>
                 <th scope="col">Hora fin</th>
+                <th scope="col">Estado</th>
+
               </tr>
             </thead>
             <tbody id="results">
-              <tr><p>Hacer click sobre una celda para consultar horarios en ese día</p></tr>
+              <tr><p>Hacer click sobre una celda para consultar los registros de asistencia en ese día</p></tr>
             </tbody>
           </table>
           <div class="card">
@@ -469,10 +471,11 @@
     <!-- resultados -->
     
     <div th:fragment="horariosList" th:unless="${#lists.isEmpty(horarios)}">
-      <tr scope="row" th:each="horario : ${horarios}">
-        <td th:text="${horario.dia.diaDeLaSemana}"></td>
-        <td th:text="${horario.hora_inicio}"></td>
-        <td th:text="${horario.hora_fin}"></td>
+      <tr scope="row" th:each="registro : ${horarios}">
+        <td th:text="${registro.idRegistro.horario.dia.diaDeLaSemana}"></td>
+        <td th:text="${registro.idRegistro.horario.hora_inicio}"></td>
+        <td th:text="${registro.idRegistro.horario.hora_fin}"></td>
+        <td th:text="${registro.estado == true} ? 'Presente' : 'Ausente'"></td>
       </tr>
     </div>
 </html>

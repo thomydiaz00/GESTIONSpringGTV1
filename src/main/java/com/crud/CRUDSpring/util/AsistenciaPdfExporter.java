@@ -89,7 +89,7 @@ public class AsistenciaPdfExporter {
 			boolean pendiente = false;
 			registros.addCell(registro.getIdRegistro().getHorario().getLugar());
 			registros.addCell(agregarHorarios(registro.getIdRegistro().getHorario()));
-			registros.addCell(parseToPresenteOrAusente(registro));
+			registros.addCell(parseToPresenteOrAusente(registro, asistencia));
 			
 			
 		}
@@ -98,29 +98,33 @@ public class AsistenciaPdfExporter {
 		
 	}
 	private PdfPTable agregarHorarios(Horario horario){
-		PdfPTable horarios= new PdfPTable(2);
-		horarios.setWidths(new float[] { 2.0f, 2.0f });
-
+		PdfPTable horarios= new PdfPTable(3);
+		horarios.setWidths(new float[] { 1.0f, 1.0f, 1.0f });
+		writeTableColumnHeader(horarios, "Dia");
 		writeTableColumnHeader(horarios, "Inicio");
-		writeTableColumnHeader(horarios, "Fin");  
+		writeTableColumnHeader(horarios, "Fin");
+		horarios.addCell(horario.getDia().getDiaDeLaSemana());  
 		horarios.addCell(horario.getHora_inicio());
 		horarios.addCell(horario.getHora_fin());
 		return horarios;
 	}
-	private String parseToPresenteOrAusente(RegistroDeAsistencia registro){
+	private String parseToPresenteOrAusente(RegistroDeAsistencia registro, Asistencia asistencia){
 		LocalDate localCurrentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
 				.toLocalDate();
-		int res = registro.getIdRegistro().getAsistencia().getFechaAsistencia().compareTo(localCurrentDate);
-		if(res <= 0){
-			if(registro.isEstado()){
-				return "presente";
-			}else{
-				return "ausente";
-			}
+		if(asistencia.isEstadoAsistencia()){
+			return "presente";
 		}else{
-			return ("-----------");
+			int res = registro.getIdRegistro().getAsistencia().getFechaAsistencia().compareTo(localCurrentDate);
+			if(res <= 0){
+				if(registro.isEstado()){
+					return "presente";
+				}else{
+					return "ausente";
+				}
+			}else{
+				return ("-----------");
+			}
 		}
-
 	} 
 
 	public void agregarAsistencia(PdfPTable table, Asistencia asistencia, Font ausente) {

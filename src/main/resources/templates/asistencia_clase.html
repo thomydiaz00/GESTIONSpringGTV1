@@ -77,7 +77,6 @@
       }
       
     </script>
-    
   </head>
   <body>
     <!--Logos-->
@@ -125,7 +124,6 @@
       </div>
     </div>
     
-  
     <div class="container-fluid">
       <div class="row">
         <div class="col-8">
@@ -207,11 +205,9 @@
           <table class="table rable-responsive table-striped table-hover">
             <thead class="thead-light">
               <tr>
-                <th scope="col">Dia</th>
                 <th scope="col">Hora inicio</th>
                 <th scope="col">Hora fin</th>
                 <th scope="col">Estado</th>
-
               </tr>
             </thead>
             <tbody id="results">
@@ -258,224 +254,231 @@
               </div>
             </div>
           </div>
+          <div class="card">
+            <div class="card-header">
+                <a th:href="@{/admin/asistencia_manual/} + ${idProf} + '/' + ${clase.idClase}">Ingresar Asistencia de forma manual</a>
+            </div>
+          </div>
         </div>
-          
-
-        </div>
-    
       </div>
     </div>
+    <!--Fragment, se renderiza cuando clickeamos una celda-->
+    <th:block th:fragment="horariosList" th:unless="${#lists.isEmpty(horarios)}">
+        <div scope="row" >
+            <p th:text="'Fecha: ' + ${selectedFecha}" class="text-center"></p>
+        </div>
+        <tr scope="row" th:each="registro : ${horarios}">
+            <td th:text="${registro.idRegistro.horario.hora_inicio}"></td>
+            <td th:text="${registro.idRegistro.horario.hora_fin}"></td>
+            <td th:text="${registro.estado == true} ? 'Presente' : 'Ausente'"></td>
+        </tr>
+    </th:block>
 
     <script th:inline="javascript">
-      /*<![CDATA[*/
-      let today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      let currentMonth = today.getMonth();
-      let currentYear = today.getFullYear();
-      let selectYear = document.getElementById("year");
-      let anio = document.getElementById("anio");
-      let mes = document.getElementById("mes");
-      const days = [
-        "Lunes",
-        "Martes",
-        "Miercoles",
-        "Jueves",
-        "Viernes",
-        "Sabado",
-        "Domingo",
-      ];
-      // function enviar(){
-      //   $.ajax({
-      //     url: "/admin/lista_asistencias/export",
-      //     data: { mes: currentMonth + 1, profesor: profesor, clase: clase },
-      //     success: function (response) {
-      //       window.open("data:application/pdf," + response);         
-      //      },
-      //     error: function (data) {
-      //       console.log("Error:", data);
-      //     },
-      //   });
-      // }
-      
-
-      const fechasCompletas = /*[[${fechasCompletas}]]*/ "defaultanyvalue";
-      const faltas = /*[[${faltas}]]*/ "defaultanyvalue";
-      const clase = /*[[${clase.idClase}]]*/ "defaultanyvalue";
-      const profesor = /*[[${profesor}]]*/ "defaultanyvalue";
-
-     
-      // $( document ).ready(function() {
-      //   $('#pdfButton').html(
-      //     '<a href="' + link + (currentMonth + 1) +'">...</a>'
-      //   );
-      // });
-      let selectMonth = document.getElementById("month");
-      let months = [
-        "Enero",
-        "Febrero",
-        "Marzo",
-        "Abril",
-        "Mayo",
-        "Junio",
-        "Julio",
-        "Agosto",
-        "Sep",
-        "Octubre",
-        "Noviembre",
-        "Diciembre",
-      ];
-      let monthAndYear = document.getElementById("monthAndYear");
-
-      showCalendar(currentMonth, currentYear);
-
-      function next() {
-        currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-        currentMonth = (currentMonth + 1) % 12;
-        showCalendar(currentMonth, currentYear);
-      }
-
-      function previous() {
-        currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-        currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-        showCalendar(currentMonth, currentYear);
-      }
-
-      function jump() {
-        currentYear = parseInt(selectYear.value);
-        currentMonth = parseInt(selectMonth.value);
-        showCalendar(currentMonth, currentYear);
-      }
-      function maskDay(dia) {
-        switch (dia) {
-          case 0:
-            break;
-
-          default:
-            break;
-        }
-      }
-      function celdaAsistencia(fechaIncompleta, idClase, profesor) {
-        console.log(fechaIncompleta);
-        alert("asistencia clickeada");
-        //$("#modal").modal("show");
-        $.ajax({
-          url: "/admin/consulta_horarios",
-          data: { date: fechaIncompleta, clase: idClase, profesor: profesor },
-          success: function (response) {
-            console.log(response);
-            $("#results").html(response);
-          },
-          error: function (data) {
-            console.log("Error:", data);
-          },
-        });
-      }
-
-      function showCalendar(month, year) {
+        /*<![CDATA[*/
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+  
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
+        let selectYear = document.getElementById("year");
+        let anio = document.getElementById("anio");
+        let mes = document.getElementById("mes");
+        const days = [
+          "Lunes",
+          "Martes",
+          "Miercoles",
+          "Jueves",
+          "Viernes",
+          "Sabado",
+          "Domingo",
+        ];
+        // function enviar(){
+        //   $.ajax({
+        //     url: "/admin/lista_asistencias/export",
+        //     data: { mes: currentMonth + 1, profesor: profesor, clase: clase },
+        //     success: function (response) {
+        //       window.open("data:application/pdf," + response);         
+        //      },
+        //     error: function (data) {
+        //       console.log("Error:", data);
+        //     },
+        //   });
+        // }
+        
+  
+        const fechasCompletas = /*[[${fechasCompletas}]]*/ "defaultanyvalue";
+        const faltas = /*[[${faltas}]]*/ "defaultanyvalue";
+        const clase = /*[[${clase.idClase}]]*/ "defaultanyvalue";
+        const profesor = /*[[${profesor}]]*/ "defaultanyvalue";
+  
        
-        let firstDay = new Date(year, month).getDay();
-        console.log("el primer dia del mes es: ", firstDay);
-
-        let daysInMonth = 32 - new Date(year, month, 32).getDate();
-
-        let tbl = document.getElementById("calendar-body"); // body of the calendar
-        // clearing all previous cells
-        tbl.innerHTML = "";
-
-        // filing data about month and in the page via DOM.
-        monthAndYear.innerHTML = months[month] + " " + year;
-        selectYear.value = year;
-        selectMonth.value = month;
-        anio.value = year;
-        mes.value = month + 1;
-        $('#pdfButton').html(
-          '<a class= "btn btn-secondary" href="' + link + (month + 1) + `/` +(year)+'"><i class="fas fa-file-pdf " </i>'
-        );
-        // creating all cells
-        let date = 1;
-        for (let i = 0; i < 6; i++) {
-          // creates a table row
-          let row = document.createElement("tr");
-
-          //creating individual cells, filing them up with data.
-          for (let j = 0; j < 7; j++) {
-            if (i === 0 && j < firstDay) {
-              let cell = document.createElement("td");
-              let cellText = document.createTextNode("");
-              cell.appendChild(cellText);
-              row.appendChild(cell);
-            } else if (date > daysInMonth) {
+        // $( document ).ready(function() {
+        //   $('#pdfButton').html(
+        //     '<a href="' + link + (currentMonth + 1) +'">...</a>'
+        //   );
+        // });
+        let selectMonth = document.getElementById("month");
+        let months = [
+          "Enero",
+          "Febrero",
+          "Marzo",
+          "Abril",
+          "Mayo",
+          "Junio",
+          "Julio",
+          "Agosto",
+          "Sep",
+          "Octubre",
+          "Noviembre",
+          "Diciembre",
+        ];
+        let monthAndYear = document.getElementById("monthAndYear");
+  
+        showCalendar(currentMonth, currentYear);
+  
+        function next() {
+          currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+          currentMonth = (currentMonth + 1) % 12;
+          showCalendar(currentMonth, currentYear);
+        }
+  
+        function previous() {
+          currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+          currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+          showCalendar(currentMonth, currentYear);
+        }
+  
+        function jump() {
+          currentYear = parseInt(selectYear.value);
+          currentMonth = parseInt(selectMonth.value);
+          showCalendar(currentMonth, currentYear);
+        }
+        function maskDay(dia) {
+          switch (dia) {
+            case 0:
               break;
-            } else {
-              if (date <= daysInMonth) {
-                let indexDate = new Date(year, month, date);
+  
+            default:
+              break;
+          }
+        }
+        function celdaAsistencia(fechaIncompleta, idClase, profesor) {
+          console.log(fechaIncompleta);
+          //$("#modal").modal("show");
+          $.ajax({
+            url: "/admin/consulta_horarios",
+            data: { date: fechaIncompleta, clase: idClase, profesor: profesor },
+            success: function (response) {
+              console.log(response);
+              $("#results").html(response);
+            },
+            error: function (data) {
+              console.log("Error:", data);
+            },
+          });
+        }
+  
+        function showCalendar(month, year) {
+         
+          let firstDay = new Date(year, month).getDay();
+          console.log("el primer dia del mes es: ", firstDay);
+  
+          let daysInMonth = 32 - new Date(year, month, 32).getDate();
+  
+          let tbl = document.getElementById("calendar-body"); // body of the calendar
+          // clearing all previous cells
+          tbl.innerHTML = "";
+  
+          // filing data about month and in the page via DOM.
+          monthAndYear.innerHTML = months[month] + " " + year;
+          selectYear.value = year;
+          selectMonth.value = month;
+          anio.value = year;
+          mes.value = month + 1;
+          $('#pdfButton').html(
+            '<a class= "btn btn-secondary" href="' + link + (month + 1) + `/` +(year)+'"><i class="fas fa-file-pdf " </i>'
+          );
+          // creating all cells
+          let date = 1;
+          for (let i = 0; i < 6; i++) {
+            // creates a table row
+            let row = document.createElement("tr");
+  
+            //creating individual cells, filing them up with data.
+            for (let j = 0; j < 7; j++) {
+              if (i === 0 && j < firstDay) {
                 let cell = document.createElement("td");
-                let cellText = document.createTextNode(date);
-
-                fechasCompletas.forEach((fecha) => {
-                  parts = fecha.split("-");
-                  // Resto porque JS cuenta meses desde 0:
-                  let myDate = new Date(parts[0], parts[1] - 1, parts[2]);
-                  if (
-                    date === myDate.getDate() &&
-                    year === myDate.getFullYear() &&
-                    month === myDate.getMonth()
-                  ) {
-                    cell.classList.add("bg-success");
-                    cell.addEventListener(
-                      "click",
-                      celdaAsistencia.bind(null, fecha, clase, profesor)
-                    );
-                  } // co
-                });
-                faltas.forEach((fechaIncompleta) => {
-                  parts = fechaIncompleta.split("-");
-                  // Resto porque JS cuenta meses desde 0:
-                  let fechaInc = new Date(parts[0], parts[1] - 1, parts[2]);
-                  if (
-                    date === fechaInc.getDate() &&
-                    year === fechaInc.getFullYear() &&
-                    month === fechaInc.getMonth()
-                  ) {
-                    cell.classList.add("bg-danger");
-                    cell.addEventListener(
-                      "click",
-                      celdaAsistencia.bind(
-                        null,
-                        fechaIncompleta,
-                        clase,
-                        profesor
-                      )
-                    );
-                  } // co
-                });
-
+                let cellText = document.createTextNode("");
                 cell.appendChild(cellText);
                 row.appendChild(cell);
-                date++;
+              } else if (date > daysInMonth) {
+                break;
+              } else {
+                if (date <= daysInMonth) {
+                  let indexDate = new Date(year, month, date);
+                  let cell = document.createElement("td");
+                  let cellText = document.createTextNode(date);
+  
+                  fechasCompletas.forEach((fecha) => {
+                    parts = fecha.split("-");
+                    // Resto porque JS cuenta meses desde 0:
+                    let myDate = new Date(parts[0], parts[1] - 1, parts[2]);
+                    if (
+                      date === myDate.getDate() &&
+                      year === myDate.getFullYear() &&
+                      month === myDate.getMonth()
+                    ) {
+                      cell.classList.add("bg-success");
+                      cell.addEventListener(
+                        "click",
+                        celdaAsistencia.bind(null, fecha, clase, profesor)
+                      );
+                    } // co
+                  });
+                  faltas.forEach((fechaIncompleta) => {
+                    parts = fechaIncompleta.split("-");
+                    // Resto porque JS cuenta meses desde 0:
+                    let fechaInc = new Date(parts[0], parts[1] - 1, parts[2]);
+                    if (
+                      date === fechaInc.getDate() &&
+                      year === fechaInc.getFullYear() &&
+                      month === fechaInc.getMonth()
+                    ) {
+                      cell.classList.add("bg-danger");
+                      cell.addEventListener(
+                        "click",
+                        celdaAsistencia.bind(
+                          null,
+                          fechaIncompleta,
+                          clase,
+                          profesor
+                        )
+                      );
+                    } // co
+                  });
+  
+                  cell.appendChild(cellText);
+                  row.appendChild(cell);
+                  date++;
+                }
               }
             }
+  
+            tbl.appendChild(row); // appending each row into calendar body.
           }
-
-          tbl.appendChild(row); // appending each row into calendar body.
+  
+          // console.log("----------break-------");
+          // todasLasDate.forEach(element => {
+          //    console.log(element) ;
+          // });
+          /*]]>*/
         }
+      </script>
+</body>
 
-        // console.log("----------break-------");
-        // todasLasDate.forEach(element => {
-        //    console.log(element) ;
-        // });
-        /*]]>*/
-      }
-    </script>
+    
     <!-- resultados -->
     
-    <div th:fragment="horariosList" th:unless="${#lists.isEmpty(horarios)}">
-      <tr scope="row" th:each="registro : ${horarios}">
-        <td th:text="${registro.idRegistro.horario.dia.diaDeLaSemana}"></td>
-        <td th:text="${registro.idRegistro.horario.hora_inicio}"></td>
-        <td th:text="${registro.idRegistro.horario.hora_fin}"></td>
-        <td th:text="${registro.estado == true} ? 'Presente' : 'Ausente'"></td>
-      </tr>
-    </div>
+   
 </html>

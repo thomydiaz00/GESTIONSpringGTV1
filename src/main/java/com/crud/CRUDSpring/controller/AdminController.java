@@ -71,7 +71,7 @@ public class AdminController {
 		model.addAttribute("profesores", profesores);
 		// System.out.println(interfaceAsis.contarNumeroDeAsistenciasPorFechaYNombreDia("2021-02-21",
 		// "PEPE"));
-		return "lista_profesores";
+		return "listas/lista_profesores";
 	}
 
 	@GetMapping("/admin/lista_profesores/nuevo")
@@ -85,7 +85,7 @@ public class AdminController {
 		List<Clase> clases = servClase.listarClase();
 		model.addAttribute("profesor", new Profesor());
 		model.addAttribute("clases", clases);
-		return "form_profesor";
+		return "forms/form_profesor";
 
 	}
 
@@ -111,7 +111,7 @@ public class AdminController {
 		model.addAttribute("clases", profClases);
 		model.addAttribute("profesor", profesor.get());
 		model.addAttribute("clasesParaAsignar", clasesParaAsignar);
-		return "lista_profesores_clases";
+		return "listas/lista_profesores_clases";
 
 	}
 
@@ -151,7 +151,7 @@ public class AdminController {
 		List<Clase> clases = servClase.listarClase();
 		model.addAttribute("profesor", profesor);
 		model.addAttribute("clases", clases);
-		return "form_profesor";
+		return "forms/form_profesor";
 
 	}
 
@@ -244,8 +244,7 @@ public class AdminController {
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate localDate = LocalDate.parse(date, formatter);
-		System.out.println("My localdate: " + localDate);
-		System.out.println("Profesor : " + idProfesor);
+		
 
 		Optional<Profesor> profesor = serviceProfesor.profesorPorId(idProfesor);
 		Optional<Clase> clase = servClase.clasePorId(idClase);
@@ -259,15 +258,34 @@ public class AdminController {
 		if (asistencia.isPresent()) {
 			for (RegistroDeAsistencia registro : asistencia.get().getRegistrosDeAsistencia()) {
 				if (registro.getIdRegistro().getHorario().getDia().getDiaDeLaSemana().equals(interfaceAsistencia.maskDay(localDate.getDayOfWeek()))) {
-					System.out.println("true dat");
 					registros.add(registro);
 				}
 			}
 		}
-
 		model.addAttribute("horarios", registros);
+		model.addAttribute("selectedFecha", date );
 		return "asistencia_clase :: horariosList";
 
+	}
+	@GetMapping(value="admin/asistencia_manual/{idProf}/{idClase}")
+	public String asistenciaManual(@PathVariable(value="idProf") int idProf, @PathVariable(value="idClase") int idClase, Model model){
+		java.time.LocalDate currentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
+				.toLocalDate();
+		Optional<Profesor> profesor = serviceProfesor.profesorPorId(idProf); 
+		Optional<Clase> clase = servClase.clasePorId(idClase);
+		List<Asistencia> todasLasAsistencias = new ArrayList<Asistencia>();
+		List<Asistencia> asistencias = new ArrayList<Asistencia>();
+
+		if(profesor.isPresent() && clase.isPresent()){
+			todasLasAsistencias = interfaceAsis.findByClaseAndProfesorAndEstadoAsistencia(clase.get(), profesor.get(), false);
+		}
+		for(Asistencia asistencia : todasLasAsistencias){
+			if(currentDate.compareTo(asistencia.getFechaAsistencia()) >= 0){
+				asistencias.add(asistencia);
+			}
+		}
+		model.addAttribute("asistencias", asistencias);
+		return "forms/form_asistencia";
 	}
 
 }

@@ -29,7 +29,7 @@ public class HorarioController {
 		model.addAttribute("clase", clase);
 		model.addAttribute("idclase", id);
 		model.addAttribute("horarios", clase.getHorarios());
-		return "lista_horarios";
+		return "listas/lista_horarios";
 
 	}
 
@@ -39,7 +39,7 @@ public class HorarioController {
 		model.addAttribute("idclase", id);
 		model.addAttribute("horario", new Horario());
 		model.addAttribute("dias", clase.getDias());
-		return "form_horario";
+		return "forms/form_horario";
 
 	}
 
@@ -73,7 +73,7 @@ public class HorarioController {
 		model.addAttribute("horario", horario);
 		model.addAttribute("dias", clase.getDias());
 
-		return "form_horario";
+		return "forms/form_horario";
 
 	}
 

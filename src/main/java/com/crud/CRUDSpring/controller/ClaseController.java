@@ -34,13 +34,13 @@ public class ClaseController {
 		model.addAttribute("clases", clases);
 		model.addAttribute("clase", new Clase());
 		model.addAttribute("dias", serviceDia.listarDiaDePractica());
-		return "lista_clases";
+		return "listas/lista_clases";
 	}
 
 	@GetMapping("/admin/lista_clases/nuevo")
 	public String agregarClase(Model model) {
 		model.addAttribute("clase", new Clase());
-		return "form_clase";
+		return "forms/form_clase";
 
 	}
 
@@ -57,7 +57,7 @@ public class ClaseController {
 		model.addAttribute("clase", clase);
 		model.addAttribute("dias", dias);
 
-		return "form_clase";
+		return "forms/form_clase";
 
 	}
 

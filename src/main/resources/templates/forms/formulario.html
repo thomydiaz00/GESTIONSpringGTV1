@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina -->
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <script src="/js/bootstrap.min.js"></script>
+        
+    <!--Iconos de FontAwesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+    <script src="https://kit.fontawesome.com/76bcb4e810.js" crossorigin="anonymous"></script>
+
+    
+     <!-- SweetAlert -->
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+</head>
+<body>
+
+    <!--Este form enviará los datos para guardar los datos ingresados
+    	en la b.d. Usamos el tipo de input Hidden para mandar el ID sin
+    	ser este modificado por el usuario
+    -->
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <p class="h1">Agregar Cliente</p>
+            </div>
+        </div>
+        
+
+        <div class="card-body">
+
+            <form th:action="@{/admin/save}" th:object=${persona} method= "POST">
+               <div class="form-group">
+					<input type="hidden" th:field="*{id}" id="id">
+               </div>
+              	 
+                <div class="form-group">
+                    <label for="nameInput">Nombre</label>
+                    <input th:field="*{name}" type="text" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="telefonoInput">Telefono</label>
+                    <input th:field="*{telefono}" type="number" min="0" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="idEquipo">Equipo</label>
+                    <input th:field="*{equipo}" type="text"  class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="serieInput">Serie</label>
+                    <input th:field="*{serie}" type="text" class="form-control"/>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fechaEntradaInput">Fecha de entrada</label>
+                    <input th:field="*{fechaEntrada}" type="date"  class="form-control"/>
+                </div>
+                
+                <div class="form-group">
+                    <label for="FechaSalidaInput">Fecha Salida</label>
+                    <input th:field="*{fechaSalida}" type="date"  class="form-control"/>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" >Guardar</button>
+                <button class=" btn btn-danger" onclick="clearSearch()">Cancelar</button>
+            
+            </form>
+
+
+        </div>
+    </div>
+    
+	
+</body>
+</html>

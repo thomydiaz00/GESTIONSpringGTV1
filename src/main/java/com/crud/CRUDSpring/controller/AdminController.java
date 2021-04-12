@@ -1,5 +1,6 @@
 package com.crud.CRUDSpring.controller;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +27,7 @@ import com.crud.CRUDSpring.interfaceService.IfServiceAsistencia;
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
 import com.crud.CRUDSpring.interfaceService.IfServiceUser;
+import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
 import com.crud.CRUDSpring.interfaces.interfaceRegistroDeAsistencia;
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
@@ -51,6 +52,8 @@ public class AdminController {
 	interfaceRegistroDeAsistencia registroDeAsistencia;
 	@Autowired
 	IfServiceAsistencia serviceAsistencia;
+	@Autowired
+	interfaceAsistencia interfaceAsis;
 
 	@GetMapping("/admin/lista_profesores")
 	public String ListarProfesores(Model model) {
@@ -187,26 +190,32 @@ public class AdminController {
 		java.time.LocalDate currentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
 				.toLocalDate();
 		Clase clase = servClase.clasePorId(idClase).get();
-		Optional<Profesor> profesor = serviceProfesor.profesorPorId(idProf);
-		List<RegistroDeAsistencia> registros = new ArrayList<RegistroDeAsistencia>();
-		List<Asistencia> asistencias = new ArrayList<Asistencia>();
+		Profesor profesor = serviceProfesor.profesorPorId(idProf).get();
+		List<LocalDate> fechasCompletas = new ArrayList<LocalDate>();
+		List<LocalDate> faltas = new ArrayList<LocalDate>();
 
-		for (Horario horario : clase.getHorarios()) {
-			for (Asistencia asistencia : clase.getAsistencias()) {
-				RegistroDiasId id = new RegistroDiasId(horario, asistencia, profesor.get());
-				Optional<RegistroDeAsistencia> registro = registroDeAsistencia.findByIdRegistro(id);
-				RegistroDeAsistencia reg = registro.get();
-				if (reg.isEstado()) {
-					System.out.println("------------------------------");
-					System.out.println(registro);
-					System.out.println("------------------------------");
-				}
-
-			}
-			//
+		for (Asistencia asistencia : interfaceAsis.findByClaseAndProfesorAndEstadoAsistencia(clase, profesor, true)) {
+			fechasCompletas.add(asistencia.getFechaAsistencia());
 		}
-		System.out.println("---------------" + "\n" + "las asistencias completas son:  \n" + asistencias.size());
-		return "index";
+		// Faltas hasta el dia de hoy. Si el estado de la asistencia esta en false y ya
+		// pasó el dia para
+		// marcar una asistencia, es una falta.
+		// Si el dia esta asociado a la clase pero no hay registros disponibles, no es
+		// una falta.
+		for (Asistencia falta : interfaceAsis.findByClaseAndProfesorAndEstadoAsistencia(clase, profesor, false)) {
+			int res = falta.getFechaAsistencia().compareTo(currentDate);
+			if (res <= 0 && !falta.getRegistrosDeAsistencia().equals(null)) {
+				faltas.add(falta.getFechaAsistencia());
+			}
+
+		}
+		System.out.println("fechas completas: " + fechasCompletas.toString());
+		System.out.println("faltas hasta el dia " + currentDate + ": " + faltas.toString());
+
+		model.addAttribute("fechasCompletas", fechasCompletas);
+		model.addAttribute("faltas", faltas);
+
+		return "asistencia_clase";
 	}
 
 	// Clase clase = servClase.clasePorId(idClase).get();

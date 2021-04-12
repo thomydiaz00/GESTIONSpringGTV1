@@ -89,8 +89,6 @@ public class ClaseService implements IfServiceClase {
 					asistencia.setFechaAsistencia(fecha);
 					asistencias.add(asistencia);
 					System.out.println(fecha + " -" + fecha.getDayOfWeek().toString());
-					System.out.println(
-							"#Nro de asistencias : " + clase.getAsistencias().size() + " || " + asistencias.size());
 
 				}
 			}

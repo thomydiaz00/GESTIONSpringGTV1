@@ -30,7 +30,7 @@ public interface interfaceAsistencia extends CrudRepository<Asistencia, Integer>
                         Clase clase);
 
         public List<Asistencia> findByClase(Clase clase);
-        
+        public List<Asistencia> findByClaseAndProfesorAndEstadoAsistencia(Clase clase, Profesor profesor, boolean estado);
         public List<Asistencia> findByClaseAndProfesor(Clase clase, Profesor profesor);
         public int countByClaseAndProfesor(Clase clase, Profesor profesor);
 

@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -63,6 +64,36 @@ public class UserController {
 			userService.guardarUser(user);
 		}
 		return "redirect:/admin/configuracion";
+
+	}
+	@PostMapping("/admin/configuracion/guardar_usuario_editado")
+	public String editarUsuario(@Valid User user, RedirectAttributes redirectAttributes) {
+		// User usernameUnique = userInterface.findByUsername(user.getUsername());
+		String usname = user.getUsername();
+		Optional<User> usuarioExistente = userInterface.findByUsername(usname);
+		if (usuarioExistente.isPresent()) {
+			System.out.println("usuario reperitdo");
+			if(user.getUsername().equals(usuarioExistente.get().getUsername()) && user.getId() != usuarioExistente.get().getId()){
+				redirectAttributes.addFlashAttribute("usuarioRepetido", "Ya existe un usuario con el nombre \""+usname+"\"");
+			}
+		}else{
+			userService.guardarUser(user);
+		}
+
+		return "redirect:/admin/configuracion";
+
+	}
+	@GetMapping("/admin/eliminar_usuario/{idUsuario}")
+	public String eliminarUsuario(@PathVariable(value="idUsuario") int idUsuario){
+		userService.borrarUser(idUsuario);
+		return "redirect:/admin/configuracion";
+	}
+	@GetMapping("/admin/editar_usuario/{idUsuario}")
+	public String editarUsuario(@PathVariable(value = "idUsuario") int idUsuario, Model model){
+		Optional<User> user = userService.UserPorId(idUsuario);
+		model.addAttribute("user", user);
+
+		return "forms/form_user";
 
 	}
 

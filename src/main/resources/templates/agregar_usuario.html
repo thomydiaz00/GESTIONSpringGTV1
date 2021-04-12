@@ -14,7 +14,6 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="/funciones.js"></script>
     <script src="/showSelector.js"></script>
-    <script src="/usernameIsUnique.js"></script>
 
 
     <!--tablas-->
@@ -82,12 +81,25 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Nombre de usuario</th>
+                                <th scope="col">Acciones</th>
+
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="user: ${users}">
                                 <td th:text="${user.id}"></td>
-                                <td th:text="${user.username}"></td>                          
+                                <td th:text="${user.username}"></td>
+                                <td>
+                                    <div class="d-flex align-items-stretch">
+                                        <div class="row">
+                                            <div class="p-2">
+                                              <button class ="btn btn-danger" th:onclick="eliminarusuario([[${user.id}]])">
+                                                  <i class="fas fa-minus"></i>
+                                              </button>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                  </td>                        
                             </tr>
                             </tbody>
                         </table>

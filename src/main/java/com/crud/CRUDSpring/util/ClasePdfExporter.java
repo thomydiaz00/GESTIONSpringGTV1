@@ -1,7 +1,5 @@
 package com.crud.CRUDSpring.util;
-
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -17,13 +15,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Color;
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.*;
 
 public class ClasePdfExporter {
 	private List<Clase> listClases;

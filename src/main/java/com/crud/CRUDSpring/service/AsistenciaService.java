@@ -5,8 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.crud.CRUDSpring.model.Asistencia;
-import com.crud.CRUDSpring.model.Clase;
-import com.crud.CRUDSpring.model.DiaDePractica;
 import com.crud.CRUDSpring.interfaceService.IfServiceAsistencia;
 import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
 

@@ -5,11 +5,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
-import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
-import com.crud.CRUDSpring.interfaces.interfaceClase;
 import com.crud.CRUDSpring.interfaces.interfaceProfesor;
 import com.crud.CRUDSpring.model.Clase;
-import com.crud.CRUDSpring.model.Horario;
 import com.crud.CRUDSpring.model.Profesor;
 
 @Service
@@ -19,10 +16,6 @@ public class ProfesorService implements IfServiceProfesor {
 	private interfaceProfesor data;
 	@Autowired
 	private ClaseService serviceClase;
-	@Autowired
-	private HorarioService serviceHorario;
-	@Autowired
-	private interfaceAsistencia interfaceAsis;
 
 	@Override
 	public List<Profesor> listarProfesores() {

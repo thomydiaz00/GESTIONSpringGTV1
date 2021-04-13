@@ -1,22 +1,18 @@
 package com.crud.CRUDSpring.controller;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.metadata.TomcatDataSourcePoolMetadata;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -41,7 +37,6 @@ import com.crud.CRUDSpring.interfaces.interfaceRegistroDeAsistencia;
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
 import com.crud.CRUDSpring.model.DiaDePractica;
-import com.crud.CRUDSpring.model.Horario;
 import com.crud.CRUDSpring.model.Profesor;
 import com.crud.CRUDSpring.model.RegistroDeAsistencia;
 
@@ -137,10 +132,14 @@ public class AdminController {
 	@PostMapping("/admin/save")
 	public String save(@Valid Profesor p, Model model, RedirectAttributes ra) {
 		Optional<Profesor> profesor = interfaceProf.findByDniProf(p.getDniProf());
+
 		if (profesor.isPresent()) {
 			if (p.getIdProf() != profesor.get().getIdProf() && p.getDniProf() == profesor.get().getDniProf()) {
+				System.out.println("No pudo registrarse el profesor");
 				ra.addFlashAttribute("mensaje",
 						"No pudo registrarse el profesor, el DNI asignado ya está registrado en el sistema");
+			}else if (p.getIdProf() == profesor.get().getIdProf()){
+				serviceProfesor.guardarProfesor(p);
 			}
 		} else {
 			serviceProfesor.guardarProfesor(p);
@@ -204,7 +203,6 @@ public class AdminController {
 		Clase clase = servClase.clasePorId(idClase).get();
 		Profesor profesor = serviceProfesor.profesorPorId(idProf).get();
 		List<LocalDate> fechasCompletas = new ArrayList<LocalDate>();
-		List<LocalDate> fechasIncompletas = new ArrayList<LocalDate>();
 		List<String> dias = new ArrayList<String>();
 		for (DiaDePractica dia : clase.getDias()) {
 			dias.add(dia.getDiaDeLaSemana());
@@ -230,8 +228,8 @@ public class AdminController {
 			}
 
 		}
-		System.out.println("fechas completas: " + fechasCompletas.toString());
-		System.out.println("faltas hasta el dia " + currentDate + ": " + faltas.toString());
+		// System.out.println("fechas completas: " + fechasCompletas.toString());
+		// System.out.println("faltas hasta el dia " + currentDate + ": " + faltas.toString());
 
 		model.addAttribute("fechasCompletas", fechasCompletas);
 		model.addAttribute("faltas", faltas);

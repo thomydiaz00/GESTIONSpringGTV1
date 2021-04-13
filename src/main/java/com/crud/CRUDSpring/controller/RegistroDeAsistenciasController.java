@@ -79,7 +79,6 @@ public class RegistroDeAsistenciasController {
 		List<Clase> clases = profesor.getClases();
 		List<Clase> clasesDeHoy =  new ArrayList<Clase>();
 		String currentDay = getCurrentDay();
-		System.out.println("hoy es:" + currentDay);
 		for(Clase cla : clases){
 			for(DiaDePractica dia :cla.getDias()){
 				if(dia.getDiaDeLaSemana().equals(currentDay)){
@@ -87,7 +86,6 @@ public class RegistroDeAsistenciasController {
 				}
 			}
 		}
-		System.out.println(clasesDeHoy.toString());
 		model.addAttribute("profesor", profesor);
 		model.addAttribute("clases", clasesDeHoy);
 		return "vistas_profesor/profesor_clases";
@@ -205,7 +203,6 @@ public class RegistroDeAsistenciasController {
 					reg.setEstado(true);
 					asistenciaCargada = true;
 					serviceRegistroDeAsistencia.guardarRegistroDeAsistencia(reg);
-					System.out.println(reg.getIdRegistro().getAsistencia().getFechaAsistencia() + ":  cargada");
 					// Registro guardado
 				}
 				if (reg.isEstado()) {

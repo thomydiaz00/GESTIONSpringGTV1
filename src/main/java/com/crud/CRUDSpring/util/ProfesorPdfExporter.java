@@ -14,21 +14,8 @@ import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Color;
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.*;
 
 public class ProfesorPdfExporter {
 	private List<Profesor> listProfesores;
@@ -71,19 +58,6 @@ public class ProfesorPdfExporter {
 		}
 	}
 
-
-	private void writeTableColumnHeader(PdfPTable tablaClases, String nombreColumna) {
-		Font font = FontFactory.getFont(FontFactory.HELVETICA);
-		font.setColor(Color.WHITE);
-		PdfPCell celda = new PdfPCell();
-		celda.setBackgroundColor(Color.BLUE);
-		celda.setPadding(5);
-
-		Phrase frase = new Phrase(nombreColumna, font);
-		celda.setPhrase(frase);
-		tablaClases.addCell(celda);
-
-	}
 
 	public void export(HttpServletResponse response) throws DocumentException, IOException {
 		Document document = new Document(PageSize.A4);

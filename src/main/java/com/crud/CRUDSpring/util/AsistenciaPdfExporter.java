@@ -22,13 +22,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Color;
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.*;
 
 public class AsistenciaPdfExporter {
 	private Clase clase;
@@ -37,14 +31,9 @@ public class AsistenciaPdfExporter {
     private List<Asistencia> todasLasFechas;
     Profesor profesor;
     
-	Comparator ascendingOrder = new Comparator(){
-		
-		@Override
-		public int compare(Object a, Object b) {
-			if(((Asistencia) a).getFechaAsistencia().isBefore(((Asistencia) b).getFechaAsistencia())) return -1;
-			else return 1;
-		}
-
+	Comparator<Asistencia> ascendingOrder = (a, b) -> {
+		if(((Asistencia) a).getFechaAsistencia().isBefore(((Asistencia) b).getFechaAsistencia())) return -1;
+		else return 1;
 	};
     
 	private void writeTableHeader(PdfPTable table) {
@@ -86,7 +75,6 @@ public class AsistenciaPdfExporter {
 		writeTableColumnHeader(registros, "Estado");
 
 		for(RegistroDeAsistencia registro : asistencia.getRegistrosDeAsistencia()){
-			boolean pendiente = false;
 			registros.addCell(registro.getIdRegistro().getHorario().getLugar());
 			registros.addCell(agregarHorarios(registro.getIdRegistro().getHorario()));
 			registros.addCell(parseToPresenteOrAusente(registro, asistencia));
@@ -185,7 +173,7 @@ public class AsistenciaPdfExporter {
 		document.add(deportesBaradero);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
 		String date = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca")).toLocalDate().format(formatter);
-		Paragraph p = new Paragraph("Lista de Asistencias - " + clase.getNombreDep() + " - Hasta " + date.toString(), font);
+		Paragraph p = new Paragraph("Lista de Asistencias - Clase \"" + clase.getNombreDep() + "\" -  " + date.toString(), font);
 		p.setAlignment(Paragraph.ALIGN_CENTER);
 
 		document.add(p);

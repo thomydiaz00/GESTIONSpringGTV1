@@ -16,7 +16,6 @@ import com.crud.CRUDSpring.interfaces.interfaceHorario;
 import com.crud.CRUDSpring.interfaces.interfaceRegistroDeAsistencia;
 import com.crud.CRUDSpring.model.Asistencia;
 import com.crud.CRUDSpring.model.Clase;
-import com.crud.CRUDSpring.model.DiaDePractica;
 import com.crud.CRUDSpring.model.Horario;
 import com.crud.CRUDSpring.model.Profesor;
 import com.crud.CRUDSpring.model.RegistroDeAsistencia;

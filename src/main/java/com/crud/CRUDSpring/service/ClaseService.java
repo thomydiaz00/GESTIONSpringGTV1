@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
-import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
 import com.crud.CRUDSpring.interfaces.interfaceClase;
 import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
 import com.crud.CRUDSpring.model.Asistencia;
@@ -149,8 +147,7 @@ public class ClaseService implements IfServiceClase {
 				}
 			}
 		}
-		System.out.println("------------Fechas-a-agregar----------------");
-		System.out.println(filteredDates.toString());
+		System.out.println("------------Agregando-Fechas---------------");
 
 		return filteredDates;
 	}

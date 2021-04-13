@@ -198,7 +198,7 @@ public class AdminController {
 	@GetMapping("admin/consultar_asistencia/{idProf}/{idClase}")
 	public String consultarAsistencia(Model model, @PathVariable int idProf, @PathVariable int idClase,
 			RedirectAttributes ra) {
-		java.time.LocalDate currentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
+		LocalDate currentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
 				.toLocalDate();
 		Clase clase = servClase.clasePorId(idClase).get();
 		Profesor profesor = serviceProfesor.profesorPorId(idProf).get();
@@ -270,7 +270,7 @@ public class AdminController {
 	}
 	@GetMapping(value="admin/asistencia_manual/{idProf}/{idClase}")
 	public String asistenciaManual(@PathVariable(value="idProf") int idProf, @PathVariable(value="idClase") int idClase, Model model){
-		java.time.LocalDate currentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
+		LocalDate currentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
 				.toLocalDate();
 		Optional<Profesor> profesor = serviceProfesor.profesorPorId(idProf); 
 		Optional<Clase> clase = servClase.clasePorId(idClase);

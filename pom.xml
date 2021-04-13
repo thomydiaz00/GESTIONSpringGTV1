@@ -21,7 +21,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
+		<java.version>1.9</java.version>
 	</properties>
 
 	<dependencies>
@@ -71,12 +71,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -108,5 +103,16 @@
 			</plugin>
 		</plugins>
 	</build>
+	<!-- <distributionManagement>
+		<repository>
+			<id>releases</id>
+			<url>https://github.com/thomydiaz00/GESTIONSpringGTV1.git</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<url>https://github.com/thomydiaz00/GESTIONSpringGTV1.git</url>
+		</snapshotRepository>
+	</distributionManagement>  -->
+	
 
 </project>

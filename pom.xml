@@ -4,7 +4,7 @@
 
 	<groupId>com.crud</groupId>
 	<artifactId>GESTIONSpringV2</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>GESTIONSpringV2</name>
@@ -20,10 +20,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.9</java.version>
-		<maven.compiler.target>1.9</maven.compiler.target>
-		<maven.compiler.source>1.9</maven.compiler.source>	
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
 	</properties>
 
 	<dependencies>
@@ -100,24 +98,15 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
 				<configuration>
-					<release>9</release>
+					<release>11</release>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	<!-- <distributionManagement>
-		<repository>
-			<id>releases</id>
-			<url>https://github.com/thomydiaz00/GESTIONSpringGTV1.git</url>
-		</repository>
-		<snapshotRepository>
-			<id>snapshots</id>
-			<url>https://github.com/thomydiaz00/GESTIONSpringGTV1.git</url>
-		</snapshotRepository>
-	</distributionManagement>  -->
 	
 
 </project>

@@ -15,7 +15,6 @@ public class AuthorityService implements IfServiceAuthority {
 
 	@Override
 	public List<Authority> listarAuthorities() {
-		// TODO Auto-generated method stub
 		return (List<Authority>) data.findAll();
 	}
 

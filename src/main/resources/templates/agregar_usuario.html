@@ -90,7 +90,7 @@
                                     <div class="d-flex align-items-stretch">
                                         <div class="row">
                                             <div class="p-2">
-                                              <button class ="btn btn-danger" th:onclick="eliminarusuario([[${user.id}]])">
+                                              <button class ="btn btn-danger" th:onclick="eliminarusuario([[${user.id}]])" th:unless="${user.username} == ${#authentication.getPrincipal().getUsername()}">
                                                   <i class="fas fa-minus"></i>
                                               </button>
                                             </div>
@@ -110,7 +110,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-header">
-                        <h5>Agregar un usuario del sistema</h5>
+                        <h5>Agregar un administrador del sistema</h5>
                     </div>
                     <div th:if="${usuarioRepetido != null}" th:text="${usuarioRepetido}" class="alert alert-danger" role="alert"> 
                     </div>

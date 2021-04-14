@@ -51,12 +51,12 @@ public class ClasePdfExporter {
 
 	private void writeTableData(PdfPTable table) {
 		for (Clase clase : listClases) {
-			table.addCell(clase.getNombreDep());
-			table.addCell(clase.getDeporte());
+			table.addCell(setFont(clase.getNombreDep()));
+			table.addCell(setFont(clase.getDeporte()));
 			agregarProfesorTable(table, clase);
 			agregarHorariosTable(table, clase);
-			table.addCell(clase.getFechaInicio().toString());
-			table.addCell(clase.getFechaFin().toString());
+			table.addCell(setFont(clase.getFechaInicio().toString()));
+			table.addCell(setFont(clase.getFechaFin().toString()));
 		}
 	}
 
@@ -71,8 +71,8 @@ public class ClasePdfExporter {
 		writeTableColumnHeader(tablaProfesor, "Apellido");
 		if (indexProf != 0) {
 			for (int i = 0; i < indexProf; i++) {
-				tablaProfesor.addCell(listaProfesores.get(i).getNombreProf());
-				tablaProfesor.addCell(listaProfesores.get(i).getApellidoProf());
+				tablaProfesor.addCell(setFont(listaProfesores.get(i).getNombreProf()));
+				tablaProfesor.addCell(setFont(listaProfesores.get(i).getApellidoProf()));
 			}
 		} else {
 			tablaProfesor.addCell("-----");
@@ -80,6 +80,13 @@ public class ClasePdfExporter {
 		}
 		tablaClases.addCell(tablaProfesor);
 		return tablaClases;
+
+	}
+	private Phrase setFont(String x){
+		Font font = FontFactory.getFont(FontFactory.HELVETICA);
+		font.setSize(9);
+		return new Phrase(x, font);
+
 
 	}
 	public PdfPTable agregarHorariosTable(PdfPTable tablaClases, Clase clase) {
@@ -98,10 +105,10 @@ public class ClasePdfExporter {
 
 		if (indexHorario != 0) {
 			for (int i = 0; i < indexHorario; i++) {
-				tablaHorario.addCell(listaHorarios.get(i).getDia().getDiaDeLaSemana());
-				tablaHorario.addCell(listaHorarios.get(i).getHora_inicio());
-				tablaHorario.addCell(listaHorarios.get(i).getHora_fin());
-                tablaHorario.addCell(listaHorarios.get(i).getLugar());
+				tablaHorario.addCell(setFont(listaHorarios.get(i).getDia().getDiaDeLaSemana()));
+				tablaHorario.addCell(setFont(listaHorarios.get(i).getHora_inicio()));
+				tablaHorario.addCell(setFont(listaHorarios.get(i).getHora_fin()));
+                tablaHorario.addCell(setFont(listaHorarios.get(i).getLugar()));
 			}
 		} else {
 			tablaHorario.addCell("-----");

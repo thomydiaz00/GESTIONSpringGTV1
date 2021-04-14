@@ -2,10 +2,12 @@ package com.crud.CRUDSpring.util;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import com.crud.CRUDSpring.model.Clase;
+import com.crud.CRUDSpring.model.Horario;
 import com.crud.CRUDSpring.model.Profesor;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -31,10 +33,13 @@ public class ClasePdfExporter {
 		cell.setPhrase(new Phrase("Nombre", font));
 		table.addCell(cell);
 
+		cell.setPhrase(new Phrase("Deporte", font));
+		table.addCell(cell);
+		
 		cell.setPhrase(new Phrase("Profesores", font));
 		table.addCell(cell);
 
-		cell.setPhrase(new Phrase("Deporte", font));
+		cell.setPhrase(new Phrase("Horarios", font));
 		table.addCell(cell);
 
 		cell.setPhrase(new Phrase("Inicio", font));
@@ -47,8 +52,9 @@ public class ClasePdfExporter {
 	private void writeTableData(PdfPTable table) {
 		for (Clase clase : listClases) {
 			table.addCell(clase.getNombreDep());
-			agregarProfesorTable(table, clase);
 			table.addCell(clase.getDeporte());
+			agregarProfesorTable(table, clase);
+			agregarHorariosTable(table, clase);
 			table.addCell(clase.getFechaInicio().toString());
 			table.addCell(clase.getFechaFin().toString());
 		}
@@ -57,6 +63,8 @@ public class ClasePdfExporter {
 	public PdfPTable agregarProfesorTable(PdfPTable tablaClases, Clase clase) {
 		PdfPTable tablaProfesor = new PdfPTable(2);
 		tablaProfesor.setWidthPercentage(100f);
+		tablaProfesor.setWidths(new float[] { 2.4f, 2.4f});
+
 		int indexProf = clase.getProfesores().size();
 		List<Profesor> listaProfesores = clase.getProfesores();
 		writeTableColumnHeader(tablaProfesor, "Nombre");
@@ -74,10 +82,44 @@ public class ClasePdfExporter {
 		return tablaClases;
 
 	}
+	public PdfPTable agregarHorariosTable(PdfPTable tablaClases, Clase clase) {
+		PdfPTable tablaHorario = new PdfPTable(4);
+		tablaHorario.setWidthPercentage(100f);
+		tablaHorario.setWidths(new float[] { 2.4f, 2.0f, 2.0f, 4.0f});
+
+		int indexHorario = clase.getHorarios().size();
+		List<Horario> listaHorarios = clase.getHorarios();
+		tablaHorario.setWidthPercentage(100f);
+		writeTableColumnHeader(tablaHorario, "Dia");
+		writeTableColumnHeader(tablaHorario, "Hora Inicio");
+		writeTableColumnHeader(tablaHorario, "Hora Fin");
+        writeTableColumnHeader(tablaHorario, "Lugar");
+
+
+		if (indexHorario != 0) {
+			for (int i = 0; i < indexHorario; i++) {
+				tablaHorario.addCell(listaHorarios.get(i).getDia().getDiaDeLaSemana());
+				tablaHorario.addCell(listaHorarios.get(i).getHora_inicio());
+				tablaHorario.addCell(listaHorarios.get(i).getHora_fin());
+                tablaHorario.addCell(listaHorarios.get(i).getLugar());
+			}
+		} else {
+			tablaHorario.addCell("-----");
+			tablaHorario.addCell("-----");
+            tablaHorario.addCell("-----");
+			tablaHorario.addCell("-----");
+
+		}
+
+		tablaClases.addCell(tablaHorario);
+		return tablaClases;
+
+	}
 
 	private void writeTableColumnHeader(PdfPTable tablaClases, String nombreColumna) {
 		Font font = FontFactory.getFont(FontFactory.HELVETICA);
 		font.setColor(Color.WHITE);
+		font.setSize(9);
 		PdfPCell celda = new PdfPCell();
 		celda.setBackgroundColor(Color.BLUE);
 		celda.setPadding(5);
@@ -108,9 +150,9 @@ public class ClasePdfExporter {
 
 		document.add(p);
 
-		PdfPTable table = new PdfPTable(5);
+		PdfPTable table = new PdfPTable(6);
 		table.setWidthPercentage(100f);
-		table.setWidths(new float[] { 1.5f, 3.5f, 1.5f, 2.0f, 2.0f });
+		table.setWidths(new float[] { 2.0f, 2.0f, 3.5f, 7.0f, 2.0f, 2.0f });
 		table.setSpacingBefore(10);
 
 		writeTableHeader(table);

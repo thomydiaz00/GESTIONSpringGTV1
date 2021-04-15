@@ -282,7 +282,7 @@ public class AdminController {
 		}
 		for(Asistencia asistencia : todasLasAsistencias){
 
-			if(currentDate.compareTo(asistencia.getFechaAsistencia()) >= 0){
+			if(currentDate.compareTo(asistencia.getFechaAsistencia()) >= 0 && !asistencia.getRegistrosDeAsistencia().isEmpty() ){
 				asistencias.add(asistencia);
 			}
 		}
@@ -307,7 +307,7 @@ public class AdminController {
 			todasLasAsistencias = interfaceAsis.findByClaseAndProfesorAndEstadoAsistencia(clase.get(), profesor.get(), true);
 		}
 		for(Asistencia asistencia : todasLasAsistencias){
-			if(currentDate.compareTo(asistencia.getFechaAsistencia()) >= 0){
+			if(currentDate.compareTo(asistencia.getFechaAsistencia()) >= 0 && !asistencia.getRegistrosDeAsistencia().isEmpty()){
 				asistencias.add(asistencia);
 			}
 		}

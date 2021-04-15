@@ -101,7 +101,7 @@ public class PdfExportController {
 
 		for(Asistencia asistencia : asistencias){
 			LocalDate fechaDeAsistencia = asistencia.getFechaAsistencia();
-			if(fechaDeAsistencia.getMonthValue() == mes){
+			if(fechaDeAsistencia.getMonthValue() == mes && !asistencia.getRegistrosDeAsistencia().isEmpty()){
 				asistenciasPorMes.add(asistencia);
 			}
 		}

@@ -53,6 +53,7 @@
     ></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    
   </head>
   <body>
     <!--logos-->
@@ -184,12 +185,15 @@
     >
       <p>La ultima clase no fue editada, no existe clase con este ID</p>
     </div>
+    <div class="container">
+      <div th:if="${mensajeClase} != null" th:text="${mensajeClase}" class="alert alert-danger"></div>
+    </div>
     <div
       class="container pt-3 w-75 h-25"
       id="formularioClase"
       style="display: none"
     >
-      <form th:action="@{/admin/save_clase}" th:object="${clase}" method="POST">
+      <form th:action="@{/admin/save_clase}" th:object="${clase}" method="POST" id="form">
         <div class="card">
           <div class="card-body">
             <input type="hidden" th:field="*{idClase}" />
@@ -267,6 +271,8 @@
             <th class="col-sm-1">Nombre</th>
             <th class="col-sm-1">Deporte</th>
             <th scope="col">Profesores</th>
+            <th class="col-sm-1">Fecha de inicio</th>
+            <th class="col-sm-1">Fecha de fin</th>
             <th class="col-sm-1">Acciones</th>
           </tr>
         </thead>
@@ -282,6 +288,8 @@
                 ></span>
               </span>
             </td>
+            <td th:text="${clase.fechaInicio}"></td>
+            <td th:text="${clase.fechaFin}"></td>
             <td>
               <div class="d-flex align-items-stretch">
                 <div class="p-2">

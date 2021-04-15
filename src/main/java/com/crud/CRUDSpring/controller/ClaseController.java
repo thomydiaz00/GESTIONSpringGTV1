@@ -1,5 +1,8 @@
 package com.crud.CRUDSpring.controller;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceDia;
@@ -31,6 +35,9 @@ public class ClaseController {
 	public String ListarClases(Model model) {
 
 		List<Clase> clases = service.listarClase();
+		LocalDate date = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
+				.toLocalDate();
+		model.addAttribute("date", date);
 		model.addAttribute("clases", clases);
 		model.addAttribute("clase", new Clase());
 		model.addAttribute("dias", serviceDia.listarDiaDePractica());
@@ -45,8 +52,12 @@ public class ClaseController {
 	}
 
 	@PostMapping("/admin/save_clase")
-	public String saveClase(@Valid Clase clase, Model model) {
-		service.guardarClase(clase);
+	public String saveClase(@Valid Clase clase, Model model, RedirectAttributes ra) {
+		if(clase.getFechaInicio().compareTo(clase.getFechaFin()) > 0){
+			ra.addFlashAttribute("mensajeClase", "La fecha de fin de la clase debe ser menor a la de inicio");
+		}else{
+			service.guardarClase(clase);
+		}
 		return "redirect:/admin/lista_clases";
 	}
 

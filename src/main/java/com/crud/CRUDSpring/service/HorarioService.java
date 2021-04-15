@@ -86,7 +86,11 @@ public class HorarioService implements IfServiceHorario {
 					RegistroDeAsistencia registroDeAsistencia = new RegistroDeAsistencia();
 					registroDeAsistencia.setIdRegistro(id);
 					registroDeAsistencia.setFechaDeFichado(asistencia.getFechaAsistencia());
-					registroDeAsistencia.setEstado(false);
+					if(asistencia.isEstadoAsistencia()){
+						registroDeAsistencia.setEstado(true);
+					}else{
+						registroDeAsistencia.setEstado(false);
+					}
 					serviceRegistroAsistencias.guardarRegistroDeAsistencia(registroDeAsistencia);
 				}
 			}

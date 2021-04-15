@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface interfaceProfesor extends CrudRepository<Profesor, Integer>{
-	public Optional<Profesor> findByDniProf(int dniProf);
+	public Optional<Profesor> findByDniProf(Long dniProf);
 
 }

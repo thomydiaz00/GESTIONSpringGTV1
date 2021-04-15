@@ -102,12 +102,12 @@
     <div class="container pt-3">
       <div class="card">
         <div class="card-header">
-          <h3>Agregar asistencia manualmente</h3>
+          <h3 th:text=${titulo}></h3>
         </div>
 
         <div class="card-body">
           <form
-            th:action="@{/admin/guardar_asistencia_manual/} + ${idProf} +'/'+ ${idClase}"
+            th:action="${titulo} == 'Eliminar asistencia' ? @{/admin/eliminar_asistencia/} + ${idProf} +'/'+ ${idClase}: @{/admin/guardar_asistencia_manual/} + ${idProf} +'/'+ ${idClase}"
             th:object="${asistencia}"
             method="POST"
           >

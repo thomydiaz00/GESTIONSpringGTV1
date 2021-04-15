@@ -59,7 +59,7 @@ public class RegistroDeAsistenciasController {
 	// Este metodo evalua si el prof enviado en la pestaña login coincide con el dni
 	// login_profesor está en AppController
 	@RequestMapping(value = "/profesor/redirect", method = { RequestMethod.POST, RequestMethod.GET })
-	public String checkSiExisteProfesor(@RequestParam("dniProfesor") int dni, RedirectAttributes ra) {
+	public String checkSiExisteProfesor(@RequestParam("dniProfesor") Long dni, RedirectAttributes ra) {
 		try {
 			Profesor profesor = interfaceProf.findByDniProf(dni).get();
 			ra.addAttribute("profesor", profesor);
@@ -99,7 +99,7 @@ public class RegistroDeAsistenciasController {
 	}
 
 	@GetMapping("/profesor/redirect_to_horarios/{dniProf}/{idClase}")
-	public String RedirectToConsultarHorariosProfesor(@PathVariable int dniProf, @PathVariable int idClase,
+	public String RedirectToConsultarHorariosProfesor(@PathVariable Long dniProf, @PathVariable int idClase,
 			RedirectAttributes ra, Model model) {
 		Profesor profesor = interfaceProf.findByDniProf(dniProf).get();
 		Clase clase = serviceClase.clasePorId(idClase).get();

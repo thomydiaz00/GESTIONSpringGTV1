@@ -144,12 +144,12 @@
             <div class="d-flex align-items-stretch">
               
               <div class="p-2">
-                <a  class = "btn btn-danger"  th:href="@{/admin/borrar_clase_profesor/}+${profesor.idProf}+ '/' +${clase.idClase}"data-toggle="tooltip" data-placement="top" title="Eliminar">
+                <a  class = "btn btn-danger"  th:onclick="|eliminarClaseDeProfesor(${clase.idClase}, ${profesor.idProf})|" data-toggle="tooltip" data-placement="top" title="Eliminar">
                   <span class="fas fa-minus"></span>
                 </a>
               </div>
               <div class="p-2">
-                <a class ="btn btn-info" th:href="@{/admin/lista_horarios/}+${clase.idClase}" data-toggle="tooltip" data-placement="top" title="Horarios">
+                <a class ="btn btn-info" th:onclick="@{/admin/lista_horarios/}+${clase.idClase}" data-toggle="tooltip" data-placement="top" title="Horarios">
                   <span class="fas fa-clock"></span>
                 </a>
               </div>

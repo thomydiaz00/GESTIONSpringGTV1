@@ -29,11 +29,11 @@ public class Profesor {
 	@Column
 	private String apellidoProf;
 	@Column
-	private int dniProf;
+	private Long dniProf;
 	@Column
 	private Date fechaNacProf;
 	@Column
-	private int telefonoProf;
+	private Long telefonoProf;
 	@Column
 	private String matriculaProf;
 
@@ -52,8 +52,8 @@ public class Profesor {
 	public Profesor() {
 	}
 
-	public Profesor(int idProf, String nombreProf, String apellidoProf, int dniProf, Date fechaNacProf,
-			int telefonoProf, String matriculaProf, List<Asistencia> asistencias, List<Clase> clases) {
+	public Profesor(int idProf, String nombreProf, String apellidoProf, Long dniProf, Date fechaNacProf,
+			Long telefonoProf, String matriculaProf, List<Asistencia> asistencias, List<Clase> clases) {
 		this.idProf = idProf;
 		this.nombreProf = nombreProf;
 		this.apellidoProf = apellidoProf;
@@ -89,11 +89,11 @@ public class Profesor {
 		this.apellidoProf = apellidoProf;
 	}
 
-	public int getDniProf() {
+	public Long getDniProf() {
 		return dniProf;
 	}
 
-	public void setDniProf(int dniProf) {
+	public void setDniProf(Long dniProf) {
 		this.dniProf = dniProf;
 	}
 
@@ -105,11 +105,11 @@ public class Profesor {
 		this.fechaNacProf = fechaNacProf;
 	}
 
-	public int getTelefonoProf() {
+	public Long getTelefonoProf() {
 		return telefonoProf;
 	}
 
-	public void setTelefonoProf(int telefonoProf) {
+	public void setTelefonoProf(Long telefonoProf) {
 		this.telefonoProf = telefonoProf;
 	}
 
@@ -154,12 +154,12 @@ public class Profesor {
 		result = prime * result + ((apellidoProf == null) ? 0 : apellidoProf.hashCode());
 		result = prime * result + ((asistencias == null) ? 0 : asistencias.hashCode());
 		result = prime * result + ((clases == null) ? 0 : clases.hashCode());
-		result = prime * result + dniProf;
+		result = prime * result + ((dniProf == null) ? 0 : dniProf.hashCode());
 		result = prime * result + ((fechaNacProf == null) ? 0 : fechaNacProf.hashCode());
 		result = prime * result + idProf;
 		result = prime * result + ((matriculaProf == null) ? 0 : matriculaProf.hashCode());
 		result = prime * result + ((nombreProf == null) ? 0 : nombreProf.hashCode());
-		result = prime * result + telefonoProf;
+		result = prime * result + ((telefonoProf == null) ? 0 : telefonoProf.hashCode());
 		return result;
 	}
 
@@ -187,7 +187,10 @@ public class Profesor {
 				return false;
 		} else if (!clases.equals(other.clases))
 			return false;
-		if (dniProf != other.dniProf)
+		if (dniProf == null) {
+			if (other.dniProf != null)
+				return false;
+		} else if (!dniProf.equals(other.dniProf))
 			return false;
 		if (fechaNacProf == null) {
 			if (other.fechaNacProf != null)
@@ -206,9 +209,15 @@ public class Profesor {
 				return false;
 		} else if (!nombreProf.equals(other.nombreProf))
 			return false;
-		if (telefonoProf != other.telefonoProf)
+		if (telefonoProf == null) {
+			if (other.telefonoProf != null)
+				return false;
+		} else if (!telefonoProf.equals(other.telefonoProf))
 			return false;
 		return true;
 	}
+
+	
+	
 
 }

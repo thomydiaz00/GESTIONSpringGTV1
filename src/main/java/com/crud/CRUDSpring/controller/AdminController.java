@@ -281,10 +281,37 @@ public class AdminController {
 			todasLasAsistencias = interfaceAsis.findByClaseAndProfesorAndEstadoAsistencia(clase.get(), profesor.get(), false);
 		}
 		for(Asistencia asistencia : todasLasAsistencias){
+
 			if(currentDate.compareTo(asistencia.getFechaAsistencia()) >= 0){
 				asistencias.add(asistencia);
 			}
 		}
+		model.addAttribute("titulo", "Agregar asistencia manualmente");
+		model.addAttribute("asistencias", asistencias);
+		model.addAttribute("idProf", idProf);
+		model.addAttribute("idClase", idClase);
+
+		return "forms/form_asistencia";
+	}
+
+	@GetMapping(value="admin/eliminar_asistencia_manual/{idProf}/{idClase}")
+	public String EliminarAsistenciaManual(@PathVariable(value="idProf") int idProf, @PathVariable(value="idClase") int idClase, Model model){
+		LocalDate currentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
+				.toLocalDate();
+		Optional<Profesor> profesor = serviceProfesor.profesorPorId(idProf); 
+		Optional<Clase> clase = servClase.clasePorId(idClase);
+		List<Asistencia> todasLasAsistencias = new ArrayList<Asistencia>();
+		List<Asistencia> asistencias = new ArrayList<Asistencia>();
+
+		if(profesor.isPresent() && clase.isPresent()){
+			todasLasAsistencias = interfaceAsis.findByClaseAndProfesorAndEstadoAsistencia(clase.get(), profesor.get(), true);
+		}
+		for(Asistencia asistencia : todasLasAsistencias){
+			if(currentDate.compareTo(asistencia.getFechaAsistencia()) >= 0){
+				asistencias.add(asistencia);
+			}
+		}
+		model.addAttribute("titulo", "Eliminar asistencia");
 		model.addAttribute("asistencias", asistencias);
 		model.addAttribute("idProf", idProf);
 		model.addAttribute("idClase", idClase);
@@ -301,6 +328,20 @@ public class AdminController {
 				servRegistro.guardarRegistroDeAsistencia(registro);
 			}
 			asis.setEstadoAsistencia(true);
+			serviceAsistencia.guardarAsistencia(asis);
+		}
+		return "redirect:/admin/consultar_asistencia/" + idProf + "/" + idClase ;
+	}
+	@PostMapping(value="admin/eliminar_asistencia/{idProf}/{idClase}")
+	public String eliminar(Model model, Asistencia asistencia, @PathVariable(value="idProf") int idProf, @PathVariable(value="idClase") int idClase){
+		Optional<Asistencia> a = serviceAsistencia.AsistenciaPorId(asistencia.getIdAsistencia());
+		if(a.isPresent()){
+			Asistencia asis= a.get();
+			for(RegistroDeAsistencia registro : asis.getRegistrosDeAsistencia()){
+				registro.setEstado(false);
+				servRegistro.guardarRegistroDeAsistencia(registro);
+			}
+			asis.setEstadoAsistencia(false);
 			serviceAsistencia.guardarAsistencia(asis);
 		}
 		return "redirect:/admin/consultar_asistencia/" + idProf + "/" + idClase ;

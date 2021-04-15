@@ -125,6 +125,7 @@
             </tr>
           </thead>
           <tbody>
+            <div class ="alert alert-warning" th:if="${ #lists.isEmpty(asistencias)}" role="alert"><p>No hay horarios disponibles para marcar la asistencia</p></div>
             <div th:each=" horario, horarioStat: ${clase.horarios}" >
               <tr th:if="${horario.dia.diaDeLaSemana == currentDay} ">
                 <td th:text="${horario.dia.diaDeLaSemana}">
@@ -150,23 +151,7 @@
                     <i th:class="${registro.estado == true} ? 'fas fa-check-circle fa-3x' : 'far fa-check-circle fa-3x' "></i>
                   </td>
                 </th:block>
-               
-              <!-- <td
-                th:if="${asistencias[__horarioStat.index__].estado == true"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Asistencia Registrada"
-              >
-                <i class="fas fa-check-circle fa-3x"></i>
-              </td>
-              <td
-                th:if="${asistencias[__horarioStat.index__].estado == false"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Pendiente"
-              >
-                <i class="far fa-check-circle fa-3x"></i>
-              </td> -->
+             
           </tbody>
         </table>
       </div>

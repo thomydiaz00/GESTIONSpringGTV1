@@ -17,6 +17,7 @@ import java.util.Optional;
 public interface interfaceRegistroDeAsistencia extends CrudRepository<RegistroDeAsistencia, Integer> {
 
     public Optional<RegistroDeAsistencia> findByIdRegistro(RegistroDiasId id);
+    public Optional<RegistroDeAsistencia> findByIdRegistroAsistencia(Asistencia asistencia);
 
     public int countByFechaDeFichadoAndIdRegistro(LocalDate date, RegistroDiasId id);
 

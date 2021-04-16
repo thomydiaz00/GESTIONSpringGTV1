@@ -120,33 +120,39 @@
               <td class="col-2">Hora de inicio</td>
               <td class="col-2">Hora de finalización</td>
               <td class="col-2">Seleccionar</td>
-              <!-- <td class="col-1">Estado</td> -->
+              <td class="col-1">Estado</td>
+
             </tr>
           </thead>
           <tbody>
-            <tr th:each=" horario: ${clase.horarios}" th:rach>
-              <td>
-                <span th:each=" dia, iterStat  : ${horario.dia} ">
-                  <span
-                    th:text="!${iterStat.last} ? ${dia.diaDeLaSemana} + ', ' : ${dia.diaDeLaSemana} "
-                  ></span>
-                </span>
-              </td>
-              <td th:text="${horario.lugar}"></td>
-              <td th:text="${horario.hora_inicio}"></td>
-              <td th:text="${horario.hora_fin}"></td>
-              <td>
-                <button
-                  th:id="'selectButton-' +${horario.idHorario}"
-                  type="button"
-                  class="btn btn-success"
-                  th:attr="onclick = |eval('${horario.idHorario}','${profesor.idProf}' , '${clase.idClase}')|"
-                >
-                  Seleccionar
-                </button>
-              </td>
+            <div th:each=" horario, horarioStat: ${clase.horarios}" >
+              <tr th:if="${horario.dia.diaDeLaSemana == currentDay} ">
+                <td th:text="${horario.dia.diaDeLaSemana}">
+                </td>
+                  </span>
+                </td>
+                <td th:text="${horario.lugar}"></td>
+                <td th:text="${horario.hora_inicio}"></td>
+                <td th:text="${horario.hora_fin}"></td>
+                <td>
+                  <button
+                    th:id="'selectButton-' +${horario.idHorario}"
+                    type="button"
+                    class="btn btn-success"
+                    th:attr="onclick = |eval('${horario.idHorario}','${profesor.idProf}' , '${clase.idClase}')|"
+                  >
+                    Seleccionar
+                  </button>
+                </td>
+
+                <th:block th:each="registro : ${asistencias}">
+                  <td th:if="${registro.idRegistro.horario == horario and horario.dia.diaDeLaSemana == currentDay}">
+                    <i th:class="${registro.estado == true} ? 'fas fa-check-circle fa-3x' : 'far fa-check-circle fa-3x' "></i>
+                  </td>
+                </th:block>
+               
               <!-- <td
-                th:if="${asistencias[__horarioStat.index__].estadoAsistencia} == true"
+                th:if="${asistencias[__horarioStat.index__].estado == true"
                 data-toggle="tooltip"
                 data-placement="top"
                 title="Asistencia Registrada"
@@ -154,14 +160,13 @@
                 <i class="fas fa-check-circle fa-3x"></i>
               </td>
               <td
-                th:if="${asistencias[__horarioStat.index__].estadoAsistencia} == false"
+                th:if="${asistencias[__horarioStat.index__].estado == false"
                 data-toggle="tooltip"
                 data-placement="top"
                 title="Pendiente"
               >
                 <i class="far fa-check-circle fa-3x"></i>
               </td> -->
-            </tr>
           </tbody>
         </table>
       </div>

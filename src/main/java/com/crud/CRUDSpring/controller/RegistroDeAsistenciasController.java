@@ -76,11 +76,28 @@ public class RegistroDeAsistenciasController {
 	@GetMapping("/profesor/clases")
 	public String clasesProfesor(@ModelAttribute Profesor profesor, Model model,
 			@RequestParam(value = "noHayHorarios", required = false) Optional<Boolean> noHayHorarios) {
-		List<Clase> clases = new ArrayList<Clase>();
-		clases = profesor.getClases(); // ver para hacer la relacion de
+		List<Clase> clases = profesor.getClases();
+		List<Clase> clasesDeHoy =  new ArrayList<Clase>();
+		String currentDay = getCurrentDay();
+		System.out.println("hoy es:" + currentDay);
+		for(Clase cla : clases){
+			for(DiaDePractica dia :cla.getDias()){
+				if(dia.getDiaDeLaSemana().equals(currentDay)){
+					clasesDeHoy.add(cla);
+				}
+			}
+		}
+		System.out.println(clasesDeHoy.toString());
 		model.addAttribute("profesor", profesor);
-		model.addAttribute("clases", clases);
+		model.addAttribute("clases", clasesDeHoy);
 		return "vistas_profesor/profesor_clases";
+	}
+
+	private String getCurrentDay() {
+		LocalDate localCurrentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
+				.toLocalDate();
+		String currentDay = interfaceAsistencia.maskDay(localCurrentDate.getDayOfWeek());
+		return currentDay;
 	}
 
 	@GetMapping("/profesor/redirect_to_horarios/{dniProf}/{idClase}")
@@ -97,8 +114,19 @@ public class RegistroDeAsistenciasController {
 	@GetMapping("/profesor/consultar_horarios")
 	public String ConsultarHorariosProfesor(Model model, @ModelAttribute Profesor profesor,
 			@ModelAttribute Clase clase) {
+		List<RegistroDeAsistencia> asistencias = new ArrayList<RegistroDeAsistencia>();
+		LocalDate localCurrentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
+				.toLocalDate();
+		for(Asistencia asistencia : clase.getAsistencias()){
+			if(asistencia.getFechaAsistencia().toString().equals(localCurrentDate.toString()) && asistencia.getProfesor() == profesor && asistencia.getClase() == clase){
+				asistencias.addAll(asistencia.getRegistrosDeAsistencia());
+			}
+		}
+		System.out.println(asistencias.size());
 		model.addAttribute("profesor", profesor);
 		model.addAttribute("clase", clase);
+		model.addAttribute("asistencias", asistencias);
+		model.addAttribute("currentDay", getCurrentDay());
 		return "vistas_profesor/consultar_horarios";
 		// Date date = new Date();
 		// LocalDate currentDate =

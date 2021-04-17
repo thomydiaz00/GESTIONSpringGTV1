@@ -100,8 +100,6 @@ public class PdfExportController {
 		List<Asistencia> asistenciasCompletas = new ArrayList<Asistencia>();
 		List<Asistencia> faltas = new ArrayList<Asistencia>();
 		List<Asistencia> asistenciasPorMes = new ArrayList<Asistencia>();
-
-
 		List<Asistencia> asistencias = interfaceAsis.findByClaseAndProfesor(c.get(), p.get());
 		LocalDate localCurrentDate = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca"))
 				.toLocalDate();
@@ -116,7 +114,7 @@ public class PdfExportController {
 		for(Asistencia asistencia: asistenciasPorMes){	
 			LocalDate fechaDeAsistencia = asistencia.getFechaAsistencia();
 			int res = fechaDeAsistencia.compareTo(localCurrentDate);
-			if((res < 0) && (fechaDeAsistencia.getYear() == anio)){
+			if((res <= 0) && (fechaDeAsistencia.getYear() == anio)){
 				if(asistencia.isEstadoAsistencia()){
 					asistenciasCompletas.add(asistencia);
 				}else{
@@ -129,7 +127,7 @@ public class PdfExportController {
 
 		response.setContentType("application/pdf");
 		String headerKey = "Content-Disposition";
-		String headerValue = "attachement;filename=Asistencias.pdf";
+		String headerValue = "attachement;filename=asistencias-"+ p.get().getApellidoProf().toLowerCase()+ "-"+ mes + "-" + anio + ".pdf";
 
 		response.setHeader(headerKey, headerValue);
 		AsistenciaPdfExporter exporter = new AsistenciaPdfExporter(p.get(), c.get(), asistenciasPorMes, asistenciasCompletas, faltas);

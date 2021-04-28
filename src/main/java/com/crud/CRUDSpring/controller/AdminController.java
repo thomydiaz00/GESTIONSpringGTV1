@@ -33,6 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.crud.CRUDSpring.interfaceService.IfServiceAsistencia;
 import com.crud.CRUDSpring.interfaceService.IfServiceClase;
 import com.crud.CRUDSpring.interfaceService.IfServiceProfesor;
+import com.crud.CRUDSpring.interfaceService.IfServiceRegistroDeAsistencia;
 import com.crud.CRUDSpring.interfaceService.IfServiceUser;
 import com.crud.CRUDSpring.interfaces.interfaceAsistencia;
 import com.crud.CRUDSpring.interfaces.interfaceProfesor;
@@ -55,6 +56,8 @@ public class AdminController {
 	private IfServiceClase servClase;
 	@Autowired
 	private IfServiceUser servUser;
+	@Autowired
+	private IfServiceRegistroDeAsistencia servRegistro;
 	@Autowired
 	interfaceRegistroDeAsistencia registroDeAsistencia;
 	@Autowired
@@ -285,7 +288,24 @@ public class AdminController {
 			}
 		}
 		model.addAttribute("asistencias", asistencias);
+		model.addAttribute("idProf", idProf);
+		model.addAttribute("idClase", idClase);
+
 		return "forms/form_asistencia";
+	}
+	@PostMapping(value="admin/guardar_asistencia_manual/{idProf}/{idClase}")
+	public String guardarAsistenciaManual(Model model, Asistencia asistencia, @PathVariable(value="idProf") int idProf, @PathVariable(value="idClase") int idClase){
+		Optional<Asistencia> a = serviceAsistencia.AsistenciaPorId(asistencia.getIdAsistencia());
+		if(a.isPresent()){
+			Asistencia asis= a.get();
+			for(RegistroDeAsistencia registro : asis.getRegistrosDeAsistencia()){
+				registro.setEstado(true);
+				servRegistro.guardarRegistroDeAsistencia(registro);
+			}
+			asis.setEstadoAsistencia(true);
+			serviceAsistencia.guardarAsistencia(asis);
+		}
+		return "redirect:/admin/consultar_asistencia/" + idProf + "/" + idClase ;
 	}
 
 }

@@ -107,7 +107,7 @@
 
         <div class="card-body">
           <form
-            th:action="@{/admin/guardar_asistencia_manual}"
+            th:action="@{/admin/guardar_asistencia_manual/} + ${idProf} +'/'+ ${idClase}"
             th:object="${asistencia}"
             method="POST"
           >

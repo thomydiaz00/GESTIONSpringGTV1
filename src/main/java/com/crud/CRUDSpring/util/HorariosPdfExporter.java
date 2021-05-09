@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import com.crud.CRUDSpring.model.Clase;
+import com.crud.CRUDSpring.model.Horario;
 import com.crud.CRUDSpring.model.Profesor;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -39,46 +40,53 @@ public class HorariosPdfExporter {
 		cell.setPhrase(new Phrase("Nombre", font));
 		table.addCell(cell);
 
-		cell.setPhrase(new Phrase("Profesores", font));
+		cell.setPhrase(new Phrase("Horarios", font));
 		table.addCell(cell);
 
 		cell.setPhrase(new Phrase("Deporte", font));
 		table.addCell(cell);
 
-		cell.setPhrase(new Phrase("Inicio", font));
+		cell.setPhrase(new Phrase("Inicio de la Clase", font));
 		table.addCell(cell);
 
-		cell.setPhrase(new Phrase("Fin", font));
+		cell.setPhrase(new Phrase("Finalización de la Clase", font));
 		table.addCell(cell);
+
 	}
 
 	private void writeTableData(PdfPTable table) {
 		for (Clase clase : listClases) {
 			table.addCell(clase.getNombreDep());
-			agregarProfesorTable(table, clase);
+			agregarHorariosTable(table, clase);
 			table.addCell(clase.getDeporte());
 			table.addCell(clase.getFechaInicio().toString());
 			table.addCell(clase.getFechaFin().toString());
 		}
 	}
 
-	public PdfPTable agregarProfesorTable(PdfPTable tablaClases, Clase clase) {
-		PdfPTable tablaProfesor = new PdfPTable(2);
-		tablaProfesor.setWidthPercentage(100f);
-		int indexProf = clase.getProfesores().size();
-		List<Profesor> listaProfesores = clase.getProfesores();
-		writeTableColumnHeader(tablaProfesor, "Nombre");
-		writeTableColumnHeader(tablaProfesor, "Apellido");
-		if (indexProf != 0) {
-			for (int i = 0; i < indexProf; i++) {
-				tablaProfesor.addCell(listaProfesores.get(i).getNombreProf());
-				tablaProfesor.addCell(listaProfesores.get(i).getApellidoProf());
+	public PdfPTable agregarHorariosTable(PdfPTable tablaClases, Clase clase) {
+		PdfPTable tablaHorario = new PdfPTable(3);
+		tablaHorario.setWidthPercentage(100f);
+		int indexHorario = clase.getHorarios().size();
+		List<Horario> listaHorarios = clase.getHorarios();
+		writeTableColumnHeader(tablaHorario, "Hora Inicio");
+		writeTableColumnHeader(tablaHorario, "Hora Fin");
+        writeTableColumnHeader(tablaHorario, "Lugar");
+
+
+		if (indexHorario != 0) {
+			for (int i = 0; i < indexHorario; i++) {
+				tablaHorario.addCell(listaHorarios.get(i).getHora_inicio());
+				tablaHorario.addCell(listaHorarios.get(i).getHora_fin());
+                tablaHorario.addCell(listaHorarios.get(i).getLugar());
 			}
 		} else {
-			tablaProfesor.addCell("-----");
-			tablaProfesor.addCell("-----");
+			tablaHorario.addCell("-----");
+			tablaHorario.addCell("-----");
+            tablaHorario.addCell("-----");
 		}
-		tablaClases.addCell(tablaProfesor);
+
+		tablaClases.addCell(tablaHorario);
 		return tablaClases;
 
 	}
@@ -111,7 +119,8 @@ public class HorariosPdfExporter {
 		document.add(deportesBaradero);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
 		String date = new Date().toInstant().atZone(ZoneId.of("America/Argentina/Catamarca")).toLocalDate().format(formatter);
-		Paragraph p = new Paragraph("Lista de Clases - " + date.toString(), font);
+		
+        Paragraph p = new Paragraph("Lista de Horarios - " + date.toString(), font);
 		p.setAlignment(Paragraph.ALIGN_CENTER);
 
 		document.add(p);

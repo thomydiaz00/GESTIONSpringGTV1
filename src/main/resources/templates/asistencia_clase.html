@@ -201,7 +201,9 @@
               <tr><p>Hacer click sobre una celda para consultar horarios en ese día</p></tr>
             </tbody>
           </table>
+          <button class="btn btn-info" onclick="enviar()"><i class="fas fa-file-pdf fa-lg p-2"></i>Asistencia mensual</button>
         </div>
+    
       </div>
     </div>
 
@@ -222,6 +224,21 @@
         "Sabado",
         "Domingo",
       ];
+      function enviar(){
+        $.ajax({
+          url: "/admin/lista_asistencias/export",
+          data: { mes: currentMonth + 1, profesor: profesor, clase: clase },
+          success: function (response) {
+            console.log("enviando el mes: ", currentMonth + 1);
+            console.log("enviando el profesor: ", profesor);
+            console.log("enviando la clase: ", clase);
+
+          },
+          error: function (data) {
+            console.log("Error:", data);
+          },
+        });
+      }
 
       const fechasCompletas = /*[[${fechasCompletas}]]*/ "defaultanyvalue";
       const faltas = /*[[${faltas}]]*/ "defaultanyvalue";
